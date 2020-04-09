@@ -1,0 +1,195 @@
+body{
+    padding:0;
+    margin:0;
+    background-color:#f4f4f4;
+}
+
+#list {
+    border: 2px solid #35424a;
+    margin-top: 50px;
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#list td {
+        border: 2px solid #35424a;
+        height:50px;
+}
+
+#list thead {
+        background-color: #35424a;
+        color: #e8491d;
+}
+
+#showcase {
+    min-height: 300px;
+    text-align:center;
+    color:white;
+}
+
+#showcase h1{
+    margin-top:100px;
+    font-size:55px;
+    margin-bottom:10px;
+}
+
+#showcase p{
+    font-size:20px;
+}
+
+
+.errorlist{
+    color:red;
+    font-size:10px;
+    padding:0;
+    margin-bottom:-7px;
+    margin-left:3%;
+    list-style-type:none;
+}
+
+header{
+    background-color:#35424a;
+    color:#ffffff;
+    padding-bottom: 30px;
+    min-height:70px;
+    border-bottom:#e8491d 3px solid;
+}
+
+header a{
+    color:whitesmoke;
+    text-decoration:none;
+    text-transform:uppercase;
+    font-size:16px;
+}
+
+header a:hover {
+  color: #e8491d;
+    text-decoration:none;
+
+}
+
+header ul{
+   margin:0;
+   padding:0;
+}
+
+header li {
+    display: inline;
+    float:left;
+    padding:0 20px 0 20px;
+}
+
+header nav{
+    float:right;
+}
+
+.highlight{
+    color:#e8491d;
+
+}
+
+.form-log label{
+    margin-top:20px;
+    color:white;
+    padding-left:20%;
+    
+}
+
+.form-log input[type=text]{
+    margin-left: 50px;
+}
+
+.form-log {
+    background-color: #35424a;
+    padding: 100px;
+    margin-top: 30px;
+    border-bottom: #e8491d 3px solid;
+}
+
+.form-log h1{
+    color:#e8491d;
+    padding:0;
+    text-align:center;
+    padding-bottom:0px;
+}
+
+.form-log button{
+    float:right;
+  
+}
+
+.button{
+    background-color:#e8491d;
+    color:white;
+    border:none;
+    padding:5px;
+    margin-left: 270px;
+}
+
+.main-footer{
+    background-color:#e8491d;
+    color:white;
+    text-align:center;
+    margin-top:8%;
+    padding:20px;
+    border-radius:5px;
+}
+
+.champ a{
+    padding-left:20px;
+    color:aquamarine;
+    font-size:10px;
+    padding-top:10px;
+}
+
+#boxes{
+    margin-top:20px;
+}
+
+#boxes .box{
+    float:left;
+    width:30%;
+    padding:15px;
+}
+
+#box-link{
+    color:black
+}
+
+#box-link :hover {
+        color: #e8491d;
+        background-color: #35424a;
+
+}
+
+.prod_lien {
+    float: left;
+    text-decoration: none;
+    margin-top: 50px;
+    color: white;
+    margin-right: 50px;
+    background-color: #35424a;
+    padding:10px;
+}
+
+.prod_lien:hover{
+    color:#e8491d;
+}
+
+.form-mini {
+    background-color: #35424a;
+    margin-top: 30px;
+    border-bottom: #e8491d 3px solid;
+}
+
+.form-mini label {
+    margin-top: 20px;
+    color: white;
+    padding-left: 30%;
+}
+
+.form-mini input[type=text] {
+    margin-left: 100px;
+}
+
+

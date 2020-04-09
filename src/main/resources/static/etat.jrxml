@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.10.0.final using JasperReports Library version 6.10.0-unknown  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="etat" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6b188c35-decf-4d7c-bf5c-6c6163fab1ca">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="gestionLabo"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<parameter name="idFacture" class="java.lang.Long"/>
+	<queryString>
+		<![CDATA[call genererFacture($P{idFacture})]]>
+	</queryString>
+	<field name="id_facture" class="java.lang.Long">
+		<property name="com.jaspersoft.studio.field.label" value="id_facture"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="facture"/>
+	</field>
+	<field name="libelle_examen" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="libelle_examen"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="examen"/>
+	</field>
+	<field name="prix_examen" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.label" value="prix_examen"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="examen"/>
+	</field>
+	<field name="nom" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="nom"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="personne"/>
+	</field>
+	<field name="prenom" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="prenom"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="personne"/>
+	</field>
+	<field name="somme_totale" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.label" value="somme_totale"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="facture"/>
+	</field>
+	<field name="code" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="code"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="examen"/>
+	</field>
+	<field name="date_creation_originale" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="date_creation_originale"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="facture"/>
+	</field>
+	<group name="GroupePatient">
+		<groupHeader>
+			<band height="83">
+				<textField>
+					<reportElement x="11" y="20" width="531" height="19" uuid="bc605344-f9b5-4a83-9026-9bbf7067b1cf"/>
+					<textElement>
+						<font size="11"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Nom du Patient:  " + $F{nom}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="10" y="39" width="531" height="19" uuid="53214787-311d-4120-bbbc-a04a699f7f38"/>
+					<textElement>
+						<font size="11"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Prenom du patient: " + $F{prenom}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="200" y="0" width="210" height="20" uuid="fbab2810-ba02-4570-af64-c63105660da3"/>
+					<textFieldExpression><![CDATA["Date d'établissement:  " + $F{date_creation_originale}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="430" y="61" width="39" height="18" uuid="827938e7-ed86-4164-aeb7-36b4af829127"/>
+					<textElement>
+						<font size="12" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Prix]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="135" y="61" width="100" height="18" uuid="4d98952e-f92e-4dcb-8318-5c7adf275637"/>
+					<textElement>
+						<font size="12" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Examens"]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement x="1" y="61" width="549" height="1" uuid="d25e359e-b6aa-4351-af9e-cacfaeeb1901"/>
+				</line>
+				<line>
+					<reportElement x="0" y="0" width="1" height="81" uuid="7b2f5964-6477-4a84-a288-0b41146ed405"/>
+				</line>
+				<line>
+					<reportElement x="349" y="61" width="1" height="18" uuid="6080bc1f-89b9-4421-9247-907160e3050b"/>
+				</line>
+				<line>
+					<reportElement x="549" y="-1" width="1" height="81" uuid="85f27c87-00b4-4940-bb03-1c544cb411e5"/>
+				</line>
+				<line>
+					<reportElement x="0" y="80" width="549" height="1" uuid="196e3fe0-94d9-4a08-9604-33b64fe13945"/>
+				</line>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="31">
+				<textField>
+					<reportElement x="160" y="4" width="70" height="19" uuid="e9229d34-6965-457f-a499-5b11ccf1985e"/>
+					<textElement>
+						<font size="14" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Total"]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="360" y="4" width="100" height="22" uuid="610b7567-01f1-4385-8740-254c6824ba43"/>
+					<textFieldExpression><![CDATA[$F{somme_totale} +" FCFA"]]></textFieldExpression>
+				</textField>
+				<line>
+					<reportElement x="0" y="27" width="549" height="1" uuid="4820aa97-b482-4427-8631-14953101d8c4"/>
+				</line>
+				<line>
+					<reportElement x="0" y="-4" width="1" height="31" uuid="b2109efb-6562-4339-898d-66ee178f0f7c"/>
+				</line>
+				<line>
+					<reportElement x="349" y="0" width="1" height="27" uuid="615082d5-6b1e-49ab-9c81-5109d0820495"/>
+				</line>
+				<line>
+					<reportElement x="549" y="0" width="1" height="27" uuid="9385084b-55ff-4d6a-bcf7-01b6b966f6f8"/>
+				</line>
+				<line>
+					<reportElement x="0" y="1" width="548" height="1" uuid="3504d63c-29e2-47e7-a857-a6f707bc03a3"/>
+				</line>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="39" splitType="Stretch">
+			<textField>
+				<reportElement x="240" y="10" width="160" height="19" uuid="ddb01a24-8dd7-4459-a944-8c299293d2fa"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Facture " + $F{id_facture}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="-1" width="1" height="40" uuid="37816afb-859a-4aee-b7da-e738b0cd4ebf"/>
+			</line>
+			<line>
+				<reportElement x="1" y="-1" width="548" height="1" uuid="23fea378-f19e-4333-8d03-93b44819cf86"/>
+			</line>
+			<line>
+				<reportElement x="549" y="-1" width="1" height="39" uuid="e83aa870-1589-4c07-a0ac-ac09774323da"/>
+			</line>
+		</band>
+	</title>
+	<detail>
+		<band height="23" splitType="Stretch">
+			<textField>
+				<reportElement x="10" y="3" width="330" height="16" uuid="d56e4375-45f8-4e38-ad49-9c325f6e8094"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[ $F{code}+"     "+$F{libelle_examen}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="360" y="4" width="100" height="15" uuid="53babc47-d11a-41e7-9506-a06fee6d49b2"/>
+				<textFieldExpression><![CDATA[$F{prix_examen} +" FCFA"]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="-4" width="1" height="27" uuid="99de414f-6695-4e1d-9557-abec0a7e0489"/>
+			</line>
+			<line>
+				<reportElement x="349" y="-4" width="1" height="27" uuid="41bc1be7-0f83-4d36-a1ff-6c351077b641"/>
+			</line>
+			<line>
+				<reportElement x="549" y="-3" width="1" height="26" uuid="5501710a-d629-4bfa-b6a3-ec90a6cd03c2"/>
+			</line>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="42">
+			<textField>
+				<reportElement x="340" y="10" width="190" height="30" uuid="a6aa2a0d-e220-44e7-92ff-b804c54122ba"/>
+				<textFieldExpression><![CDATA["Implémenté par MBOUENDE Norman " +
+"étudiant à l'institut Saint Jean"]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+</jasperReport>

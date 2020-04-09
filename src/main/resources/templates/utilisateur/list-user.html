@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <link href="webjars/bootstrap/4.1.3/css/bootstrap.min.css" th:href="@{/webjars/bootstrap/4.1.3/css/bootstrap.min.css}" rel="stylesheet">
+    <link href="webjars/font-awesome/5.12.0/css/all.css" th:href="@{/webjars/font-awesome/5.12.0/css/all.css}" rel="stylesheet" TYPE="text/css">
+    <link href="style.css" th:href="@{/style.css}" rel="stylesheet">
+    <title>Liste des examens du laboratoire</title>
+</head>
+<body>
+<script>
+
+    function deletebox(idUser) {
+        if (confirm("Voulez vous vraiment supprimer?" )) {
+            open("/Gestion_Laboratoire_EMMAUS/Gestion_Laboratoire_EMMAUS/user/deleteUser/" + idUser, "_top");
+        }
+    }
+
+    function deactivateUser(idUser) {
+        if (confirm("Voulez vous vraiment désactiver l'utilisateur?")) {
+            open("/Gestion_Laboratoire_EMMAUS/Gestion_Laboratoire_EMMAUS/user/deactivateUser/" + idUser, "_top");
+        }
+    }
+    function activateUser(idUser) {
+        if (confirm("Voulez vous vraiment activer l'utilisateur?")) {
+            open("/Gestion_Laboratoire_EMMAUS/Gestion_Laboratoire_EMMAUS/user/activateUser/" + idUser, "_top");
+        }
+    }
+</script>
+<header>
+    <div class="container">
+        <h1>Laboratoire<span class="highlight"> EMMAUS</span></h1>
+        <span sec:authorize="hasRole('ROLE_UTILISATEUR')" class="highlight">Utilisateur </span>
+        <span sec:authorize="hasRole('ROLE_MEDECIN')" class="highlight">Docteur </span>
+        <span sec:authorize="hasRole('ROLE_ADMIN')" class="highlight">Administrateur </span>
+        <span sec:authentication="name"></span>
+        <nav>
+            <ul>
+                <li><a th:href="@{/}">Accueil</a></li>
+                <li sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_UTILISATEUR')"><a th:href="@{/Gestion_Laboratoire_EMMAUS/facture/list-facture}">Factures</a></li>
+                <li sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_MEDECIN')"><a th:href="@{/Gestion_Laboratoire_EMMAUS/examen/listExamen}">Examens</a></li>
+
+                <li sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="@{/Gestion_Laboratoire_EMMAUS/user/list}">Employés</a></li>
+                <!--<li><a href="/logout">Logout</a></li>-->
+            </ul>
+        </nav>
+
+    </div>
+</header>
+<div class="container my-2">
+    <div class="card">
+        <div class="card-body">
+            <div th:switch="${utilisateurs}" class="container my-5">
+                <p class="my-5" sec:authorize="hasRole('ROLE_ADMIN')">
+                    <a th:href="@{/Gestion_Laboratoire_EMMAUS/user/add-user}"   class="btn btn-primary"><i class="fas fa-user-plus ml-2">Ajout Utilisateur</i></a>
+                    <span class="float-lg-right"><a th:href="@{/logout}"   class="btn btn-outline-danger"><i class="fa fa-power-off">Se déconnecter</i></a></span>
+
+                </p>
+                <div class="col-md-12">
+                    <h2 th:case="null">Aucun Utilisateur</h2>
+                    <div th:case="*">
+                        <table class="table table-striped table-responsive-md">
+                            <thead>
+                            <tr>
+                                <th>Nom</th>
+                                <th>Prenom</th>
+                                <th>Email</th>
+                                <th>Téléphone</th>
+                                <th>Role</th>
+                                <th>Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="utilisateur : ${utilisateurs}">
+                                <td th:text="${utilisateur.getNom()}"></td>
+                                <td th:text="${utilisateur.getPrenom()}"></td>
+                                <td th:text="${utilisateur.getEmail()}"></td>
+                                <td th:text="${utilisateur.getTelephone()}" ></td>
+                                <td th:text="${utilisateur.getRole()}" ></td>
+                                <td>
+                                    <a th:if="${utilisateur.getRole()} !='ADMIN'"
+                                       th:href="@{/Gestion_Laboratoire_EMMAUS/user/editer/{id}(id=${utilisateur.getIdPersonne()})}"
+                                       class="btn btn-outline-primary">
+                                        <i class="fa fa-edit text-warning"></i>
+                                    </a>
+                                    <a th:if="${utilisateur.getRole()} =='ADMIN'"
+                                       th:href="@{/Gestion_Laboratoire_EMMAUS/user/editerAdmin/{id}(id=${utilisateur.getIdPersonne()})}"
+                                       class="btn btn-outline-primary">
+                                        <i class="fa fa-edit text-warning"></i>
+                                    </a>
+                                    <button
+                                            class="btn btn-outline-primary"
+                                            th:if="${utilisateur.getRole()} !='ADMIN' and  ${utilisateur.getExamenSouscrits().size() ==0 && utilisateur.getFactures().size() ==0}" style="margin-left: 1%"
+                                            th:onclick="'deletebox(\'' + ${utilisateur.getIdPersonne()} + '\');'">
+                                        <span class="fa fa-trash text-danger"></span>
+                                    </button>
+                                    <button th:if="${utilisateur.getRole()} !='ADMIN' and ${utilisateur.isActive() ==true}"
+                                            class="btn btn-outline-primary"
+                                            style="margin-left: 1%"  th:onclick="'deactivateUser(\'' + ${utilisateur.getIdPersonne()} + '\');'">
+                                        <span class="fa fa-eye"></span>
+                                    </button>
+                                    <button th:if="${utilisateur.role} !='ADMIN' and ${utilisateur.isActive() ==false}"
+                                            class="btn btn-outline-primary"
+                                            style="margin-left: 1%"  th:onclick="'activateUser(\'' + ${utilisateur.getIdPersonne()} + '\');'">
+                                        <span class="fa fa-eye-slash"></span>
+                                    </button>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+</body>
+</html>
