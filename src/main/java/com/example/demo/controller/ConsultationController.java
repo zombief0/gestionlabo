@@ -17,10 +17,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
+import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.URL;
@@ -60,15 +62,15 @@ public class ConsultationController {
         JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("idCons", idConsultation );
-        URL r = resourceLoader.getResource("classpath:static/logo1.png").getURL();
-        printState(response, jasperReport, parameters, r, dataSource);
+        BufferedImage image = ImageIO.read(resourceLoader.getResource("classpath:static/logo1.png").getInputStream());
+        parameters.put("logo",image);
+        printState(response, jasperReport, parameters, dataSource);
 
         return "redirect:/Gestion_Laboratoire_EMMAUS/examenSouscrit/profil-patient/" + idPatient;
 
     }
 
-    static void printState(HttpServletResponse response, JasperReport jasperReport, Map<String, Object> parameters, URL r, DataSource dataSource) throws SQLException, JRException, IOException {
-        parameters.put("logo",r.getPath());
+    static void printState(HttpServletResponse response, JasperReport jasperReport, Map<String, Object> parameters, DataSource dataSource) throws SQLException, JRException, IOException {
         Connection connection = dataSource.getConnection();
         JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport,parameters, connection);
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();

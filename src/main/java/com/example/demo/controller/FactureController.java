@@ -21,10 +21,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import javax.validation.Valid;
+import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.URL;
@@ -130,9 +132,10 @@ public class FactureController {
 
         JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);
         Map<String, Object> parameters = new HashMap<>();
-        URL r = resourceLoader.getResource("classpath:static/logo1.png").getURL();
         parameters.put("idFacture", idFacture );
-        ConsultationController.printState(response, jasperReport, parameters, r, dataSource);
+        BufferedImage image = ImageIO.read(resourceLoader.getResource("classpath:static/logo1.png").getInputStream());
+        parameters.put("logo",image);
+        ConsultationController.printState(response, jasperReport, parameters, dataSource);
 
         return "redirect:/Gestion_Laboratoire_EMMAUS/facture/list-facture";
     }
