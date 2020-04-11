@@ -6,37 +6,37 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class TypeExamen implements Serializable {
+public class Laboratoire implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idTypeExamen;
+    private Long idLaboratoire;
 
     @Column(nullable = false)
     private String libelle;
 
     private String description;
 
-    @OneToMany(mappedBy = "typeExamen", cascade = {CascadeType.MERGE, CascadeType.PERSIST},orphanRemoval = true)
+    @OneToMany(mappedBy = "laboratoire", cascade = {CascadeType.MERGE, CascadeType.PERSIST},orphanRemoval = true)
     private List<Examen> examenList = new ArrayList<>();
 
-    public TypeExamen(String libelle, String description, List<Examen> examenList) {
+    public Laboratoire(String libelle, String description, List<Examen> examenList) {
         this.libelle = libelle;
         this.description = description;
         this.examenList = examenList;
     }
 
 
-    public TypeExamen() {
+    public Laboratoire() {
 
     }
 
-    public Long getIdTypeExamen() {
-        return idTypeExamen;
+    public Long getIdLaboratoire() {
+        return idLaboratoire;
     }
 
-    public void setIdTypeExamen(Long idTypeExamen) {
-        this.idTypeExamen = idTypeExamen;
+    public void setIdLaboratoire(Long idTypeExamen) {
+        this.idLaboratoire = idTypeExamen;
     }
 
     public String getLibelle() {
@@ -62,4 +62,6 @@ public class TypeExamen implements Serializable {
     public void setExamenList(List<Examen> examenList) {
         this.examenList = examenList;
     }
+
+
 }

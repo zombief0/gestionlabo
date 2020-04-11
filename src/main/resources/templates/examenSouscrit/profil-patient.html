@@ -1,13 +1,26 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Informations du patient</title>
+    <!-- Bootstrap core CSS-->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+    <!-- Custom fonts for this template-->
     <link href="webjars/bootstrap/4.1.3/css/bootstrap.min.css" th:href="@{/webjars/bootstrap/4.1.3/css/bootstrap.min.css}" rel="stylesheet">
     <link href="webjars/font-awesome/5.12.0/css/all.css" th:href="@{/webjars/font-awesome/5.12.0/css/all.css}" rel="stylesheet" TYPE="text/css">
+    <!-- Page level plugin CSS-->
+    <link href="vendor/datatables/dataTables.bootstrap4.css" th:href="@{/vendor/datatables/dataTables.bootstrap4.css}" rel="stylesheet">
+    <!-- Custom styles for this template-->
+    <link href="css/sb-admin.css" th:href="@{/css/sb-admin.css}"  rel="stylesheet">
     <link href="style.css" th:href="@{/style.css}" rel="stylesheet">
-    <title>Profil du patient</title>
 </head>
-<body>
+
+<body class="fixed-nav sticky-footer bg-dark" id="page-top">
 <script>
     function deletebox(idExamen,idPatient) {
         if (confirm("Voulez vous vraiment supprimer?")) {
@@ -15,157 +28,329 @@
         }
     }
 
-    function impossibleToDelete() {
-        alert("Impossible de supprimer, cet élément a déja été facturé!!!")
+    function deleteConsultation(idConsultation,idPatient) {
+        if (confirm("Voulez vous vraiment supprimer?")) {
+            open("/Gestion_Laboratoire_EMMAUS/Gestion_Laboratoire_EMMAUS/consultation/delete/" + idConsultation + "/" +idPatient, "_top");
+        }
     }
+
+    function terminerConsultation(idConsultation,idPatient) {
+        if (confirm("Voulez vous vraiment terminer la consultation?")) {
+            open("/Gestion_Laboratoire_EMMAUS/Gestion_Laboratoire_EMMAUS/consultation/terminerConsultation/" + idConsultation + "/" +idPatient, "_top");
+        }
+    }
+
+    function activerConsultation(idConsultation,idPatient) {
+        if (confirm("Voulez vous réactiver la  consultation?")) {
+            open("/Gestion_Laboratoire_EMMAUS/Gestion_Laboratoire_EMMAUS/consultation/activerConsultation/" + idConsultation + "/" +idPatient, "_top");
+        }
+    }
+
 </script>
-<header>
-    <div class="container">
-        <h1>Laboratoire<span class="highlight"> EMMAUS</span></h1>
-        <span sec:authorize="hasRole('ROLE_UTILISATEUR')" class="highlight">Utilisateur </span>
-        <span sec:authorize="hasRole('ROLE_MEDECIN')" class="highlight">Docteur </span>
-        <span sec:authorize="hasRole('ROLE_ADMIN')" class="highlight">Administrateur </span>
-        <span sec:authentication="name"></span>
-        <nav>
-            <ul>
-                <li><a th:href="@{/}">Accueil</a></li>
-                <li sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_UTILISATEUR')"><a th:href="@{/Gestion_Laboratoire_EMMAUS/facture/list-facture}">Factures</a></li>
-                <li sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_MEDECIN')"><a th:href="@{/Gestion_Laboratoire_EMMAUS/examen/listExamen}">Examens</a></li>
+<!-- Navigation-->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
+    <a class="navbar-brand" th:href="@{/}" ><span style="color:white;">LABORATOIRE</span> <span class="highlight">EMMAUS</span></a>
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
+            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
+                <a class="nav-link" th:href="@{/}">
+                    <i class="fa fa-fw fa-home text-primary"></i>
+                    <span class="nav-link-text">Acceuil</span>
+                </a>
+            </li>
+            <li sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_UTILISATEUR')" class="nav-item" data-toggle="tooltip" data-placement="right" title="Facture">
+                <a class="nav-link" th:href="@{/Gestion_Laboratoire_EMMAUS/facture/list-facture}">
+                    <i class="fa fa-fw fa-money-bill text-success"></i>
+                    <span class="nav-link-text">Factures</span>
+                </a>
+            </li>
+            <li sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_MEDECIN')" class="nav-item" data-toggle="tooltip" data-placement="right" title="Examens">
+                <a class="nav-link" th:href="@{/Gestion_Laboratoire_EMMAUS/laboratoire/listLaboratoire}">
+                    <i class="fa fa-fw fa-flask text-danger"></i>
+                    <span class="nav-link-text">Laboratoire</span>
+                </a>
+            </li>
+            <li sec:authorize="hasRole('ROLE_ADMIN')" class="nav-item" data-toggle="tooltip" data-placement="right" title="Employees">
+                <a class="nav-link" th:href="@{/Gestion_Laboratoire_EMMAUS/user/list}">
+                    <i class="fa fa-fw fa-user text-warning"></i>
+                    <span class="nav-link-text">Employés</span>
+                </a>
+            </li>
 
-                <li sec:authorize="hasRole('ROLE_ADMIN')"><a th:href="@{/Gestion_Laboratoire_EMMAUS/user/list}">Employés</a></li>
-                <!--<li><a href="/logout">Logout</a></li>-->
-            </ul>
-        </nav>
-
+        </ul>
+        <ul class="navbar-nav sidenav-toggler">
+            <li class="nav-item">
+                <a class="nav-link text-center" id="sidenavToggler">
+                    <i class="fa fa-fw fa-angle-left"></i>
+                </a>
+            </li>
+        </ul>
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item" style="padding-right: 1%;">
+                <span sec:authorize="hasRole('ROLE_UTILISATEUR')" class="highlight">Utilisateur </span>
+                <span sec:authorize="hasRole('ROLE_MEDECIN')" class="highlight">Docteur </span>
+                <span sec:authorize="hasRole('ROLE_ADMIN')" class="highlight">Administrateur </span>
+                <span sec:authentication="name" style="color: white;"></span>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="modal" data-target="#exampleModal">
+                    <i class="fa fa-fw fa-sign-out-alt"></i>Se déconnecter</a>
+            </li>
+        </ul>
     </div>
-</header>
-<div class="container my-2">
-    <div class="card">
-        <div class="card-body">
-            <div class="container my-5">
-                <p class="my-5" >
-                    <span class="float-lg-right"><a th:href="@{/logout}"   class="btn btn-outline-danger"><i class="fa fa-power-off">Se déconnecter</i></a></span>
+</nav>
+<div class="content-wrapper">
+    <div class="container-fluid">
+        <!-- Breadcrumbs-->
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <span>Patients</span>
+            </li>
+            <li class="breadcrumb-item active">Informations du patient</li>
+        </ol>
+        <!-- Icon Cards-->
 
-                </p>
-                <div class="col-md-10">
-                    <div style="width:800px;margin-left: auto;margin-right: auto;margin-top:24px;padding: 24px;">
-                        <div class="card">
-                            <div class="card-header">
-                                <span class="fa fa-user"></span> Details du patient
+        <!-- Area Chart Example-->
+
+        <div>
+            <div style="width:800px;margin-left: auto;margin-right: auto;margin-top:24px;padding: 24px;">
+                <div class="card">
+                    <div class="card-header">
+                        <span class="fa fa-user"></span> Details du patient
+                    </div>
+                    <div class="card-block" style="padding: 24px;">
+                        <div class="row">
+                            <div class="col">
+                                <label>Nom: </label>
+                                <span th:text="${patient.getNom()}"></span>
                             </div>
-                            <div class="card-block" style="padding: 24px;">
-                                <div class="row">
-                                    <div class="col">
-                                        <label>Nom: </label>
-                                        <span th:text="${patient.getNom()}"></span>
-                                    </div>
-                                    <div class="col">
-                                        <label >Prenom: </label>
-                                        <span th:text="${patient.getPrenom()}"></span>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col">
-                                    <label>Date de naissance: </label>
-                                    <span th:text="${#dates.format(patient.getDate(),'yyyy-MM-dd')}"></span>
-                                    </div>
-                                    <div class="col">
-                                        <label >Sexe: </label>
-                                        <span th:text="${patient.getSexe()}"></span>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col">
-                                        <label>Telephone: </label>
-                                        <span th:text="${patient.getTelephone()}"></span>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col">
-                                        <label>Date d'enregistrement: </label>
-                                        <span th:text="${#dates.format(patient.getDateEnregistrement(),'yyyy-MM-dd HH:mm')}"></span>
-                                    </div>
-                                </div>
-                                <div class="row" sec:authorize="hasRole('ROLE_ADMIN')">
-                                    <div class="col">
-                                        <label>Date de dernière modification: </label>
-                                        <span th:text="${#dates.format(patient.getDateModification(),'yyyy-MM-dd HH:mm')}"></span>
-                                    </div>
-                                </div>
+                            <div class="col">
+                                <label >Prenom: </label>
+                                <span th:text="${patient.getPrenom()}"></span>
                             </div>
                         </div>
-                    </div>
-                </div>
-
-                <div style="width:400px;margin-left: auto;margin-right: auto;margin-top:24px;padding: 24px;">
-                    <div class="card">
-                        <div class="card-header">
-                            <span class="fa fa-syringe text-success"></span> Prescription d'un examen
+                        <div class="row">
+                            <div class="col">
+                                <label>Date de naissance: </label>
+                                <span th:text="${#dates.format(patient.getDate(),'yyyy-MM-dd')}"></span>
+                            </div>
+                            <div class="col">
+                                <label >Sexe: </label>
+                                <span th:text="${patient.getSexe()}"></span>
+                            </div>
                         </div>
-                        <div class="card-block" style="padding: 24px;">
-                            <form name="f" action="#" th:action="@{/Gestion_Laboratoire_EMMAUS/examenSouscrit/enregistrer/{id}(id=${patient.getIdPersonne()})}" method="post" th:object="${examen.getLibelle()}">
-                                <fieldset>
-
-                                    <div class="form-group">
-                                        <select  class="form-control" id="examen" name="examen">
-                                            <option th:each="selectExamen:${examens}" th:value="${selectExamen.getIdExamen()}" th:text="${selectExamen.getCode()} + ' ' + ${selectExamen.getLibelle()}">
-                                            </option>
-                                        </select>
-                                    </div>
-
-                                    <div class="form-actions" style="margin-top: 12px;">
-                                        <button type="submit" class="btn btn-success">Enregistrer</button>
-                                    </div>
-                                </fieldset>
-                            </form>
+                        <div class="row">
+                            <div class="col">
+                                <label>Telephone: </label>
+                                <span th:text="${patient.getTelephone()}"></span>
+                            </div>
                         </div>
-                    </div>
-                </div>
-
-                <span sec:authorize="hasAnyRole('ROLE_ADMIN','UTILISATEUR')" class="float-lg-right" style="margin-bottom: 2%">
-                    <a th:href="@{/Gestion_Laboratoire_EMMAUS/facture/ajout-facture/{id}/0(id=${patient.getIdPersonne()})}"
-                       class="btn btn-outline-success"><i class="fa fa-money-bill">Créer une Facture</i></a>
-                </span>
-
-                    <h2 th:if="${examenSouscrits.size() == 0}" class="alert alert-primary">Aucun Examen prescrit</h2>
-                    <div th:if="${examenSouscrits.size() != 0}">
-                        <table class="table table-striped table-responsive-md">
-                            <thead>
-                            <tr>
-                                <th>Libellé Examen</th>
-                                <th>Medecin responsable</th>
-                                <th>Date de prescription</th>
-                                <th>Prix</th>
-                                <th>Facturé(e)</th>
-                                <th sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_MEDECIN')">Actions</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr th:each="examenSouscrit : ${examenSouscrits}">
-                                <td th:text="${examenSouscrit.getExamen().getLibelle()}"></td>
-                                <td th:if="${examenSouscrit.getMedecin() != null}" th:text="'Docteur ' +${examenSouscrit.getMedecin().getNom()} + ' ' +${examenSouscrit.getMedecin().getPrenom()}"></td>
-                                <td th:if="${examenSouscrit.getMedecin() == null}" th:text="'Externe'"></td>
-                                <td th:text="${examenSouscrit.getDate()}" ></td>
-                                <td th:text="${examenSouscrit.getExamen().getPrix()} + ' FCFA'"></td>
-                                <td th:if="${examenSouscrit.getFacture() == null}">Non</td>
-                                <td th:if="${examenSouscrit.getFacture() != null}">Oui</td>
-                                <td>
-                                    <button th:if="${examenSouscrit.getFacture() == null}"
-                                            class="btn btn-outline-primary" style="margin-left: 1%"
-                                            th:onclick="'deletebox(\'' + ${examenSouscrit.getIdExamenPasser()} + '\',\'' + ${patient.getIdPersonne()} + '\');'">
-                                        <span class="fa fa-trash text-danger"></span>
-                                    </button>
-
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
+                        <div class="row">
+                            <div class="col">
+                                <label>Date d'enregistrement: </label>
+                                <span th:text="${#dates.format(patient.getDateEnregistrement(),'yyyy-MM-dd HH:mm')}"></span>
+                            </div>
+                        </div>
+                        <div class="row" sec:authorize="hasRole('ROLE_ADMIN')">
+                            <div class="col">
+                                <label>Date de dernière modification: </label>
+                                <span th:text="${#dates.format(patient.getDateModification(),'yyyy-MM-dd HH:mm')}"></span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
+        </div>
+        <div style="margin-bottom:1%">
+
+            <a class="btn btn-outline-primary" sec:authorize="hasAnyRole('ROLE_ADMIN','UTILISATEUR')" data-toggle="modal" data-target="#consultation">
+                <i class="fa fa-fw fa-stethoscope"></i>Créer une consultation</a>
+
+            <div sec:authorize="hasRole('MEDECIN')">
+                        <form method="post" th:action="@{/Gestion_Laboratoire_EMMAUS/consultation/enregistrer/{id}(id=${patient.getIdPersonne()})}">
+                            <div class="form-actions" style="margin-top: 12px;">
+                                <button type="submit" class="btn btn-outline-primary"><i class="fa fa-thermometer-full">Créer une consultation</i></button>
+                            </div>
+                        </form>
+            </div>
+
+            <span sec:authorize="hasAnyRole('ROLE_ADMIN','UTILISATEUR')">
+						<a th:href="@{/Gestion_Laboratoire_EMMAUS/facture/ajout-facture/{id}/0(id=${patient.getIdPersonne()})}"
+                           class="btn btn-outline-success"><i class="fa fa-money-bill">Créer une Facture</i></a>
+            </span>
+
 
         </div>
+        <div class="card mb-3" th:if="${consultations.size() != 0}" th:each="consultation: ${consultations}">
+            <div class="card-header">
+                <i class="fa fa-thermometer"></i> examens prescrits par <span class="highlight">Dr</span> <span class="highlight" th:text="${consultation.getPrescripteur()}">
+            </span>  le <span  th:text="${#dates.format(consultation.getDateConsultation(),'yyyy-MM-dd')}"></span></div>
+            <div class="card-body">
+                <div style="margin-bottom: 1%">
+                    <a th:if="${consultation.getStatut() == 'EN_COURS'}" th:href="@{/Gestion_Laboratoire_EMMAUS/examenSouscrit/addExamenSouscrit/{id}/{idConsultation}(id=${patient.idPersonne},idConsultation=${consultation.getIdConsultation()})}"
+                           class="btn btn-outline-success" ><i class="fa fa-syringe">Prescrire un examen</i></a>
+
+                    <a th:href="@{/Gestion_Laboratoire_EMMAUS/consultation/print-resultat/{id}/{idConsultation}(id=${patient.idPersonne},idConsultation=${consultation.getIdConsultation()})}"
+                       class="btn btn-outline-warning" ><i class="fa fa-print">Imprimer les résultats</i></a>
+
+
+                    <button th:if="${consultation.getStatut() == 'EN_COURS'}"
+                            class="btn btn-outline-primary" style="margin-left: 1%"
+                            th:onclick="'terminerConsultation(\'' + ${consultation.getIdConsultation()} + '\',\'' + ${patient.getIdPersonne()} + '\');'">
+                        <span class="fa fa-power-off text-secondary">Terminer la consultation</span>
+                    </button>
+
+                    <button sec:authorize="hasRole('ROLE_ADMIN')"  th:if="${consultation.getStatut() == 'TERMINE'}"
+                            class="btn btn-outline-primary" style="margin-left: 1%"
+                            th:onclick="'activerConsultation(\'' + ${consultation.getIdConsultation()} + '\',\'' + ${patient.getIdPersonne()} + '\');'">
+                        Activer la consultation
+                    </button>
+
+                    <button th:if="${consultation.getExamenSouscritList().size() == 0} and ${consultation.getStatut() == 'EN_COURS'}"
+                            class="btn btn-outline-primary" style="margin-left: 1%"
+                            th:onclick="'deleteConsultation(\'' + ${consultation.getIdConsultation()} + '\',\'' + ${patient.getIdPersonne()} + '\');'">
+                        <span class="fa fa-trash text-danger">Supprimer la consultation</span>
+                    </button>
+
+                </div>
+                <div class="table-responsive" >
+                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                        <tr>
+                            <th>Libellé Examen</th>
+                            <th>Date de prescription</th>
+                            <th>Prix</th>
+                            <th>Résultat</th>
+                            <th>Facturé</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tfoot>
+                        <tr>
+                            <th>Libellé Examen</th>
+                            <th>Date de prescription</th>
+                            <th>Prix</th>
+                            <th>Résultat</th>
+                            <th>Facturé</th>
+                            <th>Actions</th>
+                        </tr>
+                        </tfoot>
+                        <tbody>
+                        <tr th:if="${consultation == examenSouscrit.consultation}" th:each="examenSouscrit : ${examenSouscrits}">
+                            <td th:text="${examenSouscrit.getExamen().getLibelle()}"></td>
+                            <td th:text="${examenSouscrit.getDate()}" ></td>
+                            <td th:text="${examenSouscrit.getExamen().getPrix()} + ' FCFA'"></td>
+                            <td th:if="${examenSouscrit.valeurNormalePatient != -1}" th:text="${examenSouscrit.getValeurNormalePatient()} + ' ' + ${examenSouscrit.getUnite()}"></td>
+                            <td th:if="${examenSouscrit.valeurNormalePatient == -1}" th:text="''"></td>
+                            <td th:if="${examenSouscrit.getFacture() == null}">Non</td>
+                            <td th:if="${examenSouscrit.getFacture() != null}">Oui</td>
+                            <td>
+                                <button th:if="${examenSouscrit.getFacture() == null}"
+                                        class="btn btn-outline-primary" style="margin-left: 1%"
+                                        th:onclick="'deletebox(\'' + ${examenSouscrit.getIdExamenPasser()} + '\',\'' + ${patient.getIdPersonne()} + '\');'">
+                                    <span class="fa fa-trash text-danger"></span>
+                                </button>
+                                <a th:href="@{/Gestion_Laboratoire_EMMAUS/examenSouscrit/addValeurNormale/{idPatient}/{idExamenSouscrit}(idPatient=${patient.getIdPersonne()},idExamenSouscrit=${examenSouscrit.getIdExamenPasser()})}"
+                                   class="btn btn-outline-primary"
+                                   style="margin-left: 1%">
+                                    <span class="fa fa-plus"></span>
+                                </a>
+
+                            </td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
+    <!-- /.container-fluid-->
+    <!-- /.content-wrapper-->
+    <footer class="sticky-footer">
+        <div class="container">
+            <div class="text-center">
+                <small>Copyright © LABORATOIRE EMMAUS</small>
+            </div>
+        </div>
+    </footer>
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fa fa-angle-up"></i>
+    </a>
+    <!-- Logout Modal-->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Voulez vous vraiment vous déconnecter?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+
+
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Annuler</button>
+                    <a class="btn btn-primary" th:href="@{/logout}">Se déconnecter</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Consultation Modal-->
+    <div class="modal fade" id="consultation" tabindex="-1" role="dialog" aria-labelledby="consultationModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="consultationModalLabel">Création d'une consultation</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form name="f" action="#" th:action="@{/Gestion_Laboratoire_EMMAUS/consultation/enregistrer/{id}(id=${patient.getIdPersonne()})}" method="post">
+                        <fieldset>
+
+                            <div class="form-group">
+                                <label for="prescripteur">Médécin Responsable</label>
+                                <input type="text" class="form-control" id="prescripteur" name="prescripteur"
+                                       />
+                            </div>
+
+                            <div class="form-actions" style="margin-top: 12px;">
+                                <button type="submit" class="btn btn-success">Enregistrer</button>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Annuler</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="vendor/jquery/jquery.min.js" th:src="@{/vendor/jquery/jquery.min.js}"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js" th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+    <!-- Core plugin JavaScript-->
+    <script src="vendor/jquery-easing/jquery.easing.min.js" th:src="@{/vendor/jquery-easing/jquery.easing.min.js}"></script>
+    <!-- Page level plugin JavaScript-->
+    <script src="vendor/chart.js/Chart.min.js" th:src="@{/vendor/chart.js/Chart.min.js}"></script>
+    <script src="vendor/datatables/jquery.dataTables.js" th:src="@{/vendor/datatables/jquery.dataTables.js}"></script>
+    <script src="vendor/datatables/dataTables.bootstrap4.js" th:src="@{/vendor/datatables/dataTables.bootstrap4.js}"></script>
+    <!-- Custom scripts for all pages-->
+    <script src="js/sb-admin.min.js" th:src="@{/js/sb-admin.min.js}"></script>
+    <!-- Custom scripts for this page-->
+    <script src="js/sb-admin-datatables.min.js" th:src="@{/js/sb-admin-datatables.min.js}"></script>
+    <script src="js/sb-admin-charts.min.js" th:src="@{/js/sb-admin-charts.min.js}"></script>
 </div>
 </body>
+
 </html>

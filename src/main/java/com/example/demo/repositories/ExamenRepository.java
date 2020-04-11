@@ -2,7 +2,7 @@ package com.example.demo.repositories;
 
 
 import com.example.demo.entities.Examen;
-import com.example.demo.entities.TypeExamen;
+import com.example.demo.entities.Laboratoire;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -13,5 +13,5 @@ public interface ExamenRepository extends JpaRepository<Examen,Long> {
 
     Examen findByIdExamen(Long idExamen);
 
-    List<Examen> findAllByTypeExamen(TypeExamen typeExamen);
+    List<Examen> findAllByLaboratoire(Laboratoire laboratoire);
 }

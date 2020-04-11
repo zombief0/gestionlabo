@@ -12,13 +12,14 @@ import java.util.List;
 public interface ExamenSouscritRepository extends JpaRepository<ExamenSouscrit,Long> {
     ExamenSouscrit findByIdExamenPasser(Long idExamen);
 
-    List<ExamenSouscrit> findAllByMedecin(Utilisateur medecin);
 
     List<ExamenSouscrit> findAllByPatient(Patient patient);
 
     List<ExamenSouscrit> findAllByPatientAndFactureIsNull(Patient patient);
 
     List<ExamenSouscrit> findAllByDate(Date date);
+
+    List<ExamenSouscrit> findAllByConsultation(Consultation consultation);
 
     List<ExamenSouscrit> findAllByFacture(Facture facture);
 

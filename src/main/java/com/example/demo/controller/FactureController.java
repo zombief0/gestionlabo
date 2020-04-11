@@ -3,7 +3,6 @@ package com.example.demo.controller;
 
 import com.example.demo.entities.ExamenSouscrit;
 import com.example.demo.entities.Facture;
-import com.example.demo.entities.Patient;
 import com.example.demo.entities.Utilisateur;
 import com.example.demo.repositories.ExamenSouscritRepository;
 import com.example.demo.repositories.FactureRepository;
@@ -16,7 +15,6 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.ResourceUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,8 +27,9 @@ import javax.sql.DataSource;
 import javax.validation.Valid;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.net.URL;
+import java.sql.Connection;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -119,10 +118,11 @@ public class FactureController {
     }
 
     @GetMapping("/print-facture/{idFacture}")
-    public String creerPdfFacture(@PathVariable Long idFacture, HttpServletResponse response) throws IOException, SQLException, InterruptedException, JRException {
+    public String creerPdfFacture(@PathVariable Long idFacture, HttpServletResponse response) throws IOException, SQLException, JRException {
         successMessage = "pdf généré! consultez le dossier Documents";
 
         //
+        response.setContentType("application/pdf");
         Facture facture = factureRepository.findByIdFacture(idFacture);
         facture.setDateCreationSecondaire(new Date());
         factureRepository.save(facture);
@@ -130,25 +130,9 @@ public class FactureController {
 
         JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);
         Map<String, Object> parameters = new HashMap<>();
+        URL r = resourceLoader.getResource("classpath:static/logo1.png").getURL();
         parameters.put("idFacture", idFacture );
-
-        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport,parameters, dataSource.getConnection());
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        response.setContentType("application/pdf");
-        /*SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
-        String myDocumentDirectory = System.getProperty("user.home") + "//Documents//facture_" + patient.getNom()+"_"
-                +patient.getPrenom()+"_"+ format.format(facture.getDateCreationSecondaire()) +"_"+format.format(facture.getDateCreationOriginale())+".pdf";
-        JasperExportManager.exportReportToPdfFile(jasperPrint,myDocumentDirectory);
-        String[] cmdOpenPdf = {"cmd","/C", myDocumentDirectory};
-
-        Runtime runtime = Runtime.getRuntime();
-         runtime.exec(cmdOpenPdf);*/
-        JasperExportManager.exportReportToPdfStream(jasperPrint,byteArrayOutputStream);
-        response.setContentLength(byteArrayOutputStream.size());
-        ServletOutputStream svl = response.getOutputStream();
-        byteArrayOutputStream.writeTo(svl);
-        svl.flush();
-
+        ConsultationController.printState(response, jasperReport, parameters, r, dataSource);
 
         return "redirect:/Gestion_Laboratoire_EMMAUS/facture/list-facture";
     }

@@ -24,7 +24,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+    protected void configure(AuthenticationManagerBuilder auth) {
         auth.authenticationProvider(authenticationProvider());
     }
 
@@ -37,9 +37,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                .antMatchers("/Gestion_Laboratoire_EMMAUS/patient/**").hasAnyRole("ADMIN","UTILISATEUR")
                .antMatchers("/Gestion_Laboratoire_EMMAUS/facture/**").hasAnyRole("ADMIN","UTILISATEUR")
                .antMatchers("/Gestion_Laboratoire_EMMAUS/user/**").hasRole("ADMIN")
-               .antMatchers("/Gestion_Laboratoire_EMMAUS/examen/listExamen").authenticated()
-               .antMatchers("/Gestion_Laboratoire_EMMAUS/examen/ajout-examen").hasRole("ADMIN")
-               .antMatchers("/Gestion_Laboratoire_EMMAUS/examen/enregistrer").hasRole("ADMIN")
+               .antMatchers("/Gestion_Laboratoire_EMMAUS/examen/listExamen/**").authenticated()
+               .antMatchers("/Gestion_Laboratoire_EMMAUS/laboratoire/listLaboratoire").authenticated()
+               .antMatchers("/Gestion_Laboratoire_EMMAUS/consultation/**").authenticated()
+               .antMatchers("/Gestion_Laboratoire_EMMAUS/examen/ajout-examen/**").hasRole("ADMIN")
+               .antMatchers("/Gestion_Laboratoire_EMMAUS/examen/enregistrer/**").hasRole("ADMIN")
                .antMatchers("/Gestion_Laboratoire_EMMAUS/examen/editer/**").hasRole("ADMIN")
                .antMatchers("/Gestion_Laboratoire_EMMAUS/examen/modifier/**").hasRole("ADMIN")
                .antMatchers("/Gestion_Laboratoire_EMMAUS/examen/delete/**").hasRole("ADMIN")

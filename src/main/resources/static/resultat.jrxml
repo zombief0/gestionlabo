@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.10.0.final using JasperReports Library version 6.10.0-unknown  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="resultat" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c9dba21b-bead-460a-add5-6096e90beda9">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="gestionLabo"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<parameter name="idCons" class="java.lang.Long"/>
+	<parameter name="logo" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[call genererResultat($P{idCons})]]>
+	</queryString>
+	<field name="nom_patient" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="nom_patient"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="personne"/>
+	</field>
+	<field name="prenom_patient" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="prenom_patient"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="personne"/>
+	</field>
+	<field name="sexe_patient" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="sexe_patient"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="personne"/>
+	</field>
+	<field name="telephone" class="java.lang.Integer">
+		<property name="com.jaspersoft.studio.field.label" value="telephone"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="personne"/>
+	</field>
+	<field name="age" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="age"/>
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="date_consultation" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="date_consultation"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="consultation"/>
+	</field>
+	<field name="prescripteur" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="prescripteur"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="consultation"/>
+	</field>
+	<field name="lab_lib" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="lab_lib"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="laboratoire"/>
+	</field>
+	<field name="lib_examen" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="lib_examen"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="examen"/>
+	</field>
+	<field name="unite" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="unite"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="examen_souscrit"/>
+	</field>
+	<field name="max_valeur" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.label" value="max_valeur"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="examen"/>
+	</field>
+	<field name="min_valeur" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.label" value="min_valeur"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="examen"/>
+	</field>
+	<field name="valeur_patient" class="java.lang.Double">
+		<property name="com.jaspersoft.studio.field.label" value="valeur_patient"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="examen_souscrit"/>
+	</field>
+	<group name="InfosConsultation">
+		<groupHeader>
+			<band height="84">
+				<textField>
+					<reportElement x="0" y="0" width="320" height="20" uuid="35e6918c-8a8a-4498-ba65-c19cb398443b"/>
+					<textElement>
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Patient: " + $F{nom_patient} +" "+$F{prenom_patient}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="0" y="20" width="180" height="20" uuid="8f0bb502-8c65-4d98-9439-7159d07781a6"/>
+					<textElement>
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Age: " + $F{age}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="190" y="20" width="140" height="20" uuid="ad9b87cb-b5f4-4d94-aa12-9deab278cd07"/>
+					<textElement>
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Sexe: " + $F{sexe_patient}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="0" y="40" width="210" height="20" uuid="c6ade65f-78e1-466a-aefd-f29715e110a3"/>
+					<textElement>
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Date des examens: " + $F{date_consultation}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="0" y="60" width="320" height="18" uuid="01afeab0-52c8-4230-a253-f9ef06af25ef"/>
+					<textElement>
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Prescripteur: Dr " + $F{prescripteur}]]></textFieldExpression>
+				</textField>
+				<textField>
+					<reportElement x="330" y="2" width="220" height="16" uuid="04c72fcb-b2bf-4f4a-8b51-3dffe37aee0a"/>
+					<textElement textAlignment="Right">
+						<font size="12"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Téléphone du patient: " +$F{telephone}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="labGroupe">
+		<groupHeader>
+			<band height="30">
+				<textField>
+					<reportElement x="-20" y="1" width="140" height="20" uuid="0b41605c-7774-4e66-b347-f2280d4cdbe6"/>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center">
+						<font size="14" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Laboratoire"]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="120" y="1" width="230" height="20" uuid="7975ab78-b25c-4f8b-a640-9f3582bee46b">
+						<property name="com.jaspersoft.studio.unit.x" value="pixel"/>
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center">
+						<font size="14" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Examen]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="350" y="1" width="84" height="20" uuid="194d58b7-b209-4582-8d42-4b22f2f92252"/>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center">
+						<font size="14" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Résultat]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="434" y="1" width="140" height="20" uuid="8ce4d1f9-39e6-4c81-87b5-41c08ce55ff6">
+						<property name="com.jaspersoft.studio.unit.y" value="px"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Center">
+						<font size="14" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Valeur normale]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="58">
+			<image onErrorType="Blank">
+				<reportElement x="10" y="5" width="50" height="40" uuid="9476f38c-b6f1-47f2-aab1-d5abdf73d994">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="185" y="5" width="170" height="44" uuid="4fd9db71-87e4-4fae-8e90-1edb4e99ac07"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[LABORATOIRE EMMAUS
+ANALYSES BIOMÉDICALES
+BILAN DE SANTÉ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="480" y="9" width="58" height="30" uuid="05b9c917-61a4-431c-90d6-f72339ac885f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="6"/>
+				</textElement>
+				<text><![CDATA[OUVERT
+24H/24
+7J/7]]></text>
+			</staticText>
+		</band>
+	</title>
+	<detail>
+		<band height="23" splitType="Stretch">
+			<textField>
+				<reportElement x="120" y="2" width="230" height="20" uuid="f48b438c-30db-4164-8ad2-2f3dc1f4355d">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{lib_examen}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="350" y="2" width="84" height="20" uuid="b38b2f00-f523-4956-9981-c598953ea28c"/>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{valeur_patient} + " " + $F{unite}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="434" y="2" width="140" height="20" uuid="9fdfcb9f-dde2-4dce-bc8a-3bac47c22c04">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<box>
+					<bottomPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["(" + $F{min_valeur} + "-" +$F{max_valeur} + ")"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="-20" y="2" width="140" height="20" uuid="c7413305-3dec-4220-a300-a027749f44a8"/>
+				<box>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{lab_lib}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="26" splitType="Stretch">
+			<staticText>
+				<reportElement x="240" y="0" width="304" height="22" uuid="6bb8aa34-1c51-4ffa-8dd8-1a089ebe06e3"/>
+				<text><![CDATA[L'équipe du laboratoire EMMAUS vous souhaite une bonne guérison]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+</jasperReport>

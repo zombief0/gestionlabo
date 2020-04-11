@@ -15,9 +15,6 @@ public class Utilisateur extends Personne implements Serializable {
     @OneToMany(mappedBy = "utilisateur", cascade = {CascadeType.MERGE, CascadeType.REFRESH},orphanRemoval = true)
     private List<Facture> factures = new ArrayList<>();
 
-    @OneToMany(mappedBy = "medecin", cascade = {CascadeType.MERGE, CascadeType.REFRESH},orphanRemoval = true)
-    private List<ExamenSouscrit> examenSouscrits = new ArrayList<>();
-
     @Column(nullable = false)
     @NotNull
     private String mdp;
@@ -93,11 +90,4 @@ public class Utilisateur extends Personne implements Serializable {
     };
 
 
-    public List<ExamenSouscrit> getExamenSouscrits() {
-        return examenSouscrits;
-    }
-
-    public void setExamenSouscrits(List<ExamenSouscrit> examenSouscrits) {
-        this.examenSouscrits = examenSouscrits;
-    }
 }

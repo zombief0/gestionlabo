@@ -21,23 +21,35 @@ public class ExamenSouscrit implements Serializable {
     private Examen examen;
 
     @ManyToOne
-    private Patient patient;
+    private Consultation consultation;
+
+    private double valeurNormalePatient;
+
+    private String unite;
 
     @ManyToOne
-    private Utilisateur medecin;
+    private Patient patient;
 
     @ManyToOne
     private Facture facture;
 
-    public ExamenSouscrit(Date date, Examen examen, Patient patient, Utilisateur medecin) {
+    public ExamenSouscrit(Date date, Examen examen, Consultation consultation, Patient patient) {
         this.date = date;
         this.examen = examen;
+        this.consultation = consultation;
         this.patient = patient;
-        this.medecin = medecin;
     }
 
     public ExamenSouscrit() {
 
+    }
+
+    public double getValeurNormalePatient() {
+        return valeurNormalePatient;
+    }
+
+    public void setValeurNormalePatient(double valeurNormalePatient) {
+        this.valeurNormalePatient = valeurNormalePatient;
     }
 
     public Long getIdExamenPasser() {
@@ -64,6 +76,22 @@ public class ExamenSouscrit implements Serializable {
         this.date = date;
     }
 
+    public Consultation getConsultation() {
+        return consultation;
+    }
+
+    public void setConsultation(Consultation consultation) {
+        this.consultation = consultation;
+    }
+
+    public String getUnite() {
+        return unite;
+    }
+
+    public void setUnite(String unite) {
+        this.unite = unite;
+    }
+
     public Examen getExamen() {
         return examen;
     }
@@ -78,14 +106,6 @@ public class ExamenSouscrit implements Serializable {
 
     public void setPatient(Patient patient) {
         this.patient = patient;
-    }
-
-    public Utilisateur getMedecin() {
-        return medecin;
-    }
-
-    public void setMedecin(Utilisateur medecin) {
-        this.medecin = medecin;
     }
 
     public static Comparator<ExamenSouscrit> ExamenSouscritComparator = (o1, o2) -> {

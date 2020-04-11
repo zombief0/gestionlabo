@@ -37,19 +37,19 @@ public class Examen implements Serializable {
     private double prix;
 
     @ManyToOne
-    private TypeExamen typeExamen;
+    private Laboratoire laboratoire;
 
-    @OneToMany(mappedBy = "examen",cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @OneToMany(mappedBy = "examen",cascade = {CascadeType.PERSIST, CascadeType.MERGE},orphanRemoval = true)
     private List<ExamenSouscrit> examenSouscrits = new ArrayList<>();
 
-    public Examen(String code, @NotNull double minValeur, @NotNull double maxValeur, String libelle, String description, double prix, TypeExamen typeExamen) {
+    public Examen(String code, @NotNull double minValeur, @NotNull double maxValeur, String libelle, String description, double prix, Laboratoire laboratoire) {
         this.code = code;
         this.minValeur = minValeur;
         this.maxValeur = maxValeur;
         this.libelle = libelle;
         this.description = description;
         this.prix = prix;
-        this.typeExamen = typeExamen;
+        this.laboratoire = laboratoire;
     }
 
     public Examen() {
@@ -98,12 +98,12 @@ public class Examen implements Serializable {
         this.prix = prix;
     }
 
-    public TypeExamen getTypeExamen() {
-        return typeExamen;
+    public Laboratoire getLaboratoire() {
+        return laboratoire;
     }
 
-    public void setTypeExamen(TypeExamen typeExamen) {
-        this.typeExamen = typeExamen;
+    public void setLaboratoire(Laboratoire laboratoire) {
+        this.laboratoire = laboratoire;
     }
 
     public List<ExamenSouscrit> getExamenSouscrits() {

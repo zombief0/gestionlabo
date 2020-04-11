@@ -1,11 +1,7 @@
 package com.example.demo.controller;
 
-import com.example.demo.entities.Examen;
-import com.example.demo.entities.ExamenSouscrit;
-import com.example.demo.entities.Patient;
-import com.example.demo.entities.Utilisateur;
+import com.example.demo.entities.*;
 import com.example.demo.repositories.*;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -14,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.Date;
 import java.util.List;
@@ -24,16 +21,16 @@ public class ExamenSouscritController {
 
     private PatientRepository patientRepository;
     private UtilisateurRepository medecinRepository;
-    private FactureRepository factureRepository;
     private ExamenRepository examenRepository;
     private ExamenSouscritRepository examenSo;
+    private ConsultationRepository consultationRepository;
 
-    public ExamenSouscritController(PatientRepository patientRepository, UtilisateurRepository medecinRepository, FactureRepository factureRepository, ExamenRepository examenRepository, ExamenSouscritRepository examenSo) {
+    public ExamenSouscritController(PatientRepository patientRepository, UtilisateurRepository medecinRepository, ExamenRepository examenRepository, ExamenSouscritRepository examenSo, ConsultationRepository consultationRepository) {
         this.patientRepository = patientRepository;
         this.medecinRepository = medecinRepository;
-        this.factureRepository = factureRepository;
         this.examenRepository = examenRepository;
         this.examenSo = examenSo;
+        this.consultationRepository = consultationRepository;
     }
 
     @GetMapping("/profil-patient/{id}")
@@ -43,39 +40,75 @@ public class ExamenSouscritController {
         return "examenSouscrit/profil-patient";
     }
 
-    @PostMapping("/enregistrer/{idPatient}")
+    @GetMapping("/addValeurNormale/{idPatient}/{idExamSouscrit}")
+    public String addValeurNormaleForm(@PathVariable Long idPatient,
+                                       @PathVariable Long idExamSouscrit,
+                                       Model model){
+        Patient patient = patientRepository.findByIdPersonne(idPatient);
+        ExamenSouscrit examenSouscrit = examenSo.findByIdExamenPasser(idExamSouscrit);
+        model.addAttribute("patient",patient);
+        model.addAttribute("examenSouscrit",examenSouscrit);
+        return "examenSouscrit/add-valeur-normale";
+    }
+
+    @GetMapping("/addExamenSouscrit/{idPatient}/{idConsultation}")
+    public String addExamSouscritForm(@PathVariable Long idPatient,
+                                      @PathVariable Long idConsultation,
+                                      Model model){
+        List<Examen> examenList = examenRepository.findAll();
+        Examen selectedExamen = new Examen();
+        examenList.sort(Examen.examenComparator);
+        model.addAttribute("examens",examenList);
+        model.addAttribute("patient",idPatient);
+        model.addAttribute("consultation",idConsultation);
+        model.addAttribute("examen",selectedExamen);
+
+        return "examenSouscrit/add-examen-souscrit";
+    }
+
+    @PostMapping("/enregistrerValeurNormale/{idPatient}/{idExamSouscrit}")
+    public String enregistrerValeurResultat(@PathVariable Long idPatient,
+                                           @PathVariable Long idExamSouscrit,
+                                           HttpServletRequest request){
+
+        ExamenSouscrit examenSouscrit = examenSo.findByIdExamenPasser(idExamSouscrit);
+        double valeur = Double.parseDouble(request.getParameter("valeur"));
+        String unite = request.getParameter("unite");
+        examenSouscrit.setValeurNormalePatient(valeur);
+        examenSouscrit.setUnite(unite);
+        examenSo.save(examenSouscrit);
+        return "redirect:/Gestion_Laboratoire_EMMAUS/examenSouscrit/profil-patient/" + idPatient;
+    }
+
+    @PostMapping("/enregistrer/{idPatient}/{idConsultation}")
     public String saveExamenSouscrit(@PathVariable Long idPatient,
+                                     @PathVariable Long idConsultation,
                                      @Valid Examen examen,
                                      Model model,
-                                     BindingResult result,
-                                     Authentication authentication){
+                                     BindingResult result){
         initiateView(idPatient, model);
         if(result.hasErrors()){
-            return "examenSouscrit/profil-patient";
+            return "examenSouscrit/add-examen-souscrit";
         }
+
         Patient patient = patientRepository.findByIdPersonne(idPatient);
-        Utilisateur medecin = medecinRepository.findByEmail(authentication.getName());
-        if(medecin.getRole().equals("MEDECIN")) {
-            ExamenSouscrit examenSouscrit = new ExamenSouscrit(new Date(), examen,
-                    patient, medecin);
-            examenSo.save(examenSouscrit);
-        }else {
-            ExamenSouscrit examenSouscrit = new ExamenSouscrit(new Date(), examen,
-                    patient, null);
-            examenSo.save(examenSouscrit);
-        }
+        Consultation consultation = consultationRepository.findByIdConsultation(idConsultation);
+        ExamenSouscrit examenSouscrit = new ExamenSouscrit(new Date(), examen,
+                consultation, patient);
+        examenSouscrit.setValeurNormalePatient(-1);
+        examenSo.save(examenSouscrit);
+
         return "redirect:/Gestion_Laboratoire_EMMAUS/examenSouscrit/profil-patient/" + idPatient;
     }
 
     private void initiateView(@PathVariable Long idPatient, Model model) {
         Patient patient = patientRepository.findByIdPersonne(idPatient);
-        Examen selectedExamen = new Examen();
+
+        List<Consultation> consultations = consultationRepository.findAllByPatient(patient);
         List<ExamenSouscrit> examenSouscrits = patient.getExamenSouscrits();
-        List<Examen> examenList = examenRepository.findAll();
-        examenList.sort(Examen.examenComparator);
+        consultations.sort(Consultation.ConsultationComparator);
         examenSouscrits.sort(ExamenSouscrit.ExamenSouscritComparator);
-        model.addAttribute("examen",selectedExamen);
-        model.addAttribute("examens",examenList);
+        model.addAttribute("consultations",consultations);
         model.addAttribute("examenSouscrits",examenSouscrits);
         model.addAttribute("patient",patient);
     }
