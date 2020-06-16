@@ -17,6 +17,9 @@ public class Patient extends Personne implements Serializable {
     @OneToMany(mappedBy = "patient", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
     private List<ExamenSouscrit> examenSouscrits = new ArrayList<>();
 
+    @OneToMany(mappedBy = "patient",cascade = {CascadeType.PERSIST,CascadeType.MERGE})
+    private List<Consultation> consultations = new ArrayList<>();
+
     @DateTimeFormat
     private Date dateEnregistrement;
 
@@ -61,4 +64,12 @@ public class Patient extends Personne implements Serializable {
         String patientnom2 = o2.getNom().toUpperCase();
         return patientnom1.compareTo(patientnom2);
     };
+
+    public List<Consultation> getConsultations() {
+        return consultations;
+    }
+
+    public void setConsultations(List<Consultation> consultations) {
+        this.consultations = consultations;
+    }
 }

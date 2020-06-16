@@ -96,7 +96,7 @@
 					<textElement>
 						<font size="12"/>
 					</textElement>
-					<textFieldExpression><![CDATA["Prescripteur: Dr " + $F{prescripteur}]]></textFieldExpression>
+					<textFieldExpression><![CDATA["Prescripteur: " + $F{prescripteur}]]></textFieldExpression>
 				</textField>
 				<textField>
 					<reportElement x="330" y="2" width="220" height="16" uuid="04c72fcb-b2bf-4f4a-8b51-3dffe37aee0a"/>
@@ -185,8 +185,10 @@
 			</image>
 			<staticText>
 				<reportElement x="185" y="5" width="170" height="44" uuid="4fd9db71-87e4-4fae-8e90-1edb4e99ac07"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<text><![CDATA[LABORATOIRE EMMAUS
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text> <![CDATA[LABORATOIRE EMMAUS
 ANALYSES BIOMÉDICALES
 BILAN DE SANTÉ]]></text>
 			</staticText>

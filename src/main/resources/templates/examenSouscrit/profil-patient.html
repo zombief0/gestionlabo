@@ -24,13 +24,13 @@
 <script>
     function deletebox(idExamen,idPatient) {
         if (confirm("Voulez vous vraiment supprimer?")) {
-            open("/Gestion_Laboratoire_EMMAUS/Gestion_Laboratoire_EMMAUS/examenSouscrit/delete/" + idExamen + "/" +idPatient, "_top");
+            open("/Gestion_Laboratoire_EMMAUS/examenSouscrit/delete/" + idExamen + "/" +idPatient, "_top");
         }
     }
 
     function deleteConsultation(idConsultation,idPatient) {
         if (confirm("Voulez vous vraiment supprimer?")) {
-            open("/Gestion_Laboratoire_EMMAUS/Gestion_Laboratoire_EMMAUS/consultation/delete/" + idConsultation + "/" +idPatient, "_top");
+            open("/Gestion_Laboratoire_EMMAUS/consultation/delete/" + idConsultation + "/" +idPatient, "_top");
         }
     }
 
@@ -186,7 +186,7 @@
         </div>
         <div class="card mb-3" th:if="${consultations.size() != 0}" th:each="consultation: ${consultations}">
             <div class="card-header">
-                <i class="fa fa-thermometer"></i> examens prescrits par <span class="highlight">Dr</span> <span class="highlight" th:text="${consultation.getPrescripteur()}">
+                <i class="fa fa-thermometer"></i> examens prescrits par <span class="highlight" th:text="${consultation.getPrescripteur()}">
             </span>  le <span  th:text="${#dates.format(consultation.getDateConsultation(),'yyyy-MM-dd')}"></span></div>
             <div class="card-body">
                 <div style="margin-bottom: 1%">

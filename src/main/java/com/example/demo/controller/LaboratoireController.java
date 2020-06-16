@@ -59,13 +59,15 @@ public class LaboratoireController {
     public String modifierLaboratoire(@PathVariable Long id,
                                       @Valid Laboratoire laboratoire,
                                       BindingResult result, Model model){
-        laboratoire.setIdLaboratoire(id);
+        Laboratoire laboratoire1= laboratoireRepository.findByIdLaboratoire(id);
         if(result.hasErrors()){
             model.addAttribute("laboratoire",laboratoire);
             return "laboratoire/modifier-laboratoire";
         }
 
-        laboratoireRepository.save(laboratoire);
+        laboratoire1.setDescription(laboratoire.getDescription());
+        laboratoire1.setLibelle(laboratoire.getLibelle());
+        laboratoireRepository.save(laboratoire1);
         return "redirect:/Gestion_Laboratoire_EMMAUS/laboratoire/listLaboratoire";
     }
 

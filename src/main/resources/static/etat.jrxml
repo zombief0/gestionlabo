@@ -160,7 +160,9 @@
 			</image>
 			<staticText>
 				<reportElement x="185" y="5" width="170" height="44" uuid="ecc37c6d-56b1-4491-bab1-1d27e2b497e7"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
 				<text><![CDATA[LABORATOIRE EMMAUS
 ANALYSES BIOMÉDICALES
 BILAN DE SANTÉ]]></text>

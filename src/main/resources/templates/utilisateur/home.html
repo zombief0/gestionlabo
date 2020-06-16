@@ -132,7 +132,7 @@
                     <td>
 						<a th:href="@{/Gestion_Laboratoire_EMMAUS/patient/editer/{id}(id=${patient.getIdPersonne()})}"
 							sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_UTILISATEUR')" class="btn btn-outline-primary"><i class="fa fa-edit text-warning"></i></a>
-						<button th:if="${patient.getExamenSouscrits().size() == 0}"
+						<button th:if="${patient.getExamenSouscrits().size() == 0 && patient.getConsultations().size() == 0}"
 							sec:authorize="hasRole('ROLE_ADMIN')"
 							class="btn btn-outline-primary"
 							style="margin-left: 1%"

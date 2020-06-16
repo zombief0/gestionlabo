@@ -68,10 +68,13 @@ public class PatientController {
         }
 
         Patient patient1 = patientRepository.findByIdPersonne(id);
-        patient.setIdPersonne(id);
-        patient.setDateEnregistrement(patient1.getDateEnregistrement());
-        patient.setDateModification(new Date());
-        patientRepository.save(patient);
+        patient1.setDate(patient.getDate());
+        patient1.setNom(patient.getNom());
+        patient1.setPrenom(patient.getPrenom());
+        patient1.setSexe(patient.getSexe());
+        patient1.setTelephone(patient.getTelephone());
+        patient1.setDateModification(new Date());
+        patientRepository.save(patient1);
         return "redirect:/";
     }
 

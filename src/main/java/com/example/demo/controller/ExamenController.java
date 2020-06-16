@@ -84,10 +84,13 @@ public class ExamenController {
             return "examen/modifier-examen";
         }
         Examen examen1 = examenRepository.findByIdExamen(id);
-        examen.setDateAjout(examen1.getDateAjout());
-        Laboratoire laboratoire = laboratoireRepository.findByIdLaboratoire(idLaboratoire);
-        examen.setLaboratoire(laboratoire);
-        examenRepository.save(examen);
+        examen1.setDescription(examen.getDescription());
+        examen1.setCode(examen.getCode());
+        examen1.setLibelle(examen.getLibelle());
+        examen1.setMaxValeur(examen.getMaxValeur());
+        examen1.setMinValeur(examen.getMinValeur());
+        examen1.setPrix(examen.getPrix());
+        examenRepository.save(examen1);
         return "redirect:/Gestion_Laboratoire_EMMAUS/examen/listExamen/" + examen.getLaboratoire().getIdLaboratoire();
     }
 

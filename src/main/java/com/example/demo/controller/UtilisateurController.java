@@ -126,13 +126,14 @@ public class UtilisateurController {
         String pwd = utilisateur.getMdp();
         pwd = bCryptPasswordEncoder.encode(pwd);
 
-            Utilisateur utilisateur1 = new Utilisateur(utilisateur.getNom(),
-                    utilisateur.getPrenom(), utilisateur.getEmail(),
-                    utilisateur.getDate(), utilisateur.getTelephone(),
-                    utilisateur.getSexe(), pwd, "ADMIN");
-            utilisateur1.setIdPersonne(id);
-            utilisateur1.setActive(true);
-            utilisateurRepository.save(utilisateur1);
+
+            utilisateur2.setEmail(utilisateur.getEmail());
+            utilisateur2.setNom(utilisateur.getNom());
+            utilisateur2.setPrenom(utilisateur.getPrenom());
+            utilisateur2.setMdp(pwd);
+            utilisateur2.setSexe(utilisateur.getSexe());
+            utilisateur2.setTelephone(utilisateur.getTelephone());
+            utilisateurRepository.save(utilisateur2);
         return "redirect:/Gestion_Laboratoire_EMMAUS/user/list";
 
 
@@ -141,7 +142,6 @@ public class UtilisateurController {
     @PostMapping("user/modifier/{id}")
     public String updateUser(@PathVariable Long id,@Valid UtilisateurDTO utilisateur,BindingResult bindingResult,Model model){
 
-        utilisateur.setId(id);
         if(bindingResult.hasErrors()){
             model.addAttribute("utilisateur",utilisateur);
             return "utilisateur/modifier-user";
@@ -150,14 +150,14 @@ public class UtilisateurController {
         String pwd = utilisateur.getMdp();
         pwd = bCryptPasswordEncoder.encode(pwd);
 
-
-            Utilisateur utilisateur1 = new Utilisateur(utilisateur.getNom(),
-                    utilisateur.getPrenom(), utilisateur.getEmail(),
-                    utilisateur.getDate(), utilisateur.getTelephone(),
-                    utilisateur.getSexe(), pwd, utilisateur.getRole());
-            utilisateur1.setIdPersonne(id);
-            utilisateur1.setActive(true);
-            utilisateurRepository.save(utilisateur1);
+            Utilisateur utilisateur2 = utilisateurRepository.findByIdPersonne(id);
+            utilisateur2.setTelephone(utilisateur.getTelephone());
+            utilisateur2.setSexe(utilisateur.getSexe());
+            utilisateur2.setMdp(pwd);
+            utilisateur2.setPrenom(utilisateur.getPrenom());
+            utilisateur2.setNom(utilisateur.getNom());
+            utilisateur2.setEmail(utilisateur.getEmail());
+            utilisateurRepository.save(utilisateur2);
         return "redirect:/Gestion_Laboratoire_EMMAUS/user/list";
 
 

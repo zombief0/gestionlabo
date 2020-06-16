@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.demo.services;
 
 import com.example.demo.services.UtilisateurDetailService;
 import org.springframework.context.annotation.Bean;
