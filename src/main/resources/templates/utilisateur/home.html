@@ -95,8 +95,7 @@
       <!-- Icon Cards-->
       
       <!-- Area Chart Example-->
-	  
-     <a class="btn btn-primary" sec:authorize="hasAnyRole('ROLE_ADMIN','UTILISATEUR')" th:href="@{/Gestion_Laboratoire_EMMAUS/patient/ajout-patient}" style="margin: 1%">
+     <a class="btn btn-primary" sec:authorize="isAuthenticated()" th:href="@{/patient/ajout-patient}" style="margin: 1%">
 		<i class="fa fa-user-plus ml-2">
 			Ajout Patient
 		</i>

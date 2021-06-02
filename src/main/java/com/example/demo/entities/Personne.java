@@ -1,5 +1,9 @@
 package com.example.demo.entities;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -11,6 +15,10 @@ import java.util.Date;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Personne implements Serializable {
 
     @Id
@@ -31,9 +39,6 @@ public class Personne implements Serializable {
     @Max(value = 999999999,message = "Valeur trop grande")
     private int telephone;
 
-    public Personne() {
-
-    }
 
     public enum Sexe {
         MASCULIN, FEMININ
@@ -42,59 +47,4 @@ public class Personne implements Serializable {
     @Enumerated(EnumType.STRING)
     private Sexe sexe;
 
-    public Personne(String nom, String prenom, Date date, int telephone, Sexe sexe) {
-        this.nom = nom;
-        this.prenom = prenom;
-        this.date = date;
-        this.telephone = telephone;
-        this.sexe = sexe;
-    }
-
-    public Long getIdPersonne() {
-        return idPersonne;
-    }
-
-    public void setIdPersonne(Long idPersonne) {
-        this.idPersonne = idPersonne;
-    }
-
-    public String getNom() {
-        return nom;
-    }
-
-    public void setNom(String nom) {
-        this.nom = nom;
-    }
-
-    public String getPrenom() {
-        return prenom;
-    }
-
-    public void setPrenom(String prenom) {
-        this.prenom = prenom;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
-    public int getTelephone() {
-        return telephone;
-    }
-
-    public void setTelephone(int telephone) {
-        this.telephone = telephone;
-    }
-
-    public Sexe getSexe() {
-        return sexe;
-    }
-
-    public void setSexe(Sexe sexe) {
-        this.sexe = sexe;
-    }
 }

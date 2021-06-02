@@ -21,8 +21,8 @@ import java.util.List;
 public class UtilisateurController {
 
     @InitBinder
-    public void initBinder(WebDataBinder binder){
-        binder.registerCustomEditor(String.class,new StringTrimmerEditor(true));
+    public void initBinder(WebDataBinder binder) {
+        binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
     }
 
     private UtilisateurRepository utilisateurRepository;
@@ -37,41 +37,41 @@ public class UtilisateurController {
 
     @GetMapping("user")
     @ResponseBody
-    public String currentUser(Authentication authentication){
+    public String currentUser(Authentication authentication) {
         return authentication.getName();
     }
 
     @GetMapping("user/list")
-    public String listUser(Model model){
+    public String listUser(Model model) {
         List<Utilisateur> utilisateurs = utilisateurRepository.findAll();
         utilisateurs.sort(Utilisateur.utilisateurComparator);
-        model.addAttribute("utilisateurs",utilisateurs);
+        model.addAttribute("utilisateurs", utilisateurs);
         return "utilisateur/list-user";
     }
 
     @GetMapping("user/add-user")
-    public String adduserForm(Model model){
+    public String adduserForm(Model model) {
         UtilisateurDTO utilisateurDTO = new UtilisateurDTO();
-        model.addAttribute("utilisateur",utilisateurDTO);
+        model.addAttribute("utilisateur", utilisateurDTO);
         return "/utilisateur/add-user";
     }
 
     @PostMapping("user/enregistrer")
-    public String enregistrerUser(@ModelAttribute("utilisateur") @Valid UtilisateurDTO utilisateur, BindingResult bindingResult,Model model){
-        if(bindingResult.hasErrors()){
+    public String enregistrerUser(@ModelAttribute("utilisateur") @Valid UtilisateurDTO utilisateur, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
             return "utilisateur/add-user";
         }
 
         String pwd = utilisateur.getMdp();
         pwd = bCryptPasswordEncoder.encode(pwd);
-        if(utilisateur.getPrenom() !=null) {
+        if (utilisateur.getPrenom() != null) {
             Utilisateur utilisateur1 = new Utilisateur(utilisateur.getNom(),
                     utilisateur.getPrenom(), utilisateur.getEmail(),
                     utilisateur.getDate(), utilisateur.getTelephone(),
                     utilisateur.getSexe(), pwd, utilisateur.getRole());
             utilisateur1.setActive(true);
             utilisateurRepository.save(utilisateur1);
-        }else {
+        } else {
             Utilisateur utilisateur1 = new Utilisateur(utilisateur.getNom(),
                     "", utilisateur.getEmail(),
                     utilisateur.getDate(), utilisateur.getTelephone(),
@@ -83,33 +83,33 @@ public class UtilisateurController {
     }
 
     @GetMapping("user/editer/{id}")
-    public String modifierUserForm(@PathVariable Long id, Model model){
+    public String modifierUserForm(@PathVariable Long id, Model model) {
         Utilisateur utilisateur = utilisateurRepository.findByIdPersonne(id);
-        UtilisateurDTO utilisateurDTO = new UtilisateurDTO(utilisateur.getIdPersonne(),utilisateur.getNom(),
-                utilisateur.getPrenom(),utilisateur.getTelephone(), utilisateur.getDate(), utilisateur.getSexe(),
-                utilisateur.getMdp(),utilisateur.getRole(),utilisateur.getEmail(),"");
-        model.addAttribute("utilisateur",utilisateurDTO);
+        UtilisateurDTO utilisateurDTO = new UtilisateurDTO(utilisateur.getIdPersonne(), utilisateur.getNom(),
+                utilisateur.getPrenom(), utilisateur.getTelephone(), utilisateur.getDate(), utilisateur.getSexe(),
+                utilisateur.getMdp(), utilisateur.getRole(), utilisateur.getEmail(), "");
+        model.addAttribute("utilisateur", utilisateurDTO);
         return "utilisateur/modifier-user";
     }
 
     @GetMapping("user/editerAdmin/{id}")
-    public String modifierAdminForm(@PathVariable Long id,Model model){
+    public String modifierAdminForm(@PathVariable Long id, Model model) {
         Utilisateur utilisateur = utilisateurRepository.findByIdPersonne(id);
-        UtilisateurDTO utilisateurDTO = new UtilisateurDTO(utilisateur.getIdPersonne(),utilisateur.getNom(),
-                utilisateur.getPrenom(),utilisateur.getTelephone(), utilisateur.getDate(), utilisateur.getSexe(),
-                utilisateur.getMdp(),utilisateur.getRole(),utilisateur.getEmail(),"");
+        UtilisateurDTO utilisateurDTO = new UtilisateurDTO(utilisateur.getIdPersonne(), utilisateur.getNom(),
+                utilisateur.getPrenom(), utilisateur.getTelephone(), utilisateur.getDate(), utilisateur.getSexe(),
+                utilisateur.getMdp(), utilisateur.getRole(), utilisateur.getEmail(), "");
         utilisateurDTO.setOldPassword("");
-        model.addAttribute("utilisateur",utilisateurDTO);
+        model.addAttribute("utilisateur", utilisateurDTO);
         return "utilisateur/modifier-admin";
     }
 
     @PostMapping("user/modifierAdmin/{id}")
-    public String updateAdminUser(@PathVariable Long id,@Valid UtilisateurDTO utilisateur,BindingResult bindingResult,Model model){
+    public String updateAdminUser(@PathVariable Long id, @Valid UtilisateurDTO utilisateur, BindingResult bindingResult, Model model) {
         String ancienMdp = utilisateur.getOldPassword();
         Utilisateur utilisateur2 = utilisateurRepository.findByIdPersonne(id);
 
-        if(ancienMdp != null) {
-            if(!bCryptPasswordEncoder.matches(ancienMdp, utilisateur2.getMdp())){
+        if (ancienMdp != null) {
+            if (!bCryptPasswordEncoder.matches(ancienMdp, utilisateur2.getMdp())) {
                 if (bindingResult.hasErrors()) {
                     utilisateur.setId(id);
                     utilisateur.setOldPassword("test");
@@ -117,7 +117,7 @@ public class UtilisateurController {
                     return "utilisateur/modifier-admin";
                 }
             }
-        }else {
+        } else {
             utilisateur.setId(id);
             utilisateur.setOldPassword("");
             model.addAttribute("utilisateur", utilisateur);
@@ -127,50 +127,50 @@ public class UtilisateurController {
         pwd = bCryptPasswordEncoder.encode(pwd);
 
 
-            utilisateur2.setEmail(utilisateur.getEmail());
-            utilisateur2.setNom(utilisateur.getNom());
-            utilisateur2.setPrenom(utilisateur.getPrenom());
-            utilisateur2.setMdp(pwd);
-            utilisateur2.setSexe(utilisateur.getSexe());
-            utilisateur2.setTelephone(utilisateur.getTelephone());
-            utilisateurRepository.save(utilisateur2);
+        utilisateur2.setEmail(utilisateur.getEmail());
+        utilisateur2.setNom(utilisateur.getNom());
+        utilisateur2.setPrenom(utilisateur.getPrenom());
+        utilisateur2.setMdp(pwd);
+        utilisateur2.setSexe(utilisateur.getSexe());
+        utilisateur2.setTelephone(utilisateur.getTelephone());
+        utilisateurRepository.save(utilisateur2);
         return "redirect:/Gestion_Laboratoire_EMMAUS/user/list";
 
 
     }
 
     @PostMapping("user/modifier/{id}")
-    public String updateUser(@PathVariable Long id,@Valid UtilisateurDTO utilisateur,BindingResult bindingResult,Model model){
+    public String updateUser(@PathVariable Long id, @Valid UtilisateurDTO utilisateur, BindingResult bindingResult, Model model) {
 
-        if(bindingResult.hasErrors()){
-            model.addAttribute("utilisateur",utilisateur);
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("utilisateur", utilisateur);
             return "utilisateur/modifier-user";
         }
 
         String pwd = utilisateur.getMdp();
         pwd = bCryptPasswordEncoder.encode(pwd);
 
-            Utilisateur utilisateur2 = utilisateurRepository.findByIdPersonne(id);
-            utilisateur2.setTelephone(utilisateur.getTelephone());
-            utilisateur2.setSexe(utilisateur.getSexe());
-            utilisateur2.setMdp(pwd);
-            utilisateur2.setPrenom(utilisateur.getPrenom());
-            utilisateur2.setNom(utilisateur.getNom());
-            utilisateur2.setEmail(utilisateur.getEmail());
-            utilisateurRepository.save(utilisateur2);
+        Utilisateur utilisateur2 = utilisateurRepository.findByIdPersonne(id);
+        utilisateur2.setTelephone(utilisateur.getTelephone());
+        utilisateur2.setSexe(utilisateur.getSexe());
+        utilisateur2.setMdp(pwd);
+        utilisateur2.setPrenom(utilisateur.getPrenom());
+        utilisateur2.setNom(utilisateur.getNom());
+        utilisateur2.setEmail(utilisateur.getEmail());
+        utilisateurRepository.save(utilisateur2);
         return "redirect:/Gestion_Laboratoire_EMMAUS/user/list";
 
 
     }
 
     @GetMapping("user/deleteUser/{id}")
-    public String deleteUser(@PathVariable Long id){
-            utilisateurRepository.deleteById(id);
+    public String deleteUser(@PathVariable Long id) {
+        utilisateurRepository.deleteById(id);
         return "redirect:/Gestion_Laboratoire_EMMAUS/user/list";
     }
 
     @GetMapping("user/deactivateUser/{id}")
-    public String deactivate(@PathVariable Long id){
+    public String deactivate(@PathVariable Long id) {
         Utilisateur utilisateur = utilisateurRepository.findByIdPersonne(id);
         utilisateur.setActive(false);
         utilisateurRepository.save(utilisateur);
@@ -178,7 +178,7 @@ public class UtilisateurController {
     }
 
     @GetMapping("user/activateUser/{id}")
-    public String activate(@PathVariable Long id){
+    public String activate(@PathVariable Long id) {
         Utilisateur utilisateur = utilisateurRepository.findByIdPersonne(id);
         utilisateur.setActive(true);
         utilisateurRepository.save(utilisateur);

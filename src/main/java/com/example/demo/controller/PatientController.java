@@ -2,7 +2,8 @@ package com.example.demo.controller;
 
 import com.example.demo.entities.Patient;
 import com.example.demo.repositories.PatientRepository;
-import com.example.demo.repositories.UtilisateurRepository;
+import com.example.demo.services.PatientService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,55 +15,47 @@ import javax.validation.Valid;
 import java.util.Date;
 
 @Controller
-@RequestMapping("/Gestion_Laboratoire_EMMAUS/patient")
+@RequestMapping("/patient")
+@RequiredArgsConstructor
 public class PatientController {
 
     @InitBinder
-    public void initBinder(WebDataBinder binder){
-        binder.registerCustomEditor(String.class,new StringTrimmerEditor(true));
+    public void initBinder(WebDataBinder binder) {
+        binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
     }
 
-    private PatientRepository patientRepository;
-    private UtilisateurRepository medecinRepository;
-
-    public PatientController(PatientRepository patientRepository, UtilisateurRepository medecinRepository) {
-        this.patientRepository = patientRepository;
-        this.medecinRepository = medecinRepository;
-    }
-
-
+    private final PatientRepository patientRepository;
+    private final PatientService patientService;
 
     @GetMapping("/ajout-patient")
-    public String formAjoutPatient(Model model){
+    public String formAjoutPatient(Model model) {
         Patient patient = new Patient();
-        model.addAttribute("patient",patient);
+        model.addAttribute("patient", patient);
         return "/patient/ajout-patient";
     }
 
     @PostMapping("/enregistrer")
-    public String ajoutPatient(@Valid Patient patient, BindingResult result, Model model){
-        if(result.hasErrors()){
+    public String ajoutPatient(@Valid Patient patient, BindingResult result, Model model) {
+        if (result.hasErrors()) {
             return "/patient/ajout-patient";
         }
 
-        patient.setDateEnregistrement(new Date());
-        patient.setDateModification(new Date());
-        patientRepository.save(patient);
+        patientService.savePatient(patient);
         return "redirect:/";
     }
 
     @GetMapping("/editer/{id}")
-    public String modifierFormPatient(@PathVariable Long id,Model model){
+    public String modifierFormPatient(@PathVariable Long id, Model model) {
         Patient patient = patientRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Id invalide:" + id));
-        model.addAttribute("patient",patient);
+        model.addAttribute("patient", patient);
         return "patient/modifier-patient";
     }
 
     @PostMapping("/modifier/{id}")
-    public String updatePatient(@PathVariable Long id,@Valid Patient patient,BindingResult bindingResult,Model model){
+    public String updatePatient(@PathVariable Long id, @Valid Patient patient, BindingResult bindingResult, Model model) {
 
-        if(bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             patient.setIdPersonne(id);
             return "patient/modifier-patient";
         }
@@ -79,7 +72,7 @@ public class PatientController {
     }
 
     @GetMapping("/delete/{id}")
-    public String deletePatient(@PathVariable Long id){
+    public String deletePatient(@PathVariable Long id) {
         patientRepository.deleteById(id);
         return "redirect:/";
     }
