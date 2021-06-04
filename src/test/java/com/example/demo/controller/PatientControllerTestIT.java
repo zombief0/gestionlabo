@@ -1,30 +1,22 @@
 package com.example.demo.controller;
 
 import com.example.demo.entities.Patient;
-import com.example.demo.repositories.PatientRepository;
-import com.example.demo.repositories.UtilisateurRepository;
-import com.example.demo.services.PatientService;
+import com.example.demo.entities.Personne;
 import com.example.demo.services.PatientServiceImpl;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.test.context.support.WithUserDetails;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
-import java.util.Date;
-
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-
-
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(PatientController.class)
@@ -33,11 +25,11 @@ class PatientControllerTestIT extends BaseControllerTest {
     @MockBean
     private PatientServiceImpl patientService;
 
-    @MockBean
-    private PatientRepository patientRepository;
+    @Captor
+    ArgumentCaptor<Patient> argumentCaptorPatient;
 
-    @MockBean
-    private UtilisateurRepository utilisateurRepository;
+    @Captor
+    ArgumentCaptor<Long> argumentCaptorId;
 
     @DisplayName("Should display add patient form when logged in")
     @WithUserDetails(userDetailsServiceBeanName = "utilisateurDetailService", value = "userTest@mail.com")
@@ -70,6 +62,7 @@ class PatientControllerTestIT extends BaseControllerTest {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/"));
 
+        then(patientService).should().savePatient(argumentCaptorPatient.capture());
     }
 
     @DisplayName("Post request to patient/enregistrer with required field nom null")
@@ -85,19 +78,97 @@ class PatientControllerTestIT extends BaseControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(model().attributeHasErrors("patient"))
                 .andExpect(model().attributeHasFieldErrors("patient", "nom"));
-
+        then(patientService).shouldHaveNoInteractions();
     }
 
 
+    @DisplayName("Should show edit patient form when logged in")
+    @WithUserDetails(userDetailsServiceBeanName = "utilisateurDetailService", value = "userTest@mail.com")
     @Test
-    void modifierFormPatient() {
+    void modifierFormPatientUserLoggedIn() throws Exception {
+        Patient patientToEdit = new Patient();
+        patientToEdit.setNom("Patient 1");
+        patientToEdit.setIdPersonne(2L);
+        given(patientService.findPatientById(2L)).willReturn(patientToEdit);
+
+        mockMvc.perform(get("/patient/editer/{id}", 2))
+                .andExpect(status().isOk())
+                .andExpect(model().attributeExists("patient"))
+                .andExpect(view().name("patient/modifier-patient"));
+
+        then(patientService).should().findPatientById(2L);
+    }
+
+    @DisplayName("Should show edit patient form when not logged in")
+    @Test
+    void modifierFormPatientUserNotLoggedIn() throws Exception {
+        Patient patientToEdit = new Patient();
+        patientToEdit.setNom("Patient 1");
+        patientToEdit.setIdPersonne(2L);
+        given(patientService.findPatientById(2L)).willReturn(patientToEdit);
+
+        mockMvc.perform(get("/patient/editer/{id}", 2))
+                .andExpect(status().is3xxRedirection());
+
+        then(patientService).shouldHaveNoInteractions();
+    }
+
+    @DisplayName("Update patient no form field errors")
+    @WithUserDetails(userDetailsServiceBeanName = "utilisateurDetailService", value = "userTest@mail.com")
+    @Test
+    void updatePatientNoErrors() throws Exception {
+
+        mockMvc.perform(post("/patient/modifier/{id}", 2L).with(csrf())
+                .param("nom", "Mbouende")
+                .param("prenom", "Norman")
+                .param("telephone", "25698714")
+                .param("date", "1992-08-19")
+                .param("sexe", "MASCULIN"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/"));
+
+        then(patientService).should().updatePatient(argumentCaptorId.capture(), argumentCaptorPatient.capture());
+        assertThat(argumentCaptorId.getValue()).isEqualTo(2L);
+        assertThat(argumentCaptorPatient.getValue().getNom()).isEqualTo("Mbouende");
+        assertThat(argumentCaptorPatient.getValue().getPrenom()).isEqualTo("Norman");
+        assertThat(argumentCaptorPatient.getValue().getTelephone()).isEqualTo(25698714);
+        assertThat(argumentCaptorPatient.getValue().getSexe()).isEqualTo(Personne.Sexe.MASCULIN);
+    }
+
+    @DisplayName("Update patient form field error nom")
+    @WithUserDetails(userDetailsServiceBeanName = "utilisateurDetailService", value = "userTest@mail.com")
+    @Test
+    void updatePatientErrorNom() throws Exception {
+
+        mockMvc.perform(post("/patient/modifier/{id}", 2L).with(csrf())
+                .param("prenom", "Norman")
+                .param("telephone", "25698714")
+                .param("date", "1992-08-19")
+                .param("sexe", "MASCULIN"))
+                .andExpect(status().isOk())
+                .andExpect(model().attributeHasErrors("patient"))
+                .andExpect(model().attributeHasFieldErrors("patient", "nom"))
+                .andExpect(view().name("patient/modifier-patient"));
+
+        then(patientService).shouldHaveNoInteractions();
+    }
+
+    @WithUserDetails(userDetailsServiceBeanName = "utilisateurDetailService", value = "userTest@mail.com")
+    @Test
+    void deletePatient() throws Exception {
+        mockMvc.perform(get("/patient/delete/{id}", 2L))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/"));
+
+        then(patientService).should().deletePatientById(argumentCaptorId.capture());
+        assertThat(argumentCaptorId.getValue()).isEqualTo(2L);
     }
 
     @Test
-    void updatePatient() {
-    }
+    void deletePatientUserNotLoggedIn() throws Exception {
+        mockMvc.perform(get("/patient/delete/{id}", 2L))
+                .andExpect(status().is3xxRedirection());
 
-    @Test
-    void deletePatient() {
+        then(patientService).shouldHaveNoInteractions();
     }
 }

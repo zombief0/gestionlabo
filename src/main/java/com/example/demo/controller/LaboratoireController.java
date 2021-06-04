@@ -2,6 +2,8 @@ package com.example.demo.controller;
 
 import com.example.demo.entities.Laboratoire;
 import com.example.demo.repositories.LaboratoireRepository;
+import com.example.demo.services.LaboratoireService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,18 +15,16 @@ import javax.validation.Valid;
 import java.util.List;
 
 @Controller
-@RequestMapping("/Gestion_Laboratoire_EMMAUS/laboratoire")
+@RequestMapping("/laboratoire")
+@RequiredArgsConstructor
 public class LaboratoireController {
 
-    private LaboratoireRepository laboratoireRepository;
-
-    public LaboratoireController(LaboratoireRepository laboratoireRepository) {
-        this.laboratoireRepository = laboratoireRepository;
-    }
+    private final LaboratoireService laboratoireService;
+    private final LaboratoireRepository laboratoireRepository;
 
     @GetMapping("/listLaboratoire")
     public String listelabo(Model model){
-        List<Laboratoire> laboratoires = laboratoireRepository.findAll();
+        List<Laboratoire> laboratoires = laboratoireService.fetchAllLaboratoire();
         model.addAttribute("laboratoires",laboratoires);
         return "laboratoire/list-laboratoire";
     }
