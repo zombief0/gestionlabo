@@ -1,11 +1,20 @@
 package com.example.demo.entities;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
 public class Laboratoire implements Serializable {
 
     @Id
@@ -13,6 +22,7 @@ public class Laboratoire implements Serializable {
     private Long idLaboratoire;
 
     @Column(nullable = false)
+    @NotBlank
     private String libelle;
 
     private String description;
@@ -25,43 +35,5 @@ public class Laboratoire implements Serializable {
         this.description = description;
         this.examenList = examenList;
     }
-
-
-    public Laboratoire() {
-
-    }
-
-    public Long getIdLaboratoire() {
-        return idLaboratoire;
-    }
-
-    public void setIdLaboratoire(Long idTypeExamen) {
-        this.idLaboratoire = idTypeExamen;
-    }
-
-    public String getLibelle() {
-        return libelle;
-    }
-
-    public void setLibelle(String libelle) {
-        this.libelle = libelle;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public List<Examen> getExamenList() {
-        return examenList;
-    }
-
-    public void setExamenList(List<Examen> examenList) {
-        this.examenList = examenList;
-    }
-
 
 }

@@ -50,6 +50,10 @@ public class PatientServiceImpl implements PatientService{
 
     @Override
     public void deletePatientById(Long id) {
-        patientRepository.deleteById(id);
+        patientRepository.findById(id).ifPresent(patient -> {
+            if (patient.getConsultations().size() == 0 && patient.getExamenSouscrits().size() == 0){
+                patientRepository.deleteById(id);
+            }
+        });
     }
 }

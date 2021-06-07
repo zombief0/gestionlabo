@@ -81,6 +81,19 @@ class PatientControllerTestIT extends BaseControllerTest {
         then(patientService).shouldHaveNoInteractions();
     }
 
+    @Test
+    void ajoutPatientUserNotLoggedIn() throws Exception {
+
+        mockMvc.perform(post("/patient/enregistrer").with(csrf())
+                .param("nom", "Mbouende")
+                .param("prenom", "Norman")
+                .param("telephone", "25698714")
+                .param("date", "1992-08-19")
+                .param("sexe", "MASCULIN"))
+                .andExpect(status().is3xxRedirection());
+        then(patientService).shouldHaveNoInteractions();
+    }
+
 
     @DisplayName("Should show edit patient form when logged in")
     @WithUserDetails(userDetailsServiceBeanName = "utilisateurDetailService", value = "userTest@mail.com")
@@ -102,15 +115,10 @@ class PatientControllerTestIT extends BaseControllerTest {
     @DisplayName("Should show edit patient form when not logged in")
     @Test
     void modifierFormPatientUserNotLoggedIn() throws Exception {
-        Patient patientToEdit = new Patient();
-        patientToEdit.setNom("Patient 1");
-        patientToEdit.setIdPersonne(2L);
-        given(patientService.findPatientById(2L)).willReturn(patientToEdit);
 
         mockMvc.perform(get("/patient/editer/{id}", 2))
                 .andExpect(status().is3xxRedirection());
 
-        then(patientService).shouldHaveNoInteractions();
     }
 
     @DisplayName("Update patient no form field errors")
@@ -133,6 +141,20 @@ class PatientControllerTestIT extends BaseControllerTest {
         assertThat(argumentCaptorPatient.getValue().getPrenom()).isEqualTo("Norman");
         assertThat(argumentCaptorPatient.getValue().getTelephone()).isEqualTo(25698714);
         assertThat(argumentCaptorPatient.getValue().getSexe()).isEqualTo(Personne.Sexe.MASCULIN);
+    }
+
+    @Test
+    void updatePatientUserNotLoggedIn() throws Exception {
+
+        mockMvc.perform(post("/patient/modifier/{id}", 2L).with(csrf())
+                .param("nom", "Mbouende")
+                .param("prenom", "Norman")
+                .param("telephone", "25698714")
+                .param("date", "1992-08-19")
+                .param("sexe", "MASCULIN"))
+                .andExpect(status().is3xxRedirection());
+        then(patientService).shouldHaveNoInteractions();
+
     }
 
     @DisplayName("Update patient form field error nom")

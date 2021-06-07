@@ -94,7 +94,7 @@
                 <span class="fa fa-thermometer text-success"></span> Modification
             </div>
             <div class="card-body">
-                <form name="f" action="#" th:action="@{/Gestion_Laboratoire_EMMAUS/laboratoire/modifier/{id}(id=${laboratoire.getIdLaboratoire()})}" method="post" th:object="${laboratoire}">
+                <form name="f" th:action="@{/laboratoire/modifier/{id}(id=${laboratoire.getIdLaboratoire()})}" method="post" th:object="${laboratoire}">
                     <fieldset>
 
 

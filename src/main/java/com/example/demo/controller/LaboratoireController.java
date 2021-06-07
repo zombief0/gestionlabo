@@ -20,7 +20,6 @@ import java.util.List;
 public class LaboratoireController {
 
     private final LaboratoireService laboratoireService;
-    private final LaboratoireRepository laboratoireRepository;
 
     @GetMapping("/listLaboratoire")
     public String listelabo(Model model){
@@ -44,13 +43,13 @@ public class LaboratoireController {
             return "laboratoire/add-laboratoire";
         }
 
-        laboratoireRepository.save(laboratoire);
-        return "redirect:/Gestion_Laboratoire_EMMAUS/laboratoire/listLaboratoire";
+        laboratoireService.saveLaboratoire(laboratoire);
+        return "redirect:/laboratoire/listLaboratoire";
     }
 
     @GetMapping("/editer/{id}")
     public String editerFormLabo(@PathVariable Long id, Model model){
-        Laboratoire laboratoire = laboratoireRepository.findByIdLaboratoire(id);
+        Laboratoire laboratoire = laboratoireService.fetchById(id);
         model.addAttribute("laboratoire",laboratoire);
         return "laboratoire/modifier-laboratoire";
     }
@@ -59,22 +58,20 @@ public class LaboratoireController {
     public String modifierLaboratoire(@PathVariable Long id,
                                       @Valid Laboratoire laboratoire,
                                       BindingResult result, Model model){
-        Laboratoire laboratoire1= laboratoireRepository.findByIdLaboratoire(id);
         if(result.hasErrors()){
+            laboratoire.setIdLaboratoire(id);
             model.addAttribute("laboratoire",laboratoire);
             return "laboratoire/modifier-laboratoire";
         }
 
-        laboratoire1.setDescription(laboratoire.getDescription());
-        laboratoire1.setLibelle(laboratoire.getLibelle());
-        laboratoireRepository.save(laboratoire1);
-        return "redirect:/Gestion_Laboratoire_EMMAUS/laboratoire/listLaboratoire";
+        laboratoireService.updateLaboratoire(id, laboratoire);
+        return "redirect:/laboratoire/listLaboratoire";
     }
 
     @GetMapping("/delete/{id}")
     public String deleteLaboratoire(@PathVariable Long id){
-        laboratoireRepository.deleteById(id);
-        return "redirect:/Gestion_Laboratoire_EMMAUS/laboratoire/listLaboratoire";
+        laboratoireService.deleteLaboratoire(id);
+        return "redirect:/laboratoire/listLaboratoire";
     }
 
 }

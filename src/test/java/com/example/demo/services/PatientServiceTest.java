@@ -106,6 +106,7 @@ public class PatientServiceTest {
 
     @Test
     void deletePatient() {
+        given(patientRepository.findById(2L)).willReturn(Optional.of(patientExemple1));
         patientService.deletePatientById(2L);
         then(patientRepository).should().deleteById(idArgumentCaptor.capture());
         assertThat(idArgumentCaptor.getValue()).isEqualTo(2L);
