@@ -43,7 +43,7 @@ jobs:
         run: echo "<settings xmlns=\"http://maven.apache.org/SETTINGS/1.2.0\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://maven.apache.org/SETTINGS/1.2.0 http://maven.apache.org/xsd/settings-1.2.0.xsd\"><mirrors><mirror><id>jaspersoft-third-party-mirror</id><mirrorOf>jaspersoft-third-party</mirrorOf><url>http://jaspersoft.jfrog.io/jaspersoft/third-party-ce-artifacts/</url><blocked>false</blocked></mirror></mirrors></settings>" > ~/.m2/settings.xml
       # Runs a set of commands using the runners shell
       - name: Step 3 unit test
-        run: mvn -Dmaven.repo.local=~/.m2/repository test
+        run: mvn test
       - name: Step 4 integration test
         run: mvn verify
       - name: Step 5 list current directory
