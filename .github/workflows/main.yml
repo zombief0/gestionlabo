@@ -32,7 +32,7 @@ jobs:
           java-version: '11'
           check-latest: false
       - name: Extra step
-        run: echo "<mirror><id>jaspersoft-third-party-mirror</id><mirrorOf>jaspersoft-third-party</mirrorOf><url>http://jaspersoft.jfrog.io/jaspersoft/third-party-ce-artifacts/</url><blocked>false</blocked></mirror>" >> /.m2/settings.xml
+        run: echo "<mirror><id>jaspersoft-third-party-mirror</id><mirrorOf>jaspersoft-third-party</mirrorOf><url>http://jaspersoft.jfrog.io/jaspersoft/third-party-ce-artifacts/</url><blocked>false</blocked></mirror>" >> ~/.m2/settings.xml
       # Runs a set of commands using the runners shell
       - name: Step 3 unit test
         run: mvn test
