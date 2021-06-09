@@ -31,7 +31,7 @@ jobs:
           distribution: 'adopt'
           java-version: '11'
           check-latest: false
-      - name: Cache m2 path
+      - name: Cache local maven path
         uses: actions/cache@v2
         with:
           path: ~/.m2/repository
