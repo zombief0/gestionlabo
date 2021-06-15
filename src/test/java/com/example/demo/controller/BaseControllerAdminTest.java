@@ -15,7 +15,7 @@ import javax.annotation.PostConstruct;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 
-public abstract class BaseControllerTest {
+public abstract class BaseControllerAdminTest {
     protected MockMvc mockMvc;
 
     @Autowired
@@ -32,11 +32,11 @@ public abstract class BaseControllerTest {
 
     @PostConstruct
     public void setUsers(){
-        Utilisateur user = new Utilisateur();
-        user.setEmail("userTest@mail.com");
-        user.setMdp("1235");
-        user.setRole("UTILISATEUR");
-        given(utilisateurDetailService.loadUserByUsername("userTest@mail.com"))
-                .willReturn(new UtilisateurDetail(user));
+        Utilisateur admin = new Utilisateur();
+        admin.setEmail("adminTest@mail.com");
+        admin.setMdp("1235");
+        admin.setRole("ADMIN");
+        given(utilisateurDetailService.loadUserByUsername("adminTest@mail.com"))
+                .willReturn(new UtilisateurDetail(admin));
     }
 }

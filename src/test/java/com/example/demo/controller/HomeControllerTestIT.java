@@ -13,7 +13,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 @WebMvcTest(HomeController.class)
-class HomeControllerTestIT extends BaseControllerTest{
+class HomeControllerTestIT extends BaseControllerUserAndAnonymousTest {
 
     @MockBean
     private PatientServiceImpl patientService;

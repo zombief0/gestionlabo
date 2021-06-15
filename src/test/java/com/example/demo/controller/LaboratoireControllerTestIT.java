@@ -1,8 +1,6 @@
 package com.example.demo.controller;
 
 import com.example.demo.entities.Laboratoire;
-import com.example.demo.repositories.LaboratoireRepository;
-import com.example.demo.services.LaboratoireService;
 import com.example.demo.services.LaboratoireServiceImpl;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,7 +15,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -27,7 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 @WebMvcTest(LaboratoireController.class)
-class LaboratoireControllerTestIT extends BaseControllerTest {
+class LaboratoireControllerTestIT extends BaseControllerUserAndAnonymousTest {
 
     @MockBean
     private LaboratoireServiceImpl laboratoireService;

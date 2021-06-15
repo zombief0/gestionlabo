@@ -13,5 +13,7 @@ public interface ExamenRepository extends JpaRepository<Examen,Long> {
 
     Examen findByIdExamen(Long idExamen);
 
-    List<Examen> findAllByLaboratoire(Laboratoire laboratoire);
+    List<Examen> findAllByLaboratoireOrderByLibelle(Laboratoire laboratoire);
+
+    List<Examen> findAllByLaboratoire_IdLaboratoireOrderByLibelle(Long idLabo);
 }

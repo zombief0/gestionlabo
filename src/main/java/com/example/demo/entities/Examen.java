@@ -1,5 +1,9 @@
 package com.example.demo.entities;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -10,6 +14,9 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
+@NoArgsConstructor
+@Getter
+@Setter
 public class Examen implements Serializable {
 
     @Id
@@ -52,95 +59,10 @@ public class Examen implements Serializable {
         this.laboratoire = laboratoire;
     }
 
-    public Examen() {
-
-    }
-
-    public Long getIdExamen() {
-        return idExamen;
-    }
-
-    public void setIdExamen(Long idExamen) {
-        this.idExamen = idExamen;
-    }
-
-
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public String getLibelle() {
-        return libelle;
-    }
-
-    public void setLibelle(String libelle) {
-        this.libelle = libelle;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public double getPrix() {
-        return prix;
-    }
-
-    public void setPrix(double prix) {
-        this.prix = prix;
-    }
-
-    public Laboratoire getLaboratoire() {
-        return laboratoire;
-    }
-
-    public void setLaboratoire(Laboratoire laboratoire) {
-        this.laboratoire = laboratoire;
-    }
-
-    public List<ExamenSouscrit> getExamenSouscrits() {
-        return examenSouscrits;
-    }
-
-    public void setExamenSouscrits(List<ExamenSouscrit> examenSouscrits) {
-        this.examenSouscrits = examenSouscrits;
-    }
-
     public static Comparator<Examen> examenComparator = (o1, o2) -> {
         String examennom1 = o1.libelle.toUpperCase();
         String examennom2 = o2.libelle.toUpperCase();
         return examennom1.compareTo(examennom2);
     };
 
-    public Date getDateAjout() {
-        return dateAjout;
-    }
-
-    public void setDateAjout(Date dateAjout) {
-        this.dateAjout = dateAjout;
-    }
-
-    public double getMinValeur() {
-        return minValeur;
-    }
-
-    public void setMinValeur(double minValeur) {
-        this.minValeur = minValeur;
-    }
-
-    public double getMaxValeur() {
-        return maxValeur;
-    }
-
-    public void setMaxValeur(double maxValeur) {
-        this.maxValeur = maxValeur;
-    }
 }
