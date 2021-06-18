@@ -1,5 +1,8 @@
 package com.example.demo.entities;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -10,6 +13,9 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
 public class Consultation implements Serializable {
 
     @Id
@@ -30,61 +36,10 @@ public class Consultation implements Serializable {
     @OneToMany(mappedBy = "consultation", cascade = {CascadeType.MERGE,CascadeType.REFRESH})
     private List<ExamenSouscrit> examenSouscritList = new ArrayList<>();
 
-    public Consultation() {
-    }
-
     public Consultation(String pres, Patient patient, Date dateConsultation){
         this.prescripteur = pres;
         this.patient = patient;
         this.dateConsultation = dateConsultation;
-    }
-
-    public Long getIdConsultation() {
-        return idConsultation;
-    }
-
-    public void setIdConsultation(Long idConsultation) {
-        this.idConsultation = idConsultation;
-    }
-
-    public String getPrescripteur() {
-        return prescripteur;
-    }
-
-    public Date getDateConsultation() {
-        return dateConsultation;
-    }
-
-    public String getStatut() {
-        return statut;
-    }
-
-    public void setStatut(String statut) {
-        this.statut = statut;
-    }
-
-    public void setDateConsultation(Date dateConsultation) {
-        this.dateConsultation = dateConsultation;
-    }
-
-    public void setPrescripteur(String prescripteur) {
-        this.prescripteur = prescripteur;
-    }
-
-    public Patient getPatient() {
-        return patient;
-    }
-
-    public void setPatient(Patient patient) {
-        this.patient = patient;
-    }
-
-    public List<ExamenSouscrit> getExamenSouscritList() {
-        return examenSouscritList;
-    }
-
-    public void setExamenSouscritList(List<ExamenSouscrit> examenSouscritList) {
-        this.examenSouscritList = examenSouscritList;
     }
 
     public static Comparator<Consultation> ConsultationComparator = (o1, o2) -> {
