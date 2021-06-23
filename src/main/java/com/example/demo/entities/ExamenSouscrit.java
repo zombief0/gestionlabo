@@ -1,5 +1,8 @@
 package com.example.demo.entities;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -8,6 +11,9 @@ import java.util.Comparator;
 import java.util.Date;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
 public class ExamenSouscrit implements Serializable {
 
     @Id
@@ -37,74 +43,6 @@ public class ExamenSouscrit implements Serializable {
         this.date = date;
         this.examen = examen;
         this.consultation = consultation;
-        this.patient = patient;
-    }
-
-    public ExamenSouscrit() {
-
-    }
-
-    public double getValeurNormalePatient() {
-        return valeurNormalePatient;
-    }
-
-    public void setValeurNormalePatient(double valeurNormalePatient) {
-        this.valeurNormalePatient = valeurNormalePatient;
-    }
-
-    public Long getIdExamenPasser() {
-        return idExamenPasser;
-    }
-
-    public Facture getFacture() {
-        return facture;
-    }
-
-    public void setFacture(Facture facture) {
-        this.facture = facture;
-    }
-
-    public void setIdExamenPasser(Long idExamenPasser) {
-        this.idExamenPasser = idExamenPasser;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
-    public Consultation getConsultation() {
-        return consultation;
-    }
-
-    public void setConsultation(Consultation consultation) {
-        this.consultation = consultation;
-    }
-
-    public String getUnite() {
-        return unite;
-    }
-
-    public void setUnite(String unite) {
-        this.unite = unite;
-    }
-
-    public Examen getExamen() {
-        return examen;
-    }
-
-    public void setExamen(Examen examen) {
-        this.examen = examen;
-    }
-
-    public Patient getPatient() {
-        return patient;
-    }
-
-    public void setPatient(Patient patient) {
         this.patient = patient;
     }
 

@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.entities.Patient;
 import com.example.demo.entities.Personne;
+import com.example.demo.services.PatientService;
 import com.example.demo.services.PatientServiceImpl;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -23,7 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class PatientControllerTestIT extends BaseControllerUserAndAnonymousTest {
 
     @MockBean
-    private PatientServiceImpl patientService;
+    private PatientService patientService;
 
     @Captor
     ArgumentCaptor<Patient> argumentCaptorPatient;

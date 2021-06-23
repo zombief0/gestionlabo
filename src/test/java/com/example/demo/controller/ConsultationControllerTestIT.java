@@ -1,6 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.services.ConsultationServiceImpl;
+import com.example.demo.services.ConsultationService;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
@@ -39,7 +39,7 @@ class ConsultationControllerTestIT extends BaseControllerUserAndAnonymousTest {
     private ArgumentCaptor<String> argumentCaptorPrescripteur;
 
     @MockBean
-    private ConsultationServiceImpl consultationService;
+    private ConsultationService consultationService;
 
     @WithUserDetails(userDetailsServiceBeanName = "utilisateurDetailService", value = "userTest@mail.com")
     @Test

@@ -4,6 +4,7 @@ import com.example.demo.entities.Examen;
 import com.example.demo.entities.Laboratoire;
 import com.example.demo.repositories.ExamenRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -55,5 +56,10 @@ public class ExamenServiceImpl implements ExamenService{
             }
         });
         return idLab.get();
+    }
+
+    @Override
+    public List<Examen> fetchAll() {
+        return examenRepository.findAll(Sort.by(Sort.Direction.ASC, "libelle"));
     }
 }

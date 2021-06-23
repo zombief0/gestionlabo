@@ -13,5 +13,7 @@ public interface ConsultationRepository extends JpaRepository<Consultation,Long>
     Consultation findByIdConsultation(Long id);
 
     List<Consultation> findAllByPatient(Patient patient);
+
+    List<Consultation> findAllByPatient_IdPersonneOrderByDateConsultationDesc(Long idPatient);
 }
 

@@ -1,6 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.services.PatientServiceImpl;
+import com.example.demo.services.PatientService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -16,7 +16,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class HomeControllerTestIT extends BaseControllerUserAndAnonymousTest {
 
     @MockBean
-    private PatientServiceImpl patientService;
+    private PatientService patientService;
 
     @WithUserDetails(userDetailsServiceBeanName = "utilisateurDetailService", value = "userTest@mail.com")
     @DisplayName("Should display patient list on UI when user connected")

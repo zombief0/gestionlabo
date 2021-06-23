@@ -4,6 +4,7 @@ import com.example.demo.entities.Examen;
 import com.example.demo.entities.Laboratoire;
 import com.example.demo.repositories.ExamenRepository;
 import com.example.demo.repositories.LaboratoireRepository;
+import com.example.demo.services.ExamenService;
 import com.example.demo.services.ExamenServiceImpl;
 import com.example.demo.services.LaboratoireService;
 import org.junit.jupiter.api.Test;
@@ -25,7 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class ExamenControllerAdminTestIT extends BaseControllerAdminTest {
 
     @MockBean
-    private ExamenServiceImpl examenService;
+    private ExamenService examenService;
 
     @MockBean
     private LaboratoireService laboratoireService;

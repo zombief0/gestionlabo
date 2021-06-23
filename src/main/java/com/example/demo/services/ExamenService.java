@@ -16,4 +16,6 @@ public interface ExamenService {
     void updateExam(Examen examen, Examen precedentValue);
 
     Long deleteExamenById(Long idExamen);
+
+    List<Examen> fetchAll();
 }

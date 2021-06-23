@@ -1,8 +1,6 @@
 package com.example.demo.services;
 
-import com.example.demo.entities.Consultation;
-import com.example.demo.entities.Patient;
-import com.example.demo.entities.Utilisateur;
+import com.example.demo.entities.*;
 import com.example.demo.repositories.ConsultationRepository;
 import com.example.demo.repositories.PatientRepository;
 import com.example.demo.repositories.UtilisateurRepository;
@@ -14,6 +12,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -22,7 +22,7 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 
 @ExtendWith(MockitoExtension.class)
-class ConsultationServiceImplTest {
+class ConsultationServiceTest {
     @Mock
     private PatientRepository patientRepository;
 
@@ -141,5 +141,29 @@ class ConsultationServiceImplTest {
         then(consultationRepository).should().save(consultationArgumentCaptor.capture());
         assertThat(idPatient).isEqualTo(6L);
         assertThat(consultationArgumentCaptor.getValue().getStatut()).isEqualTo("EN_COURS");
+    }
+
+    @Test
+    void fetchAllByIdPatient() {
+        Patient patient = new Patient();
+        patient.setNom("Test");
+        patient.setPrenom("Prenom Test");
+        patient.setIdPersonne(6L);
+        Consultation consultation = new Consultation();
+        consultation.setIdConsultation(1L);
+        consultation.setStatut("TERMINE");
+        consultation.setPatient(patient);
+        Examen examen = new Examen();
+        examen.setIdExamen(1L);
+        examen.setLibelle("Examen Test");
+        ExamenSouscrit examenSouscrit = new ExamenSouscrit(null, examen, consultation, patient);
+        consultation.setExamenSouscritList(Collections.singletonList(examenSouscrit));
+        given(consultationRepository.findAllByPatient_IdPersonneOrderByDateConsultationDesc(patient.getIdPersonne()))
+                .willReturn(Collections.singletonList(consultation));
+
+        List<Consultation> consultations = consultationService.fetchAllByIdPatient(patient.getIdPersonne());
+
+        then(consultationRepository).should().findAllByPatient_IdPersonneOrderByDateConsultationDesc(patient.getIdPersonne());
+        assertThat(consultations.size()).isGreaterThan(0);
     }
 }

@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.entities.Laboratoire;
+import com.example.demo.services.LaboratoireService;
 import com.example.demo.services.LaboratoireServiceImpl;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -27,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class LaboratoireControllerTestIT extends BaseControllerUserAndAnonymousTest {
 
     @MockBean
-    private LaboratoireServiceImpl laboratoireService;
+    private LaboratoireService laboratoireService;
 
 
     @Captor

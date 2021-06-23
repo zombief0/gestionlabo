@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -76,5 +77,10 @@ public class ConsultationServiceImpl implements ConsultationService {
             consultationRepository.save(consultPresent);
         }
         return idPatient;
+    }
+
+    @Override
+    public List<Consultation> fetchAllByIdPatient(Long idPersonne) {
+        return consultationRepository.findAllByPatient_IdPersonneOrderByDateConsultationDesc(idPersonne);
     }
 }
