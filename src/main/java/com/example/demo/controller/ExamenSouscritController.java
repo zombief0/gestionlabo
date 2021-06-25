@@ -1,14 +1,15 @@
 package com.example.demo.controller;
 
-import com.example.demo.entities.*;
-import com.example.demo.repositories.*;
+import com.example.demo.entities.Consultation;
+import com.example.demo.entities.Examen;
+import com.example.demo.entities.ExamenSouscrit;
+import com.example.demo.entities.Patient;
 import com.example.demo.services.ConsultationService;
 import com.example.demo.services.ExamenService;
 import com.example.demo.services.ExamenSouscritService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -24,10 +24,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ExamenSouscritController {
 
-    private final PatientRepository patientRepository;
-    private final ExamenRepository examenRepository;
-    private final ExamenSouscritRepository examenSo;
-    private final ConsultationRepository consultationRepository;
     private final ConsultationService consultationService;
     private final ExamenSouscritService examenSouscritService;
     private final ExamenService examenService;

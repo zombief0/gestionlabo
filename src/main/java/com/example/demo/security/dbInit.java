@@ -23,6 +23,7 @@ public class dbInit implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+//        System.out.println(bCryptPasswordEncoder.encode("1234"));
 /*
         if(utilisateurRepository.findAll().size() == 0) {
             Utilisateur admin = new Utilisateur("", "", "root@mail.com", new Date(), 664123587, Personne.Sexe.MASCULIN, bCryptPasswordEncoder.encode("1234"), "ADMIN");

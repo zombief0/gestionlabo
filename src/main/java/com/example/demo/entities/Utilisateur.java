@@ -6,12 +6,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -40,12 +37,6 @@ public class Utilisateur extends Personne implements Serializable {
     @Column(nullable = false)
     private boolean isActive;
 
-    public static Comparator<Utilisateur> utilisateurComparator = (o1, o2) -> {
-        String utilisateurnom1 = o1.getNom().toUpperCase();
-        String utilisateurnom2 = o2.getNom().toUpperCase();
-        return utilisateurnom1.compareTo(utilisateurnom2);
-
-    };
 
     public Utilisateur(String nom, String prenom, String email, Date date, int telephone, Sexe sexe, String pwd, String role) {
         super(null, nom, prenom, date, telephone, sexe);

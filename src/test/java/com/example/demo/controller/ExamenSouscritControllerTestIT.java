@@ -32,14 +32,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class ExamenSouscritControllerTestIT extends BaseControllerUserAndAnonymousTest{
 
     @MockBean
-    private PatientRepository patientRepository;
-    @MockBean
-    private ExamenRepository examenRepository;
-    @MockBean
-    private ExamenSouscritRepository examenSo;
-    @MockBean
-    private ConsultationRepository consultationRepository;
-    @MockBean
     private ConsultationService consultationService;
     @MockBean
     private ExamenSouscritService examenSouscritService;
