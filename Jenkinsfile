@@ -24,10 +24,8 @@ node {
        }
 
        stage('Docker build/push') {
-               docker.withRegistry('https://index.docker.io/v1', 'dockerhub'){
-                    def app = docker.build("zombief0/labo:${commit_id}", '.').push()
-               }
-       }
+                    def app = docker.build "zombief0/labo:${commit_id}"
+       }            app.push()
 
     } catch(e) {
         currentBuild.result = "FAILURE";
