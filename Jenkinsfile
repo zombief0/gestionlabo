@@ -25,7 +25,8 @@ node {
 
        stage('Docker build/push') {
                     def app = docker.build "zombief0/labo:${commit_id}"
-       }            app.push()
+                    app.push()
+       }
 
     } catch(e) {
         currentBuild.result = "FAILURE";
