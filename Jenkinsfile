@@ -26,7 +26,12 @@ node {
        stage('Docker build/push') {
                def app = docker.build "zombief0/labo:${commit_id}"
                app.push()
-               sh "docker image prune"
+       }
+
+       stage('Run docker container') {
+               sh "docker image prune -y"
+               sh "docker container stop labo"
+               sh "docker container rm labo"
                sh "docker container run -d -e VIRTUAL_HOST=normanmbouende.com --name labo zombief0/labo:${commit_id}"
        }
 
