@@ -10,8 +10,8 @@
     </parent>
     <groupId>com.example</groupId>
     <artifactId>demo</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <name>demo</name>
+    <version>1</version>
+    <name>labo</name>
     <description>Demo project for Spring Boot</description>
     <packaging>war</packaging>
     <properties>
@@ -131,7 +131,7 @@
     </dependencies>
 
     <build>
-        <finalName>Gestion_Laboratoire_EMMAUS</finalName>
+        <finalName>labo</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
