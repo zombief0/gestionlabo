@@ -1,5 +1,5 @@
 FROM openjdk:11
-COPY ./target/labo.war /usr/src/myapp
-WORKDIR /usr/src/myapp
+COPY ./target/labo.war /usr/src/
+WORKDIR /usr/src/
 EXPOSE 8080
-RUN java -jar labo.war
+CMD ["java","-jar", "labo.war"]
