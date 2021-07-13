@@ -32,10 +32,6 @@ class ExamenServiceTest {
     @Captor
     private ArgumentCaptor<Examen> examenArgumentCaptor;
 
-    @Captor
-    private ArgumentCaptor<Laboratoire> laboratoireArgumentCaptor;
-    @Captor
-    private ArgumentCaptor<Examen> examenToUpdateArgumentCaptor;
     private Examen examen;
     private Laboratoire laboratoire;
     private List<Examen> examenList;

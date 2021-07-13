@@ -8,5 +8,4 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface LaboratoireRepository extends JpaRepository<Laboratoire,Long> {
 
-    Laboratoire findByIdLaboratoire(Long idType);
 }

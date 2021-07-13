@@ -1,5 +1,8 @@
 package com.norman.labo.entities;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -10,6 +13,9 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
+@NoArgsConstructor
+@Getter
+@Setter
 public class Facture implements Serializable {
 
     @Id
@@ -34,59 +40,6 @@ public class Facture implements Serializable {
         this.dateCreationOriginale = dateCreationOriginale;
         this.dateCreationSecondaire = dateCreationSecondaire;
         this.utilisateur = utilisateur;
-        this.somme = somme;
-    }
-
-
-    public Facture() {
-
-    }
-
-    public Long getIdFacture() {
-        return idFacture;
-    }
-
-    public Date getDateCreationSecondaire() {
-        return dateCreationSecondaire;
-    }
-
-    public void setDateCreationSecondaire(Date dateCreationSecondaire) {
-        this.dateCreationSecondaire = dateCreationSecondaire;
-    }
-
-    public void setIdFacture(Long idFacture) {
-        this.idFacture = idFacture;
-    }
-
-    public Date getDateCreationOriginale() {
-        return dateCreationOriginale;
-    }
-
-    public void setDateCreationOriginale(Date date) {
-        this.dateCreationOriginale = date;
-    }
-
-    public Utilisateur getUtilisateur() {
-        return utilisateur;
-    }
-
-    public void setUtilisateur(Utilisateur utilisateur) {
-        this.utilisateur = utilisateur;
-    }
-
-    public List<ExamenSouscrit> getExamenSouscrits() {
-        return examenSouscrits;
-    }
-
-    public void setExamenSouscrits(List<ExamenSouscrit> examenSouscrits) {
-        this.examenSouscrits = examenSouscrits;
-    }
-
-    public double getSomme() {
-        return somme;
-    }
-
-    public void setSomme(double somme) {
         this.somme = somme;
     }
 
