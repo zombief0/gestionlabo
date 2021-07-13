@@ -20,7 +20,7 @@ node {
        }
 
        stage('Integration Test') {
-               sh "'${mvnHome}/bin/mvn' verify"
+              sh "'${mvnHome}/bin/mvn' verify"
        }
 
        stage('Docker build/push') {
