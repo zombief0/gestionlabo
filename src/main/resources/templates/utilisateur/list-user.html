@@ -2,99 +2,33 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
+
     <title>Liste des utilisateurs du laboratoire</title>
-    <!-- Bootstrap core CSS-->
-    <link href="vendor/bootstrap/css/bootstrap.min.css" th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
-    <!-- Custom fonts for this template-->
-    <link href="webjars/bootstrap/4.1.3/css/bootstrap.min.css" th:href="@{/webjars/bootstrap/4.1.3/css/bootstrap.min.css}" rel="stylesheet">
-    <link href="webjars/font-awesome/5.12.0/css/all.css" th:href="@{/webjars/font-awesome/5.12.0/css/all.css}" rel="stylesheet" TYPE="text/css">
-    <!-- Page level plugin CSS-->
-    <link href="vendor/datatables/dataTables.bootstrap4.css" th:href="@{/vendor/datatables/dataTables.bootstrap4.css}" rel="stylesheet">
-    <!-- Custom styles for this template-->
-    <link href="css/sb-admin.css" th:href="@{/css/sb-admin.css}"  rel="stylesheet">
-    <link href="style.css" th:href="@{/style.css}" rel="stylesheet">
+
 </head>
 
 <body class="fixed-nav sticky-footer bg-dark" id="page-top">
 <script>
 
     function deletebox(idUser) {
-        if (confirm("Voulez vous vraiment supprimer?" )) {
-            open("/Gestion_Laboratoire_EMMAUS/Gestion_Laboratoire_EMMAUS/user/deleteUser/" + idUser, "_top");
+        if (confirm("Voulez vous vraiment supprimer?")) {
+            open("/user/deleteUser/" + idUser, "_top");
         }
     }
 
     function deactivateUser(idUser) {
         if (confirm("Voulez vous vraiment désactiver l'utilisateur?")) {
-            open("/Gestion_Laboratoire_EMMAUS/Gestion_Laboratoire_EMMAUS/user/deactivateUser/" + idUser, "_top");
+            open("/user/deactivateUser/" + idUser, "_top");
         }
     }
+
     function activateUser(idUser) {
         if (confirm("Voulez vous vraiment activer l'utilisateur?")) {
-            open("/Gestion_Laboratoire_EMMAUS/Gestion_Laboratoire_EMMAUS/user/activateUser/" + idUser, "_top");
+            open("/user/activateUser/" + idUser, "_top");
         }
     }
 </script>
-<!-- Navigation-->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
-    <a class="navbar-brand" th:href="@{/}" ><span style="color:white;">LABORATOIRE</span> <span class="highlight">EMMAUS</span></a>
-    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarResponsive">
-        <ul class="navbar-nav navbar-sidenav" id="exampleAccordion">
-            <li class="nav-item" data-toggle="tooltip" data-placement="right" title="Dashboard">
-                <a class="nav-link" th:href="@{/}">
-                    <i class="fa fa-fw fa-home text-primary"></i>
-                    <span class="nav-link-text">Acceuil</span>
-                </a>
-            </li>
-            <li sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_UTILISATEUR')" class="nav-item" data-toggle="tooltip" data-placement="right" title="Facture">
-                <a class="nav-link" th:href="@{/Gestion_Laboratoire_EMMAUS/facture/list-facture}">
-                    <i class="fa fa-fw fa-money-bill text-success"></i>
-                    <span class="nav-link-text">Factures</span>
-                </a>
-            </li>
-            <li sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_MEDECIN')" class="nav-item" data-toggle="tooltip" data-placement="right" title="Examens">
-                <a class="nav-link" th:href="@{/Gestion_Laboratoire_EMMAUS/laboratoire/listLaboratoire}">
-                    <i class="fa fa-fw fa-flask text-danger"></i>
-                    <span class="nav-link-text">Laboratoire</span>
-                </a>
-            </li>
-            <li sec:authorize="hasRole('ROLE_ADMIN')" class="nav-item" data-toggle="tooltip" data-placement="right" title="Employees">
-                <a class="nav-link" th:href="@{/Gestion_Laboratoire_EMMAUS/user/list}">
-                    <i class="fa fa-fw fa-user text-warning"></i>
-                    <span class="nav-link-text">Employés</span>
-                </a>
-            </li>
-
-        </ul>
-        <ul class="navbar-nav sidenav-toggler">
-            <li class="nav-item">
-                <a class="nav-link text-center" id="sidenavToggler">
-                    <i class="fa fa-fw fa-angle-left"></i>
-                </a>
-            </li>
-        </ul>
-        <ul class="navbar-nav ml-auto">
-            <li class="nav-item" style="padding-right: 1%;">
-                <span sec:authorize="hasRole('ROLE_UTILISATEUR')" class="highlight">Utilisateur </span>
-                <span sec:authorize="hasRole('ROLE_MEDECIN')" class="highlight">Docteur </span>
-                <span sec:authorize="hasRole('ROLE_ADMIN')" class="highlight">Administrateur </span>
-                <span sec:authentication="name" style="color: white;"></span>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" data-toggle="modal" data-target="#exampleModal">
-                    <i class="fa fa-fw fa-sign-out-alt"></i>Se déconnecter</a>
-            </li>
-        </ul>
-    </div>
-</nav>
+<nav th:replace="fragment/header.html"></nav>
 <div class="content-wrapper">
     <div class="container-fluid">
         <!-- Breadcrumbs-->
@@ -108,17 +42,18 @@
 
         <!-- Area Chart Example-->
 
-        <a class="btn btn-primary" th:href="@{/Gestion_Laboratoire_EMMAUS/user/add-user}" style="margin: 1%">
+        <a class="btn btn-primary" th:href="@{/user/add-user}" style="margin: 1%">
             <i class="fa fa-user-plus ml-2">
                 Ajout Utilisateur
             </i>
         </a>
         <div class="card mb-3">
             <div class="card-header">
-                <i class="fa fa-address-book"></i> Liste des utilisateurs</div>
+                <i class="fa fa-address-book"></i> Liste des utilisateurs
+            </div>
             <div class="card-body">
 
-                <div class="table-responsive" >
+                <div class="table-responsive">
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                         <thead>
                         <tr>
@@ -145,33 +80,36 @@
                             <td th:text="${utilisateur.getNom()}"></td>
                             <td th:text="${utilisateur.getPrenom()}"></td>
                             <td th:text="${utilisateur.getEmail()}"></td>
-                            <td th:text="${utilisateur.getTelephone()}" ></td>
-                            <td th:text="${utilisateur.getRole()}" ></td>
+                            <td th:text="${utilisateur.getTelephone()}"></td>
+                            <td th:text="${utilisateur.getRole()}"></td>
                             <td>
                                 <a th:if="${utilisateur.getRole()} !='ADMIN'"
-                                   th:href="@{/Gestion_Laboratoire_EMMAUS/user/editer/{id}(id=${utilisateur.getIdPersonne()})}"
+                                   th:href="@{/user/editer/{id}(id=${utilisateur.getIdPersonne()})}"
                                    class="btn btn-outline-primary">
                                     <i class="fa fa-edit text-warning"></i>
                                 </a>
                                 <a th:if="${utilisateur.getRole()} =='ADMIN'"
-                                   th:href="@{/Gestion_Laboratoire_EMMAUS/user/editerAdmin/{id}(id=${utilisateur.getIdPersonne()})}"
+                                   th:href="@{/user/editerAdmin/{id}(id=${utilisateur.getIdPersonne()})}"
                                    class="btn btn-outline-primary">
                                     <i class="fa fa-edit text-warning"></i>
                                 </a>
                                 <button
                                         class="btn btn-outline-primary"
-                                        th:if="${utilisateur.getRole()} !='ADMIN' and  ${utilisateur.getFactures().size() ==0}" style="margin-left: 1%"
+                                        th:if="${utilisateur.getRole()} !='ADMIN' and  ${utilisateur.getFactures().size() ==0}"
+                                        style="margin-left: 1%"
                                         th:onclick="'deletebox(\'' + ${utilisateur.getIdPersonne()} + '\');'">
                                     <span class="fa fa-trash text-danger"></span>
                                 </button>
                                 <button th:if="${utilisateur.getRole()} !='ADMIN' and ${utilisateur.isActive() ==true}"
                                         class="btn btn-outline-primary"
-                                        style="margin-left: 1%"  th:onclick="'deactivateUser(\'' + ${utilisateur.getIdPersonne()} + '\');'">
+                                        style="margin-left: 1%"
+                                        th:onclick="'deactivateUser(\'' + ${utilisateur.getIdPersonne()} + '\');'">
                                     <span class="fa fa-eye"></span>
                                 </button>
                                 <button th:if="${utilisateur.role} !='ADMIN' and ${utilisateur.isActive() ==false}"
                                         class="btn btn-outline-primary"
-                                        style="margin-left: 1%"  th:onclick="'activateUser(\'' + ${utilisateur.getIdPersonne()} + '\');'">
+                                        style="margin-left: 1%"
+                                        th:onclick="'activateUser(\'' + ${utilisateur.getIdPersonne()} + '\');'">
                                     <span class="fa fa-eye-slash"></span>
                                 </button>
                             </td>
@@ -184,7 +122,8 @@
         </div>
     </div>
 
-    <div th:include="fragment/footer.html"></div></div>
+    <div th:include="fragment/footer.html"></div>
+</div>
 </body>
 
 </html>
