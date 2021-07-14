@@ -11,6 +11,7 @@ import org.springframework.security.test.context.support.WithUserDetails;
 
 import java.util.Collections;
 
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -39,6 +40,7 @@ class ExamenControllerUserAndAnonymousTestIT extends BaseControllerUserAndAnonym
         examen.setIdExamen(2L);
         examen.setLaboratoire(laboratoire);
         given(examenService.getAllByLaboratoire(1L)).willReturn(Collections.singletonList(examen));
+        given(laboratoireService.fetchById(anyLong())).willReturn(laboratoire);
         mockMvc.perform(get("/examen/listExamen/{idLaboratoire}", 1L))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("examens"))

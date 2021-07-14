@@ -65,4 +65,11 @@ public class FactureServiceImpl implements FactureService {
 
         factureRepository.deleteById(codeFacture);
     }
+
+    @Override
+    public void updateFacture(Long id) {
+        Facture facture = factureRepository.findByIdFacture(id);
+        facture.setDateCreationSecondaire(new Date());
+        factureRepository.save(facture);
+    }
 }

@@ -30,7 +30,7 @@
             </div>
             <div class="card-body">
                 <form name="f" action="#"
-                      th:action="@{/Gestion_Laboratoire_EMMAUS/examen/enregistrer/{id}(id=${laboratoire.getIdLaboratoire()})}"
+                      th:action="@{/examen/enregistrer/{id}(id=${laboratoire.getIdLaboratoire()})}"
                       method="post" th:object="${examen}">
                     <fieldset>
 

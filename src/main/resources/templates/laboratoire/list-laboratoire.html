@@ -11,7 +11,7 @@
 <script>
     function deletebox(idLaboratoire) {
         if (confirm("Voulez vous vraiment supprimer?")) {
-            open("/Gestion_Laboratoire_EMMAUS/Gestion_Laboratoire_EMMAUS/laboratoire/delete/" + idLaboratoire, "_top");
+            open("/laboratoire/delete/" + idLaboratoire, "_top");
         }
     }
 
@@ -31,7 +31,7 @@
         <!-- Area Chart Example-->
 
         <a class="btn btn-primary" sec:authorize="hasRole('ROLE_ADMIN')"
-           th:href="@{/Gestion_Laboratoire_EMMAUS/laboratoire/add-laboratoire}" style="margin: 1%">
+           th:href="@{/laboratoire/add-laboratoire}" style="margin: 1%">
             <i class="fa fa fa-flask ml-2">
                 Ajout Laboratoire
             </i>
@@ -64,12 +64,12 @@
                             <td th:text="${laboratoire.getDescription()}"></td>
                             <td sec:authorize="hasRole('ROLE_ADMIN')">
                                 <a
-                                        th:href="@{/Gestion_Laboratoire_EMMAUS/laboratoire/editer/{id}(id=${laboratoire.getIdLaboratoire()})}"
+                                        th:href="@{/laboratoire/editer/{id}(id=${laboratoire.getIdLaboratoire()})}"
                                         class="btn btn-outline-primary">
                                     <i class="fa fa-edit text-warning"></i>
                                 </a>
                                 <a th:alt="'Afficher les examens disponibles dans un laboratoire'"
-                                   th:href="@{/Gestion_Laboratoire_EMMAUS/examen/listExamen/{id}(id=${laboratoire.getIdLaboratoire()})}"
+                                   th:href="@{/examen/listExamen/{id}(id=${laboratoire.getIdLaboratoire()})}"
                                    class="btn btn-outline-primary">
                                     <i class="fa fa-expand-alt"></i>
                                 </a>

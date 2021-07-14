@@ -27,7 +27,7 @@
                 <span class="fa fa-user text-success"></span> Modification
             </div>
             <div class="card-body">
-                <form name="f" action="#" th:action="@{/Gestion_Laboratoire_EMMAUS/user/modifier/{id}(id=${utilisateur.getId()})}" method="post" th:object="${utilisateur}">
+                <form name="f" action="#" th:action="@{/user/modifier/{id}(id=${utilisateur.getId()})}" method="post" th:object="${utilisateur}">
                     <fieldset>
 
                         <div class="form-group">

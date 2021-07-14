@@ -11,25 +11,25 @@
 <script>
     function deletebox(idExamen, idPatient) {
         if (confirm("Voulez vous vraiment supprimer?")) {
-            open("/Gestion_Laboratoire_EMMAUS/examenSouscrit/delete/" + idExamen + "/" + idPatient, "_top");
+            open("/examenSouscrit/delete/" + idExamen + "/" + idPatient, "_top");
         }
     }
 
     function deleteConsultation(idConsultation, idPatient) {
         if (confirm("Voulez vous vraiment supprimer?")) {
-            open("/Gestion_Laboratoire_EMMAUS/consultation/delete/" + idConsultation + "/" + idPatient, "_top");
+            open("/consultation/delete/" + idConsultation + "/" + idPatient, "_top");
         }
     }
 
-    function terminerConsultation(idConsultation, idPatient) {
+    function terminerConsultation(idConsultation) {
         if (confirm("Voulez vous vraiment terminer la consultation?")) {
-            open("/Gestion_Laboratoire_EMMAUS/Gestion_Laboratoire_EMMAUS/consultation/terminerConsultation/" + idConsultation + "/" + idPatient, "_top");
+            open("/consultation/terminerConsultation/" + idConsultation, "_top");
         }
     }
 
-    function activerConsultation(idConsultation, idPatient) {
+    function activerConsultation(idConsultation) {
         if (confirm("Voulez vous réactiver la  consultation?")) {
-            open("/Gestion_Laboratoire_EMMAUS/Gestion_Laboratoire_EMMAUS/consultation/activerConsultation/" + idConsultation + "/" + idPatient, "_top");
+            open("/consultation/activerConsultation/" + idConsultation, "_top");
         }
     }
 
@@ -105,7 +105,7 @@
 
             <div sec:authorize="hasRole('MEDECIN')">
                 <form method="post"
-                      th:action="@{/Gestion_Laboratoire_EMMAUS/consultation/enregistrer/{id}(id=${patient.getIdPersonne()})}">
+                      th:action="@{/consultation/enregistrer/{id}(id=${patient.getIdPersonne()})}">
                     <div class="form-actions" style="margin-top: 12px;">
                         <button type="submit" class="btn btn-outline-primary"><i class="fa fa-thermometer-full">Créer
                             une consultation</i></button>
@@ -114,7 +114,7 @@
             </div>
 
             <span sec:authorize="hasAnyRole('ROLE_ADMIN','UTILISATEUR')">
-						<a th:href="@{/Gestion_Laboratoire_EMMAUS/facture/ajout-facture/{id}/0(id=${patient.getIdPersonne()})}"
+						<a th:href="@{/facture/ajout-facture/{id}/0(id=${patient.getIdPersonne()})}"
                            class="btn btn-outline-success"><i class="fa fa-money-bill">Créer une Facture</i></a>
             </span>
 
@@ -128,22 +128,22 @@
             <div class="card-body">
                 <div style="margin-bottom: 1%">
                     <a th:if="${consultation.getStatut() == 'EN_COURS'}"
-                       th:href="@{/Gestion_Laboratoire_EMMAUS/examenSouscrit/addExamenSouscrit/{id}/{idConsultation}(id=${patient.idPersonne},idConsultation=${consultation.getIdConsultation()})}"
+                       th:href="@{/examenSouscrit/addExamenSouscrit/{id}/{idConsultation}(id=${patient.idPersonne},idConsultation=${consultation.getIdConsultation()})}"
                        class="btn btn-outline-success"><i class="fa fa-syringe">Prescrire un examen</i></a>
 
-                    <a th:href="@{/Gestion_Laboratoire_EMMAUS/consultation/print-resultat/{id}/{idConsultation}(id=${patient.idPersonne},idConsultation=${consultation.getIdConsultation()})}"
+                    <a th:href="@{/consultation/print-resultat/{id}/{idConsultation}(id=${patient.idPersonne},idConsultation=${consultation.getIdConsultation()})}"
                        class="btn btn-outline-warning"><i class="fa fa-print">Imprimer les résultats</i></a>
 
 
                     <button th:if="${consultation.getStatut() == 'EN_COURS'}"
                             class="btn btn-outline-primary" style="margin-left: 1%"
-                            th:onclick="'terminerConsultation(\'' + ${consultation.getIdConsultation()} + '\',\'' + ${patient.getIdPersonne()} + '\');'">
+                            th:onclick="'terminerConsultation(\'' + ${consultation.getIdConsultation()} + '\');'">
                         <span class="fa fa-power-off text-secondary">Terminer la consultation</span>
                     </button>
 
                     <button sec:authorize="hasRole('ROLE_ADMIN')" th:if="${consultation.getStatut() == 'TERMINE'}"
                             class="btn btn-outline-primary" style="margin-left: 1%"
-                            th:onclick="'activerConsultation(\'' + ${consultation.getIdConsultation()} + '\',\'' + ${patient.getIdPersonne()} + '\');'">
+                            th:onclick="'activerConsultation(\'' + ${consultation.getIdConsultation()} + '\');'">
                         Activer la consultation
                     </button>
 
@@ -177,8 +177,7 @@
                         </tr>
                         </tfoot>
                         <tbody>
-                        <tr th:if="${consultation == examenSouscrit.consultation}"
-                            th:each="examenSouscrit : ${examenSouscrits}">
+                        <tr th:each="examenSouscrit : ${consultation.getExamenSouscritList()}">
                             <td th:text="${examenSouscrit.getExamen().getLibelle()}"></td>
                             <td th:text="${examenSouscrit.getDate()}"></td>
                             <td th:text="${examenSouscrit.getExamen().getPrix()} + ' FCFA'"></td>
@@ -193,7 +192,7 @@
                                         th:onclick="'deletebox(\'' + ${examenSouscrit.getIdExamenPasser()} + '\',\'' + ${patient.getIdPersonne()} + '\');'">
                                     <span class="fa fa-trash text-danger"></span>
                                 </button>
-                                <a th:href="@{/Gestion_Laboratoire_EMMAUS/examenSouscrit/addValeurNormale/{idPatient}/{idExamenSouscrit}(idPatient=${patient.getIdPersonne()},idExamenSouscrit=${examenSouscrit.getIdExamenPasser()})}"
+                                <a th:href="@{/examenSouscrit/addValeurNormale/{idExamenSouscrit}(idExamenSouscrit=${examenSouscrit.getIdExamenPasser()})}"
                                    class="btn btn-outline-primary"
                                    style="margin-left: 1%">
                                     <span class="fa fa-plus"></span>
@@ -204,6 +203,39 @@
 
                         </tbody>
                     </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Consultation Modal-->
+    <div class="modal fade" id="consultation" tabindex="-1" role="dialog" aria-labelledby="consultationModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="consultationModalLabel">Création d'une consultation</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form  th:action="@{/consultation/enregistrer/{id}(id=${patient.getIdPersonne()})}" method="post">
+                        <fieldset>
+
+                            <div class="form-group">
+                                <label for="prescripteur">Médécin Responsable</label>
+                                <input type="text" class="form-control" id="prescripteur" name="prescripteur"
+                                />
+                            </div>
+
+                            <div class="form-actions" style="margin-top: 12px;">
+                                <button type="submit" class="btn btn-success">Enregistrer</button>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Annuler</button>
                 </div>
             </div>
         </div>

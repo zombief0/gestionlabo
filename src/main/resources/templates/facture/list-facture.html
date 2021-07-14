@@ -11,7 +11,7 @@
 <script>
     function deletebox(idFacture) {
         if (confirm("Voulez vous vraiment supprimer?")) {
-            open("/Gestion_Laboratoire_EMMAUS/Gestion_Laboratoire_EMMAUS/facture/delete/" + idFacture, "_top");
+            open("/facture/delete/" + idFacture, "_top");
         }
     }
 
@@ -62,7 +62,7 @@
 
                             <td>
                                 <a style="text-decoration: none;"
-                                   th:href="@{/Gestion_Laboratoire_EMMAUS/examenSouscrit/profil-patient/{id}(id=${facture.getExamenSouscrits().get(0).getPatient().getIdPersonne()})}">
+                                   th:href="@{/examenSouscrit/profil-patient/{id}(id=${facture.getExamenSouscrits().get(0).getPatient().getIdPersonne()})}">
                                     <span th:text="${facture.getExamenSouscrits().get(0).getPatient().getNom()} + ' ' + ${facture.getExamenSouscrits().get(0).getPatient().getPrenom()}">
 
                                     </span>
@@ -72,11 +72,11 @@
                             <td th:text="${#dates.format(facture.getDateCreationOriginale(),'yyyy-MM-dd HH:mm')}"></td>
                             <td th:text="${facture.getUtilisateur().getNom()} + ' ' + ${facture.getUtilisateur().getPrenom()}"></td>
                             <td sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_UTILISATEUR')">
-                                <a th:href="@{/Gestion_Laboratoire_EMMAUS/facture/detail-facture/{id}(id=${facture.getIdFacture()})}"
+                                <a th:href="@{/facture/detail-facture/{id}(id=${facture.getIdFacture()})}"
                                    class="btn btn-outline-primary">
                                     <i class="fa fa-expand-alt"></i>
                                 </a>
-                                <a th:href="@{/Gestion_Laboratoire_EMMAUS/facture/print-facture/{id}(id=${facture.getIdFacture()})}"
+                                <a th:href="@{/facture/print-facture/{id}(id=${facture.getIdFacture()})}"
                                    class="btn btn-outline-success">
                                     <i class="fa fa-file-pdf"></i>
                                 </a>

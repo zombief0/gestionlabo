@@ -163,7 +163,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
-				<text><![CDATA[LABORATOIRE EMMAUS
+				<text><![CDATA[LABORATOIRE
 ANALYSES BIOMÉDICALES
 BILAN DE SANTÉ]]></text>
 			</staticText>

@@ -30,9 +30,8 @@ public class ExamenController {
     @GetMapping("/listExamen/{idLaboratoire}")
     public String listeExamen(@PathVariable Long idLaboratoire, Model model) {
         List<Examen> examens = examenService.getAllByLaboratoire(idLaboratoire);
-        if (examens.size() != 0) {
-            model.addAttribute("laboratoire", examens.get(0).getLaboratoire());
-        }
+
+        model.addAttribute("laboratoire", laboratoireService.fetchById(idLaboratoire));
         model.addAttribute("examens", examens);
         return "examen/list-examen";
     }

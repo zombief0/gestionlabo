@@ -28,7 +28,7 @@
             </div>
             <div class="card-body">
                 <form name="f" action="#"
-                      th:action="@{/Gestion_Laboratoire_EMMAUS/examen/modifier/{id}/{idLaboratoire}(id=${examen.getIdExamen()},idLaboratoire=${laboratoire.getIdLaboratoire()})}"
+                      th:action="@{/examen/modifier/{id}(id=${examen.getIdExamen()})}"
                       method="post" th:object="${examen}">
                     <fieldset>
 

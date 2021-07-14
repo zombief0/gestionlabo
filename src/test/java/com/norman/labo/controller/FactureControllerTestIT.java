@@ -2,6 +2,7 @@ package com.norman.labo.controller;
 
 import com.norman.labo.entities.*;
 import com.norman.labo.repositories.FactureRepository;
+import com.norman.labo.services.ExamenSouscritService;
 import com.norman.labo.services.FactureService;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -25,14 +26,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(FactureController.class)
 class FactureControllerTestIT extends BaseControllerUserAndAnonymousTest {
-    @MockBean
-    private FactureRepository factureRepository;
 
     @MockBean
     private DataSource dataSource;
     @MockBean
     private ResourceLoader resourceLoader;
 
+    @MockBean
+    private ExamenSouscritService examenSouscritService;
 
     @MockBean
     private FactureService factureService;
@@ -48,34 +49,34 @@ class FactureControllerTestIT extends BaseControllerUserAndAnonymousTest {
         ExamenSouscrit examenSouscrit = new ExamenSouscrit();
         examenSouscrit.setPatient(new Patient());
         examenSouscrit.setExamen(new Examen());
-        facture.setExamenSouscrits(Collections.singletonList(examenSouscrit));
         given(factureService.findByCode(anyLong())).willReturn(facture);
-        mockMvc.perform(get("/facture/ajout-facture/{codeFacture}", 6))
+        given(examenSouscritService.findAllByPatientAndFactureNull(anyLong())).willReturn(Collections.singletonList(examenSouscrit));
+        mockMvc.perform(get("/facture/ajout-facture/2/{codeFacture}", 6))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("examenSouscrits", "facture", "message", "examenSouscrit"))
                 .andExpect(view().name("facture/add-facture"));
 
         then(factureService).should().findByCode(anyLong());
+        then(examenSouscritService).should().findAllByPatientAndFactureNull(anyLong());
     }
 
     @Test
     @WithUserDetails(userDetailsServiceBeanName = "utilisateurDetailService", value = "userTest@mail.com")
-    void ajoutFactureFormExamnSouscritEmpty() throws Exception {
-        Facture facture = new Facture();
-        facture.setIdFacture(6L);
-        facture.setExamenSouscrits(Collections.emptyList());
-        given(factureService.findByCode(anyLong())).willReturn(facture);
-        mockMvc.perform(get("/facture/ajout-facture/{codeFacture}", 6))
+    void ajoutFactureFormNoExamnSouscrits() throws Exception {
+
+        given(examenSouscritService.findAllByPatientAndFactureNull(anyLong())).willReturn(Collections.emptyList());
+        mockMvc.perform(get("/facture/ajout-facture/2/{codeFacture}", 6))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/facture/list-facture"));
 
-        then(factureService).should().findByCode(anyLong());
+        then(factureService).shouldHaveNoInteractions();
+        then(examenSouscritService).should().findAllByPatientAndFactureNull(anyLong());
     }
 
     @Test
     void ajoutFactureFormUserNotLoggedIn() throws Exception {
 
-        mockMvc.perform(get("/facture/ajout-facture/{codeFacture}", 6))
+        mockMvc.perform(get("/facture/ajout-facture/2/{codeFacture}", 6))
                 .andExpect(status().is3xxRedirection());
 
         then(factureService).shouldHaveNoInteractions();
@@ -85,11 +86,11 @@ class FactureControllerTestIT extends BaseControllerUserAndAnonymousTest {
     @WithUserDetails(userDetailsServiceBeanName = "utilisateurDetailService", value = "userTest@mail.com")
     void enregistrerFacture() throws Exception {
         given(factureService.saveFacture(anyString(), any(ExamenSouscrit.class), anyLong())).willReturn(1L);
-        mockMvc.perform(post("/facture/enregistrer/{codeFacture}", 1)
+        mockMvc.perform(post("/facture/enregistrer/2/{codeFacture}", 1)
                 .with(csrf())
                 .param("idExamenPasser", "1"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:facture/ajout-facture/1"));
+                .andExpect(view().name("redirect:/facture/ajout-facture/2/1"));
 
         then(factureService).should()
                 .saveFacture(anyString(), examenSouscritArgumentCaptor.capture(), anyLong());

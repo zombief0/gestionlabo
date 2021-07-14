@@ -36,7 +36,7 @@
                     <form
                             name="f"
                             action="#"
-                            th:action="@{/Gestion_Laboratoire_EMMAUS/facture/enregistrer/{id}/{idFacture}(id=${examenSouscrits.get(0).patient.getIdPersonne()},idFacture=${facture.getIdFacture()})}"
+                            th:action="@{/facture/enregistrer/{id}/{idFacture}(id=${examenSouscrits.get(0).patient.getIdPersonne()},idFacture=${facture.getIdFacture()})}"
                             method="post" th:object="${examenSouscrit}">
                         <fieldset>
 
@@ -57,7 +57,7 @@
                 </div>
                 <div th:if="${facture == null}" class="card-block" style="padding: 24px;">
                     <form name="fa" action="#"
-                          th:action="@{/Gestion_Laboratoire_EMMAUS/facture/enregistrer/{id}/0(id=${examenSouscrits.get(0).patient.getIdPersonne()})}"
+                          th:action="@{/facture/enregistrer/{id}/0(id=${examenSouscrits.get(0).patient.getIdPersonne()})}"
                           method="post" th:object="${examenSouscrit}">
                         <fieldset>
 

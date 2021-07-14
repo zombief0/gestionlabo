@@ -14,7 +14,7 @@
         <!-- Breadcrumbs-->
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a th:href="@{/Gestion_Laboratoire_EMMAUS/examenSouscrit/profil-patient/{id}(id=${patient.getIdPersonne()})}"
+                <a th:href="@{/examenSouscrit/profil-patient/{id}(id=${patient.getIdPersonne()})}"
                 >
                     <span>Examens du patient</span>
                 </a>
@@ -33,7 +33,7 @@
                 </div>
                 <div class="card-block" style="padding: 24px;">
                     <form name="f" action="#"
-                          th:action="@{/Gestion_Laboratoire_EMMAUS/examenSouscrit/enregistrerValeurNormale/{idPatient}/{idExamenSouscrit}(idPatient=${patient.getIdPersonne()},idExamenSouscrit=${examenSouscrit.getIdExamenPasser()})}"
+                          th:action="@{/examenSouscrit/enregistrerValeurNormale/{idExamenSouscrit}(idExamenSouscrit=${examenSouscrit.getIdExamenPasser()})}"
                           method="post">
                         <fieldset>
 

@@ -63,7 +63,7 @@
                             <td th:text="${patient.getPrenom()}"></td>
                             <td th:text="${patient.getTelephone()}"></td>
                             <td>
-                                <a th:href="@{/Gestion_Laboratoire_EMMAUS/patient/editer/{id}(id=${patient.getIdPersonne()})}"
+                                <a th:href="@{/patient/editer/{id}(id=${patient.getIdPersonne()})}"
                                    sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_UTILISATEUR')"
                                    class="btn btn-outline-primary"><i class="fa fa-edit text-warning"></i></a>
                                 <button th:if="${patient.getExamenSouscrits().size() == 0 && patient.getConsultations().size() == 0}"
@@ -73,7 +73,7 @@
                                         th:onclick="'deletebox(\'' + ${patient.getIdPersonne()} + '\');'">
                                     <span class="fa fa-trash text-danger"></span>
                                 </button>
-                                <a th:href="@{/Gestion_Laboratoire_EMMAUS/examenSouscrit/profil-patient/{id}(id=${patient.getIdPersonne()})}"
+                                <a th:href="@{/examenSouscrit/profil-patient/{id}(id=${patient.getIdPersonne()})}"
                                    class="btn btn-outline-primary"
                                    style="margin-left: 1%">
                                     <span class="fa fa-expand-alt"></span>

@@ -7,6 +7,7 @@ import com.norman.labo.entities.Patient;
 import com.norman.labo.services.ConsultationService;
 import com.norman.labo.services.ExamenService;
 import com.norman.labo.services.ExamenSouscritService;
+import com.norman.labo.services.PatientService;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
@@ -36,6 +37,8 @@ class ExamenSouscritControllerTestIT extends BaseControllerUserAndAnonymousTest{
     @MockBean
     private ExamenService examenService;
 
+    @MockBean
+    private PatientService patientService;
     @Captor
     private ArgumentCaptor<String> uniteCaptor;
 
@@ -66,6 +69,7 @@ class ExamenSouscritControllerTestIT extends BaseControllerUserAndAnonymousTest{
         consultation.setExamenSouscritList(Collections.singletonList(examenSouscrit));
         given(consultationService.fetchAllByIdPatient(patient.getIdPersonne()))
                 .willReturn(Collections.singletonList(consultation));
+        given(patientService.findPatientById(anyLong())).willReturn(patient);
 
         mockMvc.perform(get("/examenSouscrit/profil-patient/{id}", patient.getIdPersonne()))
                 .andExpect(status().isOk())

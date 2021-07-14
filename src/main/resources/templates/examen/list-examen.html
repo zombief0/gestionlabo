@@ -11,7 +11,7 @@
 <script>
     function deletebox(idExamen) {
         if (confirm("Voulez vous vraiment supprimer?")) {
-            open("/Gestion_Laboratoire_EMMAUS/Gestion_Laboratoire_EMMAUS/examen/delete/" + idExamen, "_top");
+            open("/examen/delete/" + idExamen, "_top");
         }
     }
 
@@ -24,7 +24,7 @@
         <!-- Breadcrumbs-->
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a th:href="@{/Gestion_Laboratoire_EMMAUS/laboratoire/listLaboratoire}">Laboratoire</a>
+                <a th:href="@{/laboratoire/listLaboratoire}">Laboratoire</a>
             </li>
             <li class="breadcrumb-item active" th:text="${laboratoire.libelle}"></li>
             <li class="breadcrumb-item active">Liste des examens</li>
@@ -34,7 +34,7 @@
         <!-- Area Chart Example-->
 
         <a class="btn btn-primary" sec:authorize="hasRole('ROLE_ADMIN')"
-           th:href="@{/Gestion_Laboratoire_EMMAUS/examen/ajout-examen/{id}(id=${laboratoire.getIdLaboratoire()})}"
+           th:href="@{/examen/ajout-examen/{id}(id=${laboratoire.getIdLaboratoire()})}"
            style="margin: 1%">
             <i class="fa fa fa-thermometer ml-2">
                 Ajout Examen
@@ -80,7 +80,7 @@
                             <td th:text="${examen.getDateAjout()}"></td>
                             <td sec:authorize="hasRole('ROLE_ADMIN')">
                                 <a
-                                        th:href="@{/Gestion_Laboratoire_EMMAUS/examen/editer/{id}/{idLaboratoire}(id=${examen.getIdExamen()},idLaboratoire=${laboratoire.getIdLaboratoire()})}"
+                                        th:href="@{/examen/editer/{id}(id=${examen.getIdExamen()})}"
                                         class="btn btn-outline-primary">
                                     <i class="fa fa-edit text-warning"></i>
                                 </a>

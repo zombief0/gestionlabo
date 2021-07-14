@@ -13,4 +13,6 @@ public interface FactureService {
     List<Facture> findAll();
 
     void delete(Long codeFacture);
+
+    void updateFacture(Long id);
 }

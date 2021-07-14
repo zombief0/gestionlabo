@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -61,5 +62,10 @@ public class ExamenSouscritServiceImpl implements ExamenSouscritService{
             }
         }
         return idPatient;
+    }
+
+    @Override
+    public List<ExamenSouscrit> findAllByPatientAndFactureNull(Long idPatient) {
+        return examenSouscritRepository.findAllByPatient_IdPersonneAndFactureNull(idPatient);
     }
 }

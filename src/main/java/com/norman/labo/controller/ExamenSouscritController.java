@@ -7,6 +7,7 @@ import com.norman.labo.entities.Patient;
 import com.norman.labo.services.ConsultationService;
 import com.norman.labo.services.ExamenService;
 import com.norman.labo.services.ExamenSouscritService;
+import com.norman.labo.services.PatientService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,15 +28,14 @@ public class ExamenSouscritController {
     private final ConsultationService consultationService;
     private final ExamenSouscritService examenSouscritService;
     private final ExamenService examenService;
+    private final PatientService patientService;
 
     @GetMapping("/profil-patient/{id}")
     public String montrerProfilPatient(@PathVariable Long id, Model model){
         List<Consultation> consultations = consultationService.fetchAllByIdPatient(id);
-        if (consultations.size() != 0){
-            if (consultations.get(0).getPatient() != null){
-                model.addAttribute("patient",consultations.get(0).getPatient());
-            }
-        }
+
+        model.addAttribute("patient",patientService.findPatientById(id));
+
         model.addAttribute("consultations",consultations);
         FactureController.successMessage = "null";
         return "examenSouscrit/profil-patient";

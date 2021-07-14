@@ -188,7 +188,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
-				<text> <![CDATA[LABORATOIRE EMMAUS
+				<text> <![CDATA[LABORATOIRE
 ANALYSES BIOMÉDICALES
 BILAN DE SANTÉ]]></text>
 			</staticText>
@@ -258,7 +258,7 @@ BILAN DE SANTÉ]]></text>
 		<band height="26" splitType="Stretch">
 			<staticText>
 				<reportElement x="240" y="0" width="304" height="22" uuid="6bb8aa34-1c51-4ffa-8dd8-1a089ebe06e3"/>
-				<text><![CDATA[L'équipe du laboratoire EMMAUS vous souhaite une bonne guérison]]></text>
+				<text><![CDATA[L'équipe du laboratoire vous souhaite une bonne guérison]]></text>
 			</staticText>
 		</band>
 	</pageFooter>

@@ -3,11 +3,6 @@ package com.norman.labo.controller;
 
 import com.norman.labo.entities.ExamenSouscrit;
 import com.norman.labo.entities.Facture;
-import com.norman.labo.entities.Utilisateur;
-import com.norman.labo.repositories.ExamenSouscritRepository;
-import com.norman.labo.repositories.FactureRepository;
-import com.norman.labo.repositories.PatientRepository;
-import com.norman.labo.repositories.UtilisateurRepository;
 import com.norman.labo.services.ExamenSouscritService;
 import com.norman.labo.services.FactureService;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +15,6 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,7 +27,6 @@ import javax.validation.Valid;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,39 +36,39 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class FactureController {
 
-    private final FactureRepository factureRepository;
     private final DataSource dataSource;
     private final ResourceLoader resourceLoader;
     private final FactureService factureService;
+    private final ExamenSouscritService examenSouscritService;
     public static String successMessage = "null";
 
-    @GetMapping("/ajout-facture/{codeFacture}")
-    public String ajoutFactureForm(@PathVariable Long codeFacture,
+    @GetMapping("/ajout-facture/{idPatient}/{codeFacture}")
+    public String ajoutFactureForm(@PathVariable Long idPatient,
+                                   @PathVariable Long codeFacture,
                                    Model model) {
 
-        Facture facture = factureService.findByCode(codeFacture);
-        if (facture != null) {
-            List<ExamenSouscrit> examenSouscrits = facture.getExamenSouscrits();
+        List<ExamenSouscrit> examenSouscrits = examenSouscritService.findAllByPatientAndFactureNull(idPatient);
 
-            if (examenSouscrits.size() != 0) {
-                model.addAttribute("examenSouscrits", examenSouscrits);
-                model.addAttribute("facture", facture);
-                model.addAttribute("message", successMessage);
-                model.addAttribute("examenSouscrit", new ExamenSouscrit());
-                return "facture/add-facture";
-            }
+        if (examenSouscrits.size() != 0) {
+            Facture facture = factureService.findByCode(codeFacture);
+            model.addAttribute("examenSouscrits", examenSouscrits);
+            model.addAttribute("facture", facture);
+            model.addAttribute("message", successMessage);
+            model.addAttribute("examenSouscrit", new ExamenSouscrit());
+            return "facture/add-facture";
         }
         return "redirect:/facture/list-facture";
     }
 
-    @PostMapping("/enregistrer/{codeFacture}")
-    public String enregistrerFacture(@PathVariable Long codeFacture,
+    @PostMapping("/enregistrer/{idPatient}/{codeFacture}")
+    public String enregistrerFacture(@PathVariable Long idPatient,
+                                     @PathVariable Long codeFacture,
                                      @Valid ExamenSouscrit examenSouscrit,
                                      Authentication authentication) {
 
         successMessage = "enregistrement réussi";
         codeFacture = factureService.saveFacture(authentication.getName(), examenSouscrit, codeFacture);
-        return "redirect:facture/ajout-facture/" + codeFacture;
+        return "redirect:/facture/ajout-facture/" + idPatient + "/" + codeFacture;
     }
 
     @GetMapping("/list-facture")
@@ -95,9 +88,7 @@ public class FactureController {
 
         //
         response.setContentType("application/pdf");
-        Facture facture = factureRepository.findByIdFacture(idFacture);
-        facture.setDateCreationSecondaire(new Date());
-        factureRepository.save(facture);
+        factureService.updateFacture(idFacture);
         JasperDesign jasperDesign = JRXmlLoader.load(resourceLoader.getResource("classpath:static/etat.jrxml").getInputStream());
 
         JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);

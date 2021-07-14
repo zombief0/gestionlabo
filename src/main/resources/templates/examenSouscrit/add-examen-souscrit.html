@@ -8,13 +8,13 @@
 </head>
 
 <body class="fixed-nav sticky-footer bg-dark" id="page-top">
-
+<nav th:replace="fragment/header.html"></nav>
 <div class="content-wrapper">
     <div class="container-fluid">
         <!-- Breadcrumbs-->
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
-                <a th:href="@{/Gestion_Laboratoire_EMMAUS/examenSouscrit/profil-patient/{id}(id=${patient})}"
+                <a th:href="@{/examenSouscrit/profil-patient/{id}(id=${patient})}"
                 >
                     <span>Profil du patient</span>
                 </a>
@@ -31,8 +31,7 @@
                     <span class="fa fa-syringe text-success">Prescription d'un examen</span>
                 </div>
                 <div class="card-block" style="padding: 24px;">
-                    <form name="f" action="#"
-                          th:action="@{/Gestion_Laboratoire_EMMAUS/examenSouscrit/enregistrer/{id}/{idConsultation}(id=${patient},idConsultation=${consultation})}"
+                    <form th:action="@{/examenSouscrit/enregistrer/{idConsultation}(idConsultation=${consultation})}"
                           method="post" th:object="${examen.getLibelle()}">
                         <fieldset>
 

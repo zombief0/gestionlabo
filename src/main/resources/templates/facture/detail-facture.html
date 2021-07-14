@@ -28,11 +28,11 @@
 
         <div style="margin-bottom: 2%">
             <span>
-                        <a th:href="@{/Gestion_Laboratoire_EMMAUS/facture/print-facture/{id}(id=${facture.getIdFacture()})}"
+                        <a th:href="@{/facture/print-facture/{id}(id=${facture.getIdFacture()})}"
                            class="btn btn-outline-success"><i class="fa fa-file-pdf">Générer PDF</i></a></span>
 
             <span  style="margin-left: 2%">
-                        <a th:href="@{/Gestion_Laboratoire_EMMAUS/facture/delete/{id}(id=${facture.getIdFacture()})}"
+                        <a th:href="@{/facture/delete/{id}(id=${facture.getIdFacture()})}"
                            class="btn btn-outline-danger"><i class="fa fa-trash">Supprimer</i></a>
             </span>
         </div>

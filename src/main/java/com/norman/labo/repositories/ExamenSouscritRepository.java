@@ -13,4 +13,5 @@ public interface ExamenSouscritRepository extends JpaRepository<ExamenSouscrit,L
 
     List<ExamenSouscrit> findAllByFacture_IdFacture(Long idFacture);
 
+    List<ExamenSouscrit> findAllByPatient_IdPersonneAndFactureNull(Long idConsultation);
 }
