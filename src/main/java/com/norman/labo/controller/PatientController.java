@@ -28,13 +28,13 @@ public class PatientController {
     public String formAjoutPatient(Model model) {
         Patient patient = new Patient();
         model.addAttribute("patient", patient);
-        return "/patient/ajout-patient";
+        return "patient/ajout-patient";
     }
 
     @PostMapping("/enregistrer")
     public String ajoutPatient(@Valid Patient patient, BindingResult result, Model model) {
         if (result.hasErrors()) {
-            return "/patient/ajout-patient";
+            return "patient/ajout-patient";
         }
 
         patientService.savePatient(patient);

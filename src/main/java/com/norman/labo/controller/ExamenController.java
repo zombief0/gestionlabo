@@ -53,7 +53,7 @@ public class ExamenController {
 
         if (result.hasErrors()) {
             model.addAttribute("laboratoire", laboratoire);
-            return "/examen/add-examen";
+            return "examen/add-examen";
         }
 
         examenService.saveExamen(examen, laboratoire);
