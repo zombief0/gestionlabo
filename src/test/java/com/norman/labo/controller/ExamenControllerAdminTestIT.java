@@ -106,7 +106,7 @@ public class ExamenControllerAdminTestIT extends BaseControllerAdminTest {
                 .andExpect(status().isOk())
                 .andExpect(model().attributeHasErrors("examen"))
                 .andExpect(model().attributeHasFieldErrors("examen", "code", "libelle"))
-                .andExpect(view().name("/examen/add-examen"));
+                .andExpect(view().name("examen/add-examen"));
 
         // Then
         then(laboratoireService).should().fetchById(1L);

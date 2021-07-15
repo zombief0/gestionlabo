@@ -38,7 +38,7 @@ class PatientControllerTestIT extends BaseControllerUserAndAnonymousTest {
         mockMvc.perform(get("/patient/ajout-patient"))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("patient"))
-                .andExpect(view().name("/patient/ajout-patient"));
+                .andExpect(view().name("patient/ajout-patient"));
     }
 
     @DisplayName("Should display login page when trying to access add patient form not loggedIn")
