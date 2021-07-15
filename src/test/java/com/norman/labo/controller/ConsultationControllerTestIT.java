@@ -23,12 +23,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(ConsultationController.class)
 class ConsultationControllerTestIT extends BaseControllerUserAndAnonymousTest {
 
-    @MockBean
-    private ResourceLoader resourceLoader;
-
-    @MockBean
-    private DataSource dataSource;
-
     @Captor
     private ArgumentCaptor<String> argumentCaptorUsername;
 

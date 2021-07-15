@@ -28,11 +28,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class FactureControllerTestIT extends BaseControllerUserAndAnonymousTest {
 
     @MockBean
-    private DataSource dataSource;
-    @MockBean
-    private ResourceLoader resourceLoader;
-
-    @MockBean
     private ExamenSouscritService examenSouscritService;
 
     @MockBean

@@ -99,7 +99,7 @@
         </div>
         <div style="margin-bottom:1%">
 
-            <a class="btn btn-outline-primary" sec:authorize="hasAnyRole('ROLE_ADMIN','UTILISATEUR')"
+            <a class="btn btn-outline-primary" sec:authorize="hasAnyRole('ADMIN','UTILISATEUR')"
                data-toggle="modal" data-target="#consultation">
                 <i class="fa fa-fw fa-stethoscope"></i>Créer une consultation</a>
 
@@ -113,7 +113,7 @@
                 </form>
             </div>
 
-            <span sec:authorize="hasAnyRole('ROLE_ADMIN','UTILISATEUR')">
+            <span sec:authorize="hasAnyRole('ADMIN','UTILISATEUR')">
 						<a th:href="@{/facture/ajout-facture/{id}/0(id=${patient.getIdPersonne()})}"
                            class="btn btn-outline-success"><i class="fa fa-money-bill">Créer une Facture</i></a>
             </span>
@@ -131,7 +131,7 @@
                        th:href="@{/examenSouscrit/addExamenSouscrit/{id}/{idConsultation}(id=${patient.idPersonne},idConsultation=${consultation.getIdConsultation()})}"
                        class="btn btn-outline-success"><i class="fa fa-syringe">Prescrire un examen</i></a>
 
-                    <a th:href="@{/consultation/print-resultat/{id}/{idConsultation}(id=${patient.idPersonne},idConsultation=${consultation.getIdConsultation()})}"
+                    <a th:href="@{/consultation/print-resultat/{idConsultation}(idConsultation=${consultation.getIdConsultation()})}"
                        class="btn btn-outline-warning"><i class="fa fa-print">Imprimer les résultats</i></a>
 
 

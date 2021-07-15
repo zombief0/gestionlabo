@@ -30,41 +30,8 @@ import java.util.Map;
 @RequestMapping("/consultation")
 @RequiredArgsConstructor
 public class ConsultationController {
-    private final ResourceLoader resourceLoader;
-    private final DataSource dataSource;
+
     private final ConsultationService consultationService;
-
-
-    @GetMapping("/print-resultat/{idPatient}/{idConsultation}")
-    public String imprimerResultat(@PathVariable Long idConsultation,
-                                   @PathVariable Long idPatient,
-                                   HttpServletResponse response) throws JRException, IOException, SQLException {
-
-        response.setContentType("application/pdf");
-        JasperDesign jasperDesign = JRXmlLoader.load(resourceLoader.getResource("classpath:static/resultat.jrxml").getInputStream());
-
-        JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);
-        Map<String, Object> parameters = new HashMap<>();
-        parameters.put("idCons", idConsultation);
-        BufferedImage image = ImageIO.read(resourceLoader.getResource("classpath:static/logo1.png").getInputStream());
-        parameters.put("logo", image);
-        printState(response, jasperReport, parameters, dataSource);
-
-        return "redirect:/examenSouscrit/profil-patient/" + idPatient;
-
-    }
-
-    static void printState(HttpServletResponse response, JasperReport jasperReport, Map<String, Object> parameters, DataSource dataSource) throws SQLException, JRException, IOException {
-        Connection connection = dataSource.getConnection();
-        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, connection);
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        JasperExportManager.exportReportToPdfStream(jasperPrint, byteArrayOutputStream);
-        response.setContentLength(byteArrayOutputStream.size());
-        ServletOutputStream svl = response.getOutputStream();
-        byteArrayOutputStream.writeTo(svl);
-        svl.flush();
-        connection.close();
-    }
 
     @PostMapping("/enregistrer/{idPatient}")
     public String enregistrerConsultation(@PathVariable Long idPatient,

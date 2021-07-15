@@ -36,8 +36,6 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class FactureController {
 
-    private final DataSource dataSource;
-    private final ResourceLoader resourceLoader;
     private final FactureService factureService;
     private final ExamenSouscritService examenSouscritService;
     public static String successMessage = "null";
@@ -82,24 +80,6 @@ public class FactureController {
         return "facture/list-facture";
     }
 
-    @GetMapping("/print-facture/{idFacture}")
-    public String creerPdfFacture(@PathVariable Long idFacture, HttpServletResponse response) throws IOException, SQLException, JRException {
-        successMessage = "pdf généré! consultez le dossier Documents";
-
-        //
-        response.setContentType("application/pdf");
-        factureService.updateFacture(idFacture);
-        JasperDesign jasperDesign = JRXmlLoader.load(resourceLoader.getResource("classpath:static/etat.jrxml").getInputStream());
-
-        JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);
-        Map<String, Object> parameters = new HashMap<>();
-        parameters.put("idFacture", idFacture);
-        BufferedImage image = ImageIO.read(resourceLoader.getResource("classpath:static/logo1.png").getInputStream());
-        parameters.put("logo", image);
-        ConsultationController.printState(response, jasperReport, parameters, dataSource);
-
-        return "redirect:/facture/list-facture";
-    }
 
     @GetMapping("/detail-facture/{idFacture}")
     public String afficherDetail(@PathVariable Long idFacture, Model model) {
