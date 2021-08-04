@@ -29,10 +29,10 @@ node {
        }
 
        stage('Run docker container') {
-               sh "docker image prune -a -f"
                sh "docker container stop labo"
                sh "docker container rm labo"
                sh "docker container run -d -e VIRTUAL_HOST=labo.normanmbouende.com --name labo zombief0/labo:${commit_id}"
+               sh "docker image prune -a -f"
        }
 
     } catch(e) {
