@@ -1,5 +1,6 @@
 package com.norman.labo.security;
 
+import com.norman.labo.entities.Utilisateur;
 import com.norman.labo.repositories.UtilisateurRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -21,11 +22,16 @@ public class dbInit implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 //        System.out.println(bCryptPasswordEncoder.encode("1234"));
-        /*if(utilisateurRepository.findAll().size() == 0) {
-            Utilisateur admin = utilisateurRepository.findByIdPersonne(1L);
+        if(utilisateurRepository.findAll().size() == 0) {
+            Utilisateur admin = new Utilisateur();
+            admin.setActive(true);
+            admin.setRole("ADMIN");
+            admin.setEmail("root@mail.com");
+            admin.setNom("admin");
+            admin.setPrenom("user");
             admin.setMdp(bCryptPasswordEncoder.encode("myTimeIndeed$985"));
             utilisateurRepository.save(admin);
-        }*/
+        }
        /* JasperDesign jasperDesign = JRXmlLoader.load(ResourceUtils.getFile("classpath:etat.jrxml"));
 
         JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);
