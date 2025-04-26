@@ -28,8 +28,4 @@ public class HomeController {
         return "utilisateur/login";
     }
 
-   /* @GetMapping("/error")
-    public String errorPage(){
-        return "error";
-    }*/
 }

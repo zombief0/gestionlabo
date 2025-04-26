@@ -2,8 +2,8 @@ package com.norman.labo.controller;
 
 import org.apache.commons.beanutils.BeanUtils;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 
 public class PasswordMatchesValidator implements ConstraintValidator<PasswordMatches,Object> {
 

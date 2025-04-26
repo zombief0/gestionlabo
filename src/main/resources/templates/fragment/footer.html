@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <script></script>
 </head>
 <body>
 <footer class="sticky-footer">
@@ -30,7 +31,10 @@
 
             <div class="modal-footer">
                 <button class="btn btn-secondary" type="button" data-dismiss="modal">Annuler</button>
-                <a class="btn btn-primary" th:href="@{/logout}">Se déconnecter</a>
+                <form th:action="@{/logout}" method="post">
+                    <input type="hidden" name="_csrf.token" th:value="${_csrf.token}"/>
+                    <button class="btn btn-primary" type="submit">Se déconnecter</button>
+                </form>
             </div>
         </div>
     </div>
