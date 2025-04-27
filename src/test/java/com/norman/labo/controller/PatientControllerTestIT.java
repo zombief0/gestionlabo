@@ -7,9 +7,12 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.security.test.context.support.WithUserDetails;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.web.servlet.MockMvc;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
@@ -19,20 +22,23 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(PatientController.class)
-class PatientControllerTestIT extends BaseControllerUserAndAnonymousTest {
+@SpringBootTest
+@AutoConfigureMockMvc
+class PatientControllerTestIT {
+    @Autowired
+    private MockMvc mockMvc;
 
     @MockBean
     private PatientService patientService;
 
     @Captor
-    ArgumentCaptor<Patient> argumentCaptorPatient;
+    private ArgumentCaptor<Patient> argumentCaptorPatient;
 
     @Captor
-    ArgumentCaptor<Long> argumentCaptorId;
+    private ArgumentCaptor<Long> argumentCaptorId;
 
     @DisplayName("Should display add patient form when logged in")
-    @WithUserDetails(userDetailsServiceBeanName = "utilisateurDetailService", value = "userTest@mail.com")
+    @WithMockUser(username = "user@test.com", roles = "UTILISATEUR")
     @Test
     void displayAjoutPatientFormWhenUserIsLoggedIn() throws Exception {
         mockMvc.perform(get("/patient/ajout-patient"))
@@ -49,7 +55,7 @@ class PatientControllerTestIT extends BaseControllerUserAndAnonymousTest {
     }
 
     @DisplayName("Save patient successfully no form errors")
-    @WithUserDetails(userDetailsServiceBeanName = "utilisateurDetailService", value = "userTest@mail.com")
+    @WithMockUser(username = "user@test.com", roles = "UTILISATEUR")
     @Test
     void ajoutPatientNoErrors() throws Exception {
 
@@ -66,7 +72,7 @@ class PatientControllerTestIT extends BaseControllerUserAndAnonymousTest {
     }
 
     @DisplayName("Post request to patient/enregistrer with required field nom null")
-    @WithUserDetails(userDetailsServiceBeanName = "utilisateurDetailService", value = "userTest@mail.com")
+    @WithMockUser(username = "user@test.com", roles = "UTILISATEUR")
     @Test
     void ajoutPatientError() throws Exception {
 
@@ -96,7 +102,7 @@ class PatientControllerTestIT extends BaseControllerUserAndAnonymousTest {
 
 
     @DisplayName("Should show edit patient form when logged in")
-    @WithUserDetails(userDetailsServiceBeanName = "utilisateurDetailService", value = "userTest@mail.com")
+    @WithMockUser(username = "user@test.com", roles = "UTILISATEUR")
     @Test
     void modifierFormPatientUserLoggedIn() throws Exception {
         Patient patientToEdit = new Patient();
@@ -122,7 +128,7 @@ class PatientControllerTestIT extends BaseControllerUserAndAnonymousTest {
     }
 
     @DisplayName("Update patient no form field errors")
-    @WithUserDetails(userDetailsServiceBeanName = "utilisateurDetailService", value = "userTest@mail.com")
+    @WithMockUser(username = "user@test.com", roles = "UTILISATEUR")
     @Test
     void updatePatientNoErrors() throws Exception {
 
@@ -158,7 +164,7 @@ class PatientControllerTestIT extends BaseControllerUserAndAnonymousTest {
     }
 
     @DisplayName("Update patient form field error nom")
-    @WithUserDetails(userDetailsServiceBeanName = "utilisateurDetailService", value = "userTest@mail.com")
+    @WithMockUser(username = "user@test.com", roles = "UTILISATEUR")
     @Test
     void updatePatientErrorNom() throws Exception {
 
@@ -175,7 +181,7 @@ class PatientControllerTestIT extends BaseControllerUserAndAnonymousTest {
         then(patientService).shouldHaveNoInteractions();
     }
 
-    @WithUserDetails(userDetailsServiceBeanName = "utilisateurDetailService", value = "userTest@mail.com")
+    @WithMockUser(username = "user@test.com", roles = "UTILISATEUR")
     @Test
     void deletePatient() throws Exception {
         mockMvc.perform(get("/patient/delete/{id}", 2L))

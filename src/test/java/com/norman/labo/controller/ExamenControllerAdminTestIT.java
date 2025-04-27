@@ -7,9 +7,12 @@ import com.norman.labo.services.LaboratoireService;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.security.test.context.support.WithUserDetails;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.web.servlet.MockMvc;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
@@ -19,9 +22,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(ExamenController.class)
-public class ExamenControllerAdminTestIT extends BaseControllerAdminTest {
-
+@SpringBootTest
+@AutoConfigureMockMvc
+class ExamenControllerAdminTestIT {
+    @Autowired
+    private MockMvc mockMvc;
     @MockBean
     private ExamenService examenService;
 
@@ -42,7 +47,7 @@ public class ExamenControllerAdminTestIT extends BaseControllerAdminTest {
     private ArgumentCaptor<Laboratoire> laboratoireArgumentCaptor;
 
     @Test
-    @WithUserDetails(userDetailsServiceBeanName = "utilisateurDetailService", value = "adminTest@mail.com")
+    @WithMockUser(username = "admin@test.com", roles = "ADMIN")
     void ajoutExamenForm() throws Exception {
         Laboratoire laboratoire = new Laboratoire();
         laboratoire.setLibelle("Lab 1");
@@ -59,7 +64,7 @@ public class ExamenControllerAdminTestIT extends BaseControllerAdminTest {
     }
 
     @Test
-    @WithUserDetails(userDetailsServiceBeanName = "utilisateurDetailService", value = "adminTest@mail.com")
+    @WithMockUser(username = "admin@test.com", roles = "ADMIN")
     void enregistrerExamen() throws Exception {
         // Given
         Laboratoire laboratoire = new Laboratoire();
@@ -91,7 +96,7 @@ public class ExamenControllerAdminTestIT extends BaseControllerAdminTest {
     }
 
     @Test
-    @WithUserDetails(userDetailsServiceBeanName = "utilisateurDetailService", value = "adminTest@mail.com")
+    @WithMockUser(username = "admin@test.com", roles = "ADMIN")
     void enregistrerExamenErrorForm() throws Exception {
         // Given
         Laboratoire laboratoire = new Laboratoire();
@@ -115,7 +120,7 @@ public class ExamenControllerAdminTestIT extends BaseControllerAdminTest {
     }
 
     @Test
-    @WithUserDetails(userDetailsServiceBeanName = "utilisateurDetailService", value = "adminTest@mail.com")
+    @WithMockUser(username = "admin@test.com", roles = "ADMIN")
     void modifierExamen() throws Exception {
         // Given
         Laboratoire laboratoire = new Laboratoire();
@@ -149,7 +154,7 @@ public class ExamenControllerAdminTestIT extends BaseControllerAdminTest {
     }
 
     @Test
-    @WithUserDetails(userDetailsServiceBeanName = "utilisateurDetailService", value = "adminTest@mail.com")
+    @WithMockUser(username = "admin@test.com", roles = "ADMIN")
     void modifierExamenFormError() throws Exception {
 
         // Given
@@ -177,7 +182,7 @@ public class ExamenControllerAdminTestIT extends BaseControllerAdminTest {
     }
 
     @Test
-    @WithUserDetails(userDetailsServiceBeanName = "utilisateurDetailService", value = "adminTest@mail.com")
+    @WithMockUser(username = "admin@test.com", roles = "ADMIN")
     void deleteExamen() throws Exception {
         given(examenService.deleteExamenById(2L)).willReturn(1L);
         mockMvc.perform(get("/examen/delete/{id}", 2L))

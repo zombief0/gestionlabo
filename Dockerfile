@@ -1,5 +1,5 @@
-FROM openjdk:11
-COPY ./target/labo.war /usr/src/
+FROM eclipse-temurin:17
+COPY ./target/labo.jar /usr/src/
 WORKDIR /usr/src/
 EXPOSE 8080
-CMD ["java","-jar", "labo.war"]
+CMD ["java","-jar", "labo.jar"]

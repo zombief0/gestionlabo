@@ -3,22 +3,27 @@ package com.norman.labo.controller;
 import com.norman.labo.services.PatientService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.security.test.context.support.WithUserDetails;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.BDDMockito.then;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
-@WebMvcTest(HomeController.class)
-class HomeControllerTestIT extends BaseControllerUserAndAnonymousTest {
-
+@SpringBootTest
+@AutoConfigureMockMvc
+class HomeControllerTestIT {
+    @Autowired
+    private MockMvc mockMvc;
     @MockBean
     private PatientService patientService;
 
-    @WithUserDetails(userDetailsServiceBeanName = "utilisateurDetailService", value = "userTest@mail.com")
+    @WithMockUser
     @DisplayName("Should display patient list on UI when user connected")
     @Test
     void listPatientsWhenUserConnected() throws Exception {

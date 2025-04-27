@@ -6,9 +6,12 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.security.test.context.support.WithUserDetails;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,9 +26,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
-@WebMvcTest(LaboratoireController.class)
-class LaboratoireControllerTestIT extends BaseControllerUserAndAnonymousTest {
-
+@SpringBootTest
+@AutoConfigureMockMvc
+class LaboratoireControllerTestIT {
+    @Autowired
+    private MockMvc mockMvc;
     @MockBean
     private LaboratoireService laboratoireService;
 
@@ -36,7 +41,7 @@ class LaboratoireControllerTestIT extends BaseControllerUserAndAnonymousTest {
     @Captor
     ArgumentCaptor<Long> idLaboratoireArgumentCaptor;
 
-    @WithUserDetails(userDetailsServiceBeanName = "utilisateurDetailService", value = "userTest@mail.com")
+    @WithMockUser
     @Test
     void listelaboUserLoggedIn() throws Exception {
         Laboratoire lab1 = new Laboratoire();
@@ -65,7 +70,7 @@ class LaboratoireControllerTestIT extends BaseControllerUserAndAnonymousTest {
     }
 
     @DisplayName("Display laboratoire add form")
-    @WithUserDetails(userDetailsServiceBeanName = "utilisateurDetailService", value = "userTest@mail.com")
+    @WithMockUser
     @Test
     void addLaboratoireForm() throws Exception {
         mockMvc.perform(get("/laboratoire/add-laboratoire"))
@@ -82,7 +87,7 @@ class LaboratoireControllerTestIT extends BaseControllerUserAndAnonymousTest {
     }
 
     @Test
-    @WithUserDetails(userDetailsServiceBeanName = "utilisateurDetailService", value = "userTest@mail.com")
+    @WithMockUser
     void enregistrerLaboratoireNoFormErrors() throws Exception {
         mockMvc.perform(post("/laboratoire/enregistrer").with(csrf())
                 .param("libelle", "Labo 1")
@@ -104,7 +109,7 @@ class LaboratoireControllerTestIT extends BaseControllerUserAndAnonymousTest {
     }
 
     @Test
-    @WithUserDetails(userDetailsServiceBeanName = "utilisateurDetailService", value = "userTest@mail.com")
+    @WithMockUser
     void enregistrerLaboratoireFormErrors() throws Exception {
         mockMvc.perform(post("/laboratoire/enregistrer").with(csrf())
                 .param("description", "Desc 1"))
@@ -117,7 +122,7 @@ class LaboratoireControllerTestIT extends BaseControllerUserAndAnonymousTest {
 
     @DisplayName("Show Edit labo form")
     @Test
-    @WithUserDetails(userDetailsServiceBeanName = "utilisateurDetailService", value = "userTest@mail.com")
+    @WithMockUser
     void editerFormLabo() throws Exception {
         Laboratoire lab1 = new Laboratoire();
         lab1.setIdLaboratoire(1L);
@@ -143,7 +148,7 @@ class LaboratoireControllerTestIT extends BaseControllerUserAndAnonymousTest {
 
     @DisplayName("Update Laboratoire Test")
     @Test
-    @WithUserDetails(userDetailsServiceBeanName = "utilisateurDetailService", value = "userTest@mail.com")
+    @WithMockUser
     void modifierLaboratoire() throws Exception {
 
         mockMvc.perform(post("/laboratoire/modifier/{id}", 200L).with(csrf())
@@ -172,7 +177,7 @@ class LaboratoireControllerTestIT extends BaseControllerUserAndAnonymousTest {
     }
 
     @Test
-    @WithUserDetails(userDetailsServiceBeanName = "utilisateurDetailService", value = "userTest@mail.com")
+    @WithMockUser
     void modifierLaboratoireFormError() throws Exception {
 
         mockMvc.perform(post("/laboratoire/modifier/{id}", 200L).with(csrf())
@@ -187,7 +192,7 @@ class LaboratoireControllerTestIT extends BaseControllerUserAndAnonymousTest {
     }
 
     @Test
-    @WithUserDetails(userDetailsServiceBeanName = "utilisateurDetailService", value = "userTest@mail.com")
+    @WithMockUser
     void deleteLaboratoire() throws Exception {
         mockMvc.perform(get("/laboratoire/delete/{id}", 200))
                 .andExpect(status().is3xxRedirection())

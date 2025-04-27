@@ -1,18 +1,18 @@
 package com.norman.labo.controller;
 
 import com.norman.labo.entities.*;
-import com.norman.labo.repositories.FactureRepository;
 import com.norman.labo.services.ExamenSouscritService;
 import com.norman.labo.services.FactureService;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.core.io.ResourceLoader;
-import org.springframework.security.test.context.support.WithUserDetails;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.web.servlet.MockMvc;
 
-import javax.sql.DataSource;
 import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -24,9 +24,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(FactureController.class)
-class FactureControllerTestIT extends BaseControllerUserAndAnonymousTest {
-
+@SpringBootTest
+@AutoConfigureMockMvc
+class FactureControllerTestIT {
+    @Autowired
+    private MockMvc mockMvc;
     @MockBean
     private ExamenSouscritService examenSouscritService;
 
@@ -37,7 +39,7 @@ class FactureControllerTestIT extends BaseControllerUserAndAnonymousTest {
     ArgumentCaptor<ExamenSouscrit> examenSouscritArgumentCaptor;
 
     @Test
-    @WithUserDetails(userDetailsServiceBeanName = "utilisateurDetailService", value = "userTest@mail.com")
+    @WithMockUser(username = "user@test.com", roles = "UTILISATEUR")
     void ajoutFactureForm() throws Exception {
         Facture facture = new Facture();
         facture.setIdFacture(6L);
@@ -56,7 +58,7 @@ class FactureControllerTestIT extends BaseControllerUserAndAnonymousTest {
     }
 
     @Test
-    @WithUserDetails(userDetailsServiceBeanName = "utilisateurDetailService", value = "userTest@mail.com")
+    @WithMockUser(username = "user@test.com", roles = "UTILISATEUR")
     void ajoutFactureFormNoExamnSouscrits() throws Exception {
 
         given(examenSouscritService.findAllByPatientAndFactureNull(anyLong())).willReturn(Collections.emptyList());
@@ -78,7 +80,7 @@ class FactureControllerTestIT extends BaseControllerUserAndAnonymousTest {
     }
 
     @Test
-    @WithUserDetails(userDetailsServiceBeanName = "utilisateurDetailService", value = "userTest@mail.com")
+    @WithMockUser(username = "user@test.com", roles = "UTILISATEUR")
     void enregistrerFacture() throws Exception {
         given(factureService.saveFacture(anyString(), any(ExamenSouscrit.class), anyLong())).willReturn(1L);
         mockMvc.perform(post("/facture/enregistrer/2/{codeFacture}", 1)
@@ -102,7 +104,7 @@ class FactureControllerTestIT extends BaseControllerUserAndAnonymousTest {
     }
 
     @Test
-    @WithUserDetails(userDetailsServiceBeanName = "utilisateurDetailService", value = "userTest@mail.com")
+    @WithMockUser(username = "user@test.com", roles = "UTILISATEUR")
     void listFacture() throws Exception {
         given(factureService.findAll()).willReturn(Collections.emptyList());
         mockMvc.perform(get("/facture/list-facture"))
@@ -120,11 +122,7 @@ class FactureControllerTestIT extends BaseControllerUserAndAnonymousTest {
     }
 
     @Test
-    void creerPdfFacture() {
-    }
-
-    @Test
-    @WithUserDetails(userDetailsServiceBeanName = "utilisateurDetailService", value = "userTest@mail.com")
+    @WithMockUser(username = "user@test.com", roles = "UTILISATEUR")
     void afficherDetail() throws Exception{
         Facture facture = new Facture();
         facture.setIdFacture(6L);
@@ -143,7 +141,7 @@ class FactureControllerTestIT extends BaseControllerUserAndAnonymousTest {
     }
 
     @Test
-    @WithUserDetails(userDetailsServiceBeanName = "utilisateurDetailService", value = "userTest@mail.com")
+    @WithMockUser(username = "user@test.com", roles = "UTILISATEUR")
     void deleteFacture() throws Exception{
         mockMvc.perform(get("/facture/delete/{idFacture}", 1))
                 .andExpect(status().is3xxRedirection())

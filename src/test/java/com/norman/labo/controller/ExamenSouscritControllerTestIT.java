@@ -11,9 +11,12 @@ import com.norman.labo.services.PatientService;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.security.test.context.support.WithUserDetails;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Collections;
 import java.util.List;
@@ -27,9 +30,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(ExamenSouscritController.class)
-class ExamenSouscritControllerTestIT extends BaseControllerUserAndAnonymousTest{
-
+@SpringBootTest
+@AutoConfigureMockMvc
+class ExamenSouscritControllerTestIT{
+    @Autowired
+    private MockMvc mockMvc;
     @MockBean
     private ConsultationService consultationService;
     @MockBean
@@ -51,7 +56,7 @@ class ExamenSouscritControllerTestIT extends BaseControllerUserAndAnonymousTest{
     @Captor
     private ArgumentCaptor<Double> valeurNormaleCaptor;
 
-    @WithUserDetails(userDetailsServiceBeanName = "utilisateurDetailService", value = "userTest@mail.com")
+    @WithMockUser(username = "user@test.com", roles = "UTILISATEUR")
     @Test
     void montrerProfilPatient() throws Exception {
         Patient patient = new Patient();
@@ -88,7 +93,7 @@ class ExamenSouscritControllerTestIT extends BaseControllerUserAndAnonymousTest{
         then(consultationService).shouldHaveNoInteractions();
     }
 
-    @WithUserDetails(userDetailsServiceBeanName = "utilisateurDetailService", value = "userTest@mail.com")
+    @WithMockUser(username = "user@test.com", roles = "UTILISATEUR")
     @Test
     void addValeurNormaleForm() throws Exception {
         Patient patient = new Patient();
@@ -124,7 +129,7 @@ class ExamenSouscritControllerTestIT extends BaseControllerUserAndAnonymousTest{
         then(examenSouscritService).shouldHaveNoInteractions();
     }
 
-    @WithUserDetails(userDetailsServiceBeanName = "utilisateurDetailService", value = "userTest@mail.com")
+    @WithMockUser(username = "user@test.com", roles = "UTILISATEUR")
     @Test
     void addExamSouscritForm() throws Exception {
         Examen examen = new Examen();
@@ -150,7 +155,7 @@ class ExamenSouscritControllerTestIT extends BaseControllerUserAndAnonymousTest{
         then(examenService).shouldHaveNoInteractions();
     }
 
-    @WithUserDetails(userDetailsServiceBeanName = "utilisateurDetailService", value = "userTest@mail.com")
+    @WithMockUser(username = "user@test.com", roles = "UTILISATEUR")
     @Test
     void enregistrerValeurResultat() throws Exception {
         given(examenSouscritService.updateExamenSouscrit(anyLong(), anyDouble(), anyString())).willReturn(5L);
@@ -178,7 +183,7 @@ class ExamenSouscritControllerTestIT extends BaseControllerUserAndAnonymousTest{
         then(examenSouscritService).shouldHaveNoInteractions();
     }
 
-    @WithUserDetails(userDetailsServiceBeanName = "utilisateurDetailService", value = "userTest@mail.com")
+    @WithMockUser(username = "user@test.com", roles = "UTILISATEUR")
     @Test
     void saveExamenSouscrit() throws Exception {
         given(examenSouscritService.saveExamSouscrit(anyLong(), any(Examen.class))).willReturn(2L);
@@ -216,7 +221,7 @@ class ExamenSouscritControllerTestIT extends BaseControllerUserAndAnonymousTest{
         then(examenSouscritService).shouldHaveNoInteractions();
     }
 
-    @WithUserDetails(userDetailsServiceBeanName = "utilisateurDetailService", value = "userTest@mail.com")
+    @WithMockUser(username = "user@test.com", roles = "UTILISATEUR")
     @Test
     void delete() throws Exception {
         given(examenSouscritService.deleteById(anyLong())).willReturn(1L);

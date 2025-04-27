@@ -4,12 +4,12 @@ import com.norman.labo.services.ConsultationService;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.core.io.ResourceLoader;
-import org.springframework.security.test.context.support.WithUserDetails;
-
-import javax.sql.DataSource;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.web.servlet.MockMvc;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
@@ -20,9 +20,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
-@WebMvcTest(ConsultationController.class)
-class ConsultationControllerTestIT extends BaseControllerUserAndAnonymousTest {
-
+@SpringBootTest
+@AutoConfigureMockMvc
+class ConsultationControllerTestIT {
+    @Autowired
+    private MockMvc mockMvc;
     @Captor
     private ArgumentCaptor<String> argumentCaptorUsername;
 
@@ -35,7 +37,7 @@ class ConsultationControllerTestIT extends BaseControllerUserAndAnonymousTest {
     @MockBean
     private ConsultationService consultationService;
 
-    @WithUserDetails(userDetailsServiceBeanName = "utilisateurDetailService", value = "userTest@mail.com")
+    @WithMockUser(username = "user@test.com", roles = "UTILISATEUR")
     @Test
     void enregistrerConsultation() throws Exception {
         mockMvc.perform(post("/consultation/enregistrer/{idPatient}", 5)
@@ -46,7 +48,7 @@ class ConsultationControllerTestIT extends BaseControllerUserAndAnonymousTest {
 
         then(consultationService).should().saveConsultation(argumentCaptorUsername.capture(),
                 argumentCaptorId.capture(), argumentCaptorPrescripteur.capture());
-        assertThat(argumentCaptorUsername.getValue()).isEqualTo("userTest@mail.com");
+        assertThat(argumentCaptorUsername.getValue()).isEqualTo("user@test.com");
         assertThat(argumentCaptorId.getValue()).isEqualTo(5L);
         assertThat(argumentCaptorPrescripteur.getValue()).isEqualTo("Norman Mbouende");
     }
@@ -61,7 +63,7 @@ class ConsultationControllerTestIT extends BaseControllerUserAndAnonymousTest {
         then(consultationService).shouldHaveNoInteractions();
     }
 
-    @WithUserDetails(userDetailsServiceBeanName = "utilisateurDetailService", value = "userTest@mail.com")
+    @WithMockUser(username = "user@test.com", roles = "UTILISATEUR")
     @Test
     void delete() throws Exception {
         given(consultationService.deleteConsultationById(1L)).willReturn(3L);
@@ -81,7 +83,7 @@ class ConsultationControllerTestIT extends BaseControllerUserAndAnonymousTest {
         then(consultationService).shouldHaveNoInteractions();
     }
 
-    @WithUserDetails(userDetailsServiceBeanName = "utilisateurDetailService", value = "userTest@mail.com")
+    @WithMockUser(username = "user@test.com", roles = "UTILISATEUR")
     @Test
     void terminer() throws Exception {
         given(consultationService.terminerConsultation(1L)).willReturn(3L);
@@ -99,7 +101,7 @@ class ConsultationControllerTestIT extends BaseControllerUserAndAnonymousTest {
         then(consultationService).shouldHaveNoInteractions();
     }
 
-    @WithUserDetails(userDetailsServiceBeanName = "utilisateurDetailService", value = "userTest@mail.com")
+    @WithMockUser(username = "user@test.com", roles = "UTILISATEUR")
     @Test
     void activer() throws Exception {
         given(consultationService.activerConsultation(1L)).willReturn(3L);

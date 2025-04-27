@@ -33,7 +33,7 @@ public class SecurityConfiguration {
     public SecurityFilterChain configure(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(authorizationManagerRequestMatcherRegistry -> {
-                    var subHttp = authorizationManagerRequestMatcherRegistry
+                    authorizationManagerRequestMatcherRegistry
                             .requestMatchers(antMatcher("/")).authenticated()
                             .requestMatchers(antMatcher("/examenSouscrit/**")).authenticated()
                             .requestMatchers(antMatcher("/patient/**")).hasAnyRole("ADMIN", "UTILISATEUR")
@@ -54,19 +54,14 @@ public class SecurityConfiguration {
                             .requestMatchers(antMatcher("/pug/**")).permitAll()
                             .requestMatchers(antMatcher("/scss/**")).permitAll()
                             .requestMatchers(antMatcher("/vendor/**")).permitAll()
-                            .requestMatchers(antMatcher("/style.css")).permitAll()
-                            .and();
-                    try {
-                        subHttp.formLogin()
-                                .usernameParameter("email")
-                                .loginPage("/login").permitAll()
-                                .defaultSuccessUrl("/")
-                                .and()
-                                .logout( httpSecurityLogoutConfigurer -> httpSecurityLogoutConfigurer.logoutSuccessUrl("/login"));
-                    } catch (Exception e) {
-                        throw new RuntimeException(e);
-                    }
-                });
+                            .requestMatchers(antMatcher("/style.css")).permitAll();
+
+                }).formLogin()
+                .usernameParameter("email")
+                .loginPage("/login").permitAll()
+                .defaultSuccessUrl("/")
+                .and()
+                .logout( httpSecurityLogoutConfigurer -> httpSecurityLogoutConfigurer.logoutSuccessUrl("/login"));
         return http.build();
     }
 

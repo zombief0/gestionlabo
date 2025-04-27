@@ -6,9 +6,12 @@ import com.norman.labo.services.UtilisateurService;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.security.test.context.support.WithUserDetails;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Arrays;
 
@@ -22,9 +25,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(UtilisateurController.class)
-class UtilisateurControllerAdminTestIT extends BaseControllerAdminTest {
-
+@SpringBootTest
+@AutoConfigureMockMvc
+class UtilisateurControllerAdminTestIT {
+    @Autowired
+    private MockMvc mockMvc;
     @MockBean
     private UtilisateurService utilisateurService;
 
@@ -34,7 +39,7 @@ class UtilisateurControllerAdminTestIT extends BaseControllerAdminTest {
     @Captor
     private ArgumentCaptor<Long> idCaptor;
 
-    @WithUserDetails(userDetailsServiceBeanName = "utilisateurDetailService", value = "adminTest@mail.com")
+    @WithMockUser(username = "admin@test.com", roles = "ADMIN")
     @Test
     void listUser() throws Exception {
         Utilisateur utilisateur = new Utilisateur();
@@ -50,7 +55,7 @@ class UtilisateurControllerAdminTestIT extends BaseControllerAdminTest {
         then(utilisateurService).should().fetchAll();
     }
 
-    @WithUserDetails(userDetailsServiceBeanName = "utilisateurDetailService", value = "adminTest@mail.com")
+    @WithMockUser(username = "admin@test.com", roles = "ADMIN")
     @Test
     void adduserForm() throws Exception {
         mockMvc.perform(get("/user/add-user"))
@@ -59,7 +64,7 @@ class UtilisateurControllerAdminTestIT extends BaseControllerAdminTest {
                 .andExpect(view().name("utilisateur/add-user"));
     }
 
-    @WithUserDetails(userDetailsServiceBeanName = "utilisateurDetailService", value = "adminTest@mail.com")
+    @WithMockUser(username = "admin@test.com", roles = "ADMIN")
     @Test
     void enregistrerUser() throws Exception {
 
@@ -78,7 +83,7 @@ class UtilisateurControllerAdminTestIT extends BaseControllerAdminTest {
         assertThat(utilisateurArgumentCaptor.getValue().getNom()).isEqualTo("Mbouende");
     }
 
-    @WithUserDetails(userDetailsServiceBeanName = "utilisateurDetailService", value = "adminTest@mail.com")
+    @WithMockUser(username = "admin@test.com", roles = "ADMIN")
     @Test
     void enregistrerUserEmailError() throws Exception {
 
@@ -95,7 +100,7 @@ class UtilisateurControllerAdminTestIT extends BaseControllerAdminTest {
 
     }
 
-    @WithUserDetails(userDetailsServiceBeanName = "utilisateurDetailService", value = "adminTest@mail.com")
+    @WithMockUser(username = "admin@test.com", roles = "ADMIN")
     @Test
     void enregistrerUserMdpNotMatch() throws Exception {
 
@@ -111,7 +116,7 @@ class UtilisateurControllerAdminTestIT extends BaseControllerAdminTest {
 
     }
 
-    @WithUserDetails(userDetailsServiceBeanName = "utilisateurDetailService", value = "adminTest@mail.com")
+    @WithMockUser(username = "admin@test.com", roles = "ADMIN")
     @Test
     void enregistrerUserNomNullEmailNull() throws Exception {
 
@@ -126,7 +131,7 @@ class UtilisateurControllerAdminTestIT extends BaseControllerAdminTest {
 
     }
 
-    @WithUserDetails(userDetailsServiceBeanName = "utilisateurDetailService", value = "adminTest@mail.com")
+    @WithMockUser(username = "admin@test.com", roles = "ADMIN")
     @Test
     void modifierUserForm() throws Exception {
         UtilisateurDTO utilisateur = new UtilisateurDTO();
@@ -142,7 +147,7 @@ class UtilisateurControllerAdminTestIT extends BaseControllerAdminTest {
         then(utilisateurService).should().fetchById(1L);
     }
 
-    @WithUserDetails(userDetailsServiceBeanName = "utilisateurDetailService", value = "adminTest@mail.com")
+    @WithMockUser(username = "admin@test.com", roles = "ADMIN")
     @Test
     void modifierAdminForm() throws Exception {
         UtilisateurDTO utilisateur = new UtilisateurDTO();
@@ -158,7 +163,7 @@ class UtilisateurControllerAdminTestIT extends BaseControllerAdminTest {
         then(utilisateurService).should().fetchById(1L);
     }
 
-    @WithUserDetails(userDetailsServiceBeanName = "utilisateurDetailService", value = "adminTest@mail.com")
+    @WithMockUser(username = "admin@test.com", roles = "ADMIN")
     @Test
     void updateAdminUser() throws Exception {
         given(utilisateurService.updateAdmin(anyLong(), any(UtilisateurDTO.class))).willReturn(true);
@@ -174,7 +179,7 @@ class UtilisateurControllerAdminTestIT extends BaseControllerAdminTest {
         then(utilisateurService).should().updateAdmin(anyLong(), any(UtilisateurDTO.class));
     }
 
-    @WithUserDetails(userDetailsServiceBeanName = "utilisateurDetailService", value = "adminTest@mail.com")
+    @WithMockUser(username = "admin@test.com", roles = "ADMIN")
     @Test
     void updateAdminUserOldPasswordNotMatching() throws Exception {
         given(utilisateurService.updateAdmin(anyLong(), any(UtilisateurDTO.class))).willReturn(false);
@@ -192,7 +197,7 @@ class UtilisateurControllerAdminTestIT extends BaseControllerAdminTest {
 
     }
 
-    @WithUserDetails(userDetailsServiceBeanName = "utilisateurDetailService", value = "adminTest@mail.com")
+    @WithMockUser(username = "admin@test.com", roles = "ADMIN")
     @Test
     void updateAdminUserEmailNomInvalid() throws Exception {
         mockMvc.perform(post("/user/modifierAdmin/{id}", 1)
@@ -207,7 +212,7 @@ class UtilisateurControllerAdminTestIT extends BaseControllerAdminTest {
 
     }
 
-    @WithUserDetails(userDetailsServiceBeanName = "utilisateurDetailService", value = "adminTest@mail.com")
+    @WithMockUser(username = "admin@test.com", roles = "ADMIN")
     @Test
     void updateAdminUserPasswordNotMatching() throws Exception {
         mockMvc.perform(post("/user/modifierAdmin/{id}", 1)
@@ -224,7 +229,7 @@ class UtilisateurControllerAdminTestIT extends BaseControllerAdminTest {
 
     }
 
-    @WithUserDetails(userDetailsServiceBeanName = "utilisateurDetailService", value = "adminTest@mail.com")
+    @WithMockUser(username = "admin@test.com", roles = "ADMIN")
     @Test
     void updateAdminNotOldPassword() throws Exception {
         mockMvc.perform(post("/user/modifierAdmin/{id}", 1)
@@ -239,7 +244,7 @@ class UtilisateurControllerAdminTestIT extends BaseControllerAdminTest {
 
     }
 
-    @WithUserDetails(userDetailsServiceBeanName = "utilisateurDetailService", value = "adminTest@mail.com")
+    @WithMockUser(username = "admin@test.com", roles = "ADMIN")
     @Test
     void updateUser() throws Exception {
         mockMvc.perform(post("/user/modifier/{id}", 2)
@@ -256,7 +261,7 @@ class UtilisateurControllerAdminTestIT extends BaseControllerAdminTest {
         assertThat(utilisateurArgumentCaptor.getValue()).isNotNull();
     }
 
-    @WithUserDetails(userDetailsServiceBeanName = "utilisateurDetailService", value = "adminTest@mail.com")
+    @WithMockUser(username = "admin@test.com", roles = "ADMIN")
     @Test
     void updateUserUserEmailInvalid() throws Exception {
         mockMvc.perform(post("/user/modifier/{id}", 2)
@@ -271,7 +276,7 @@ class UtilisateurControllerAdminTestIT extends BaseControllerAdminTest {
 
     }
 
-    @WithUserDetails(userDetailsServiceBeanName = "utilisateurDetailService", value = "adminTest@mail.com")
+    @WithMockUser(username = "admin@test.com", roles = "ADMIN")
     @Test
     void updateUserPasswordNotMatch() throws Exception {
         mockMvc.perform(post("/user/modifier/{id}", 2)
@@ -286,7 +291,7 @@ class UtilisateurControllerAdminTestIT extends BaseControllerAdminTest {
         then(utilisateurService).shouldHaveNoInteractions();
     }
 
-    @WithUserDetails(userDetailsServiceBeanName = "utilisateurDetailService", value = "adminTest@mail.com")
+    @WithMockUser(username = "admin@test.com", roles = "ADMIN")
     @Test
     void deleteUser() throws Exception {
         mockMvc.perform(get("/user/deleteUser/{id}", 1))
@@ -297,7 +302,7 @@ class UtilisateurControllerAdminTestIT extends BaseControllerAdminTest {
         assertThat(idCaptor.getValue()).isEqualTo(1L);
     }
 
-    @WithUserDetails(userDetailsServiceBeanName = "utilisateurDetailService", value = "adminTest@mail.com")
+    @WithMockUser(username = "admin@test.com", roles = "ADMIN")
     @Test
     void activateDeactivate() throws Exception {
         mockMvc.perform(get("/user/activateDeactivateUser/{id}", 1))
