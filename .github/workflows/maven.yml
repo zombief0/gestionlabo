@@ -31,8 +31,11 @@ jobs:
       run: mvn -B verify --file pom.xml
     - name: Build Docker image
       run: docker build . --tag zombief0/labo:$(date +%s)
-    - name: List Docker images
-      run: docker image ls
+    - name: push Docker image
+      run:
+        docker login -u zombief0 -p ${{ secrets.DOCKER_HUB_TOKEN }}
+        docker push zombief0/labo:$(date +%s)
+
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
     - name: Update dependency graph
