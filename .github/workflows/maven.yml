@@ -30,7 +30,7 @@ jobs:
     - name: Build with Maven
       run: mvn -B verify --file pom.xml
     - name: Build Docker image
-      run: docker build --file ../Dockerfile --tag gestionlabo:$(date +%s)
+      run: docker build . --tag zombief0/labo:$(date +%s)
     - name: List Docker images
       run: docker image ls
 
