@@ -32,7 +32,7 @@ jobs:
     - name: Build Docker image
       run: docker build . --tag zombief0/labo:$(date +%s)
     - name: push Docker image
-      run:
+      run: |
         docker login -u zombief0 -p ${{ secrets.DOCKER_HUB_TOKEN }}
         docker push zombief0/labo:$(date +%s)
 
