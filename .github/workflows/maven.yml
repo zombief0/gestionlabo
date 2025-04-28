@@ -35,6 +35,14 @@ jobs:
       run: |
         echo "${{ secrets.DOCKER_HUB_TOKEN }}" | docker login -u zombief0  --password-stdin
         docker push zombief0/labo:${{ github.sha }}
+    - name: Testing remote server connection
+      uses: appleboy/ssh-action@v1
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        password: ${{ secrets.PASSWORD }}
+        port: ${{ secrets.PORT }}
+        script: whoami
 
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
