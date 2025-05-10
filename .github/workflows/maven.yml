@@ -43,7 +43,7 @@ jobs:
         username: ${{ secrets.USERNAME }}
         password: ${{ secrets.PASSWORD }}
         port: ${{ secrets.PORT }}
-        script: docker run -v /data/labo/config:/springconfig  --net=host --name labo -d zombief0/labo:${{ github.sha }}
+        script: docker run -v /data/labo/config:/springconfig -e VIRTUAL_HOST=labo.normanmbouende.fr -e LETSENCRYPT_HOST=labo.normanmbouende.fr -e VIRTUAL_PORT=8080 --net=host --name labo -d zombief0/labo:${{ github.sha }}
 
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
