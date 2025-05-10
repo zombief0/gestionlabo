@@ -16,7 +16,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  build-and-deploy:
 
     runs-on: ubuntu-latest
 
@@ -36,10 +36,6 @@ jobs:
     - name: Build Docker image
       run: docker build . --tag zombief0/labo:${{ github.sha }}
 
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v4
     - name: push Docker image
       run: |
         echo "${{ secrets.DOCKER_HUB_TOKEN }}" | docker login -u zombief0  --password-stdin
