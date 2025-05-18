@@ -51,4 +51,4 @@ jobs:
           docker stop labo || true
           docker rm labo || true
           docker image prune -a -f
-          docker run -v /data/labo/config:/springconfig -e VIRTUAL_HOST=labo.normanmbouende.fr -e LETSENCRYPT_HOST=labo.normanmbouende.fr -e VIRTUAL_PORT=8080 --net=host --name labo -d zombief0/labo:${{ github.sha }}
+          docker run -v /data/labo/config:/springconfig -e VIRTUAL_HOST=labo.normanmbouende.fr -e LETSENCRYPT_HOST=labo.normanmbouende.fr -e VIRTUAL_PORT=8080 --name labo -d zombief0/labo:${{ github.sha }}
